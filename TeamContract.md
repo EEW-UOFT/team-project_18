@@ -72,4 +72,5 @@ Team Member Signatures:
 
 Helen Lei,
 Sunny Cai,
-Eijiro Watanabe
+Eijiro Watanabe,
+Ryan Xue
