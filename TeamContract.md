@@ -73,4 +73,5 @@ Team Member Signatures:
 Helen Lei,
 Sunny Cai,
 Eijiro Watanabe,
-Ryan Xue
+Ryan Xue,
+Hargun Kaur Badhesha
