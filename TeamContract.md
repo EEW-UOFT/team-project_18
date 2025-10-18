@@ -53,5 +53,5 @@ Helen Lei,
 Sunny Cai,
 Eijiro Watanabe,
 Ryan Xue,
-Hargun Kaur Badhesha
+Hargun Kaur Badhesha,
 juri bin shudayyid 
