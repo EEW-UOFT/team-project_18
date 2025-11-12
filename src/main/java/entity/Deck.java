@@ -70,7 +70,7 @@ public class Deck {
                 JSONArray drawCards = responseBody.getJSONArray("cards");
                 for (int i = 0; i < drawCards.length(); i++) {
                     String tempCardSuit = drawCards.getJSONObject(i).getString("suit");
-                    int tempCardValue = Integer.valueOf(drawCards.getJSONObject(i).getString("value"));
+                    String tempCardValue = drawCards.getJSONObject(i).getString("value");
                     Card newCard = new Card(tempCardSuit, tempCardValue);
                     currDrawnCards.add(newCard);
                     drawnCards.add(newCard);
