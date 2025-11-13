@@ -2,9 +2,9 @@ package entity;
 
 public class Card {
     private final String suit;
-    private final int value;
+    private final String value;
 
-    public Card(String suit, int value) {
+    public Card(String suit, String value) {
         this.suit = suit;
         this.value = value;
     }
@@ -13,7 +13,7 @@ public class Card {
         return this.suit;
     }
 
-    public int getValue() {
+    public String getValue() {
         return this.value;
     }
 }
