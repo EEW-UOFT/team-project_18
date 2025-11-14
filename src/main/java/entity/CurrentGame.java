@@ -10,7 +10,14 @@ public class CurrentGame {
     private GameState gameState = GameState.ONGOING;
     private Deck deck;
 
-    public int returnDeckID() {
+    public CurrentGame(User player, Deck deck) {
+        this.player = player;
+        this.deck = deck;
+        this.playerHand = new ArrayList<>();
+        this.dealerHand = new ArrayList<>();
+    }
+
+    public String returnDeckID() {
         //Return the deckID
         return deck.returnDeckID();
     }
@@ -45,17 +52,24 @@ public class CurrentGame {
         switch (gameState) {
             case WIN:
                 return "Player Won";
-                break;
             case LOST:
                 return "Dealer Won";
-                break;
             case DRAW:
                 return "Draw";
-                break;
             case ONGOING:
                 return "Game is currently ongoing";
+            default:
+                return "Game is currently over";
         }
-        return null;
     }
 
+    public List<Card> getPlayerHand() {return playerHand;}
+
+    public List<Card> getDealerHand() {return dealerHand;}
+
+    public GameState getGameState() {return gameState;}
+
+    public Deck getDeck() {return deck;}
+
+    public User getPlayer() {return player;}
 }
