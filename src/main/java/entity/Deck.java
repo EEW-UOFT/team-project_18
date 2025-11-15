@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.util.*;
 
 public class Deck {
-    int deckID;
-    List<Card> drawnCards;
+    private String deckID;
+    private List<Card> drawnCards;
     private final OkHttpClient client = new OkHttpClient();
 
-    private Deck(int deckID){
+    public Deck(){
         //Constructor
-        this.deckID = deckID;
+        this.drawnCards = new ArrayList<>();
     }
 
     public static class UnableToLoadDeck extends Exception{
@@ -27,12 +27,12 @@ public class Deck {
         }
     }
 
-    public int returnDeckID(){
+    public String returnDeckID(){
         //Return deckID
         return deckID;
     }
 
-    public Deck getNewDeck() throws UnableToLoadDeck {
+    public Deck initializeNewDeck() throws UnableToLoadDeck {
         //Call the API to get a new deck, shuffled
         HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
 
@@ -43,9 +43,9 @@ public class Deck {
             final JSONObject responseBody = new JSONObject(response.body().string());
 
             if (responseBody.getString("success").equals("true")) {
-                deckID = responseBody.getInt("deck_id");
-            }
-            return new Deck(deckID);
+                this.deckID = responseBody.getString("deck_id");
+                return this;
+            }else{throw new UnableToLoadDeck();}
         }
         catch (Exception e) {
             throw new UnableToLoadDeck();
@@ -54,9 +54,9 @@ public class Deck {
 
     public List<Card> drawCards(int n) throws UnableToLoadDeck {
         //Calls the API to draws n cards from a deck and returns a list containing them.
-        HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck").newBuilder()
-                .addPathSegment("/"+deckID+"/draw/?count=")
-                .addPathSegment(Integer.toString(n))
+        HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/" + deckID + "/draw/")
+                .newBuilder()
+                .addQueryParameter("count", String.valueOf(n))
                 .build();
 
         Request request = new Request.Builder().url(url).build();
