@@ -1,10 +1,10 @@
 package entity;
 
 public class HistoryEntry {
-    private int timeStamp;
-    private int playerTotal;
-    private int dealerTotal;
-    private String outcome;
+    private final int timeStamp;
+    private final int playerTotal;
+    private final int dealerTotal;
+    private final String outcome;
 
     public HistoryEntry(int timeStamp, int playerTotal, int dealerTotal, String outcome) {
         this.timeStamp = timeStamp;
