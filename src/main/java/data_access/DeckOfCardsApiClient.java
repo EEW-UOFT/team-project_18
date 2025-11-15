@@ -15,13 +15,17 @@ public class DeckOfCardsApiClient implements DeckGateway {
         var req = HttpRequest.newBuilder(URI.create(url)).GET().build();
         var res = http.send(req, HttpResponse.BodyHandlers.ofString());
         String body = res.body();
-        String key = "\"deck_id\":\"";
+
+        String key = "\"deck_id\": \"";
         int i = body.indexOf(key);
-        if (i < 0) throw new IllegalStateException("No deck_id in response: " + body);
+        if (i < 0) {
+            throw new IllegalStateException("No deck_id in response: " + body);
+        }
         int start = i + key.length();
         int end = body.indexOf('"', start);
         return body.substring(start, end);
     }
+
 
     @Override
     public String drawOneValue(String deckId) throws Exception {
@@ -29,12 +33,17 @@ public class DeckOfCardsApiClient implements DeckGateway {
         var req = HttpRequest.newBuilder(URI.create(url)).GET().build();
         var res = http.send(req, HttpResponse.BodyHandlers.ofString());
         String body = res.body();
-        String k = "\"value\":\"";
+
+        // Look for: "value": "8"
+        String k = "\"value\": \"";
         int i = body.indexOf(k);
-        if (i < 0) throw new IllegalStateException("No card value in response: " + body);
+        if (i < 0) {
+            throw new IllegalStateException("No card value in response: " + body);
+        }
         int start = i + k.length();
         int end = body.indexOf('"', start);
-        return body.substring(start, end).toUpperCase(); // normalize
+        return body.substring(start, end).toUpperCase();  // "8", "KING", "ACE", etc.
     }
+
 }
 
