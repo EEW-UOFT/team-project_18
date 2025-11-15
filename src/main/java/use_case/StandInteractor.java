@@ -18,7 +18,6 @@ public class StandInteractor implements StandInputBoundary {
         this.presenter = presenter;
     }
 
-
     @Override
     public void execute(String deckId) {
         try {
