@@ -1,8 +1,16 @@
 package use_case;
 
+import entity.Card;
+
 public interface StandOutputBoundary {
-    void presentDealerDrew(String value, int dealerTotal);
-    void presentResult(String outcome, int playerTotal, int dealerTotal);
+
+    // Called every time the dealer draws a card
+    void presentDealerDrew(Card card, int dealerTotal);
+
+    // Called when the Stand use case is finished
+    void presentResult(StandOutputData outputData);
+
+    // Called if something goes wrong (API issues etc.)
     void presentError(String message);
 }
 

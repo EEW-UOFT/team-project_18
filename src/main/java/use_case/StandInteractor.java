@@ -1,40 +1,74 @@
 package use_case;
 
-import data_access.DeckGateway;
+import entity.Card;
+import entity.Deck;
+
+import java.util.List;
 
 public class StandInteractor implements StandInputBoundary {
-    private final Player player;
-    private final Dealer dealer;
-    private final DeckGateway deckGateway;
+
     private final StandOutputBoundary presenter;
 
-    public StandInteractor(Player player, Dealer dealer,
-                           DeckGateway deckGateway, StandOutputBoundary presenter) {
-        this.player = player;
-        this.dealer = dealer;
-        this.deckGateway = deckGateway;
+    public StandInteractor(StandOutputBoundary presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void execute(String deckId) {
+    public void execute(StandInputData inputData) {
+        Deck deck = inputData.getDeck();
+        int playerTotal = inputData.getPlayerTotal();
+        int dealerTotal = 0;
+
         try {
-            // Dealer auto-plays
-            while (dealer.mustDraw()) {
-                String value = deckGateway.drawOneValue(deckId); // "ACE", "7", "KING", ...
-                dealer.add(value);
-                presenter.presentDealerDrew(value, dealer.total());
+            // Dealer auto-draws until total >= 17
+            while (dealerTotal < 17) {
+                List<Card> drawn = deck.drawCards(1);
+
+                if (drawn == null || drawn.isEmpty()) {
+                    presenter.presentError("Deck returned no cards.");
+                    return;
+                }
+
+                Card card = drawn.get(0);
+                dealerTotal += cardValue(card);
+                presenter.presentDealerDrew(card, dealerTotal);
             }
 
-            int p = player.total(), d = dealer.total();
-            String outcome = (d > 21) ? "Player wins (dealer busts)"
-                    : (p > 21) ? "Dealer wins (player busts)"
-                    : (p > d)  ? "Player wins"
-                    : (p < d)  ? "Dealer wins"
-                    :           "Push";
-            presenter.presentResult(outcome, p, d);
-        } catch (Exception e) {
-            presenter.presentError("Stand failed: " + e.getMessage());
+            String outcome;
+            if (playerTotal > 21) {
+                outcome = "Dealer wins (player busts)";
+            } else if (dealerTotal > 21) {
+                outcome = "Player wins (dealer busts)";
+            } else if (playerTotal > dealerTotal) {
+                outcome = "Player wins";
+            } else if (dealerTotal > playerTotal) {
+                outcome = "Dealer wins";
+            } else {
+                outcome = "Push";
+            }
+
+            StandOutputData output = new StandOutputData(playerTotal, dealerTotal, outcome);
+            presenter.presentResult(output);
+
+        } catch (Deck.UnableToLoadDeck e) {
+            presenter.presentError("Could not draw from deck: " + e.getMessage());
+        }
+    }
+
+    // Convert API value string to Blackjack numeric value
+    private int cardValue(Card card) {
+        String v = card.getValue();   // "2", "10", "KING", "ACE", etc.
+
+        switch (v) {
+            case "KING":
+            case "QUEEN":
+            case "JACK":
+                return 10;
+            case "ACE":
+                // simple version: ACE = 11
+                return 11;
+            default:
+                return Integer.parseInt(v);
         }
     }
 }
