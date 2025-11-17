@@ -1,8 +1,6 @@
 package use_case;
 
 import data_access.DeckGateway;
-import entity.Dealer;
-import entity.Player;
 
 public class StandInteractor implements StandInputBoundary {
     private final Player player;

@@ -1,7 +1,5 @@
 import data_access.DeckGateway;
 import data_access.DeckOfCardsApiClient;
-import entity.Dealer;
-import entity.Player;
 import interface_adapter.ConsolePresenter;
 import interface_adapter.StandController;
 import use_case.StandInputBoundary;
