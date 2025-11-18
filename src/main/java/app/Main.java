@@ -1,8 +1,5 @@
 package app;
 
-import entity.CurrentGame;
-import entity.Deck;
-import entity.User;
 import interface_adapter.StartNewGame.StartNewGameViewModel;
 import view.HomePageView;
 

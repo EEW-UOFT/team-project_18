@@ -1,5 +1,7 @@
 package entity;
 
+import data_access.DeckAPIInterface;
+
 import java.util.*;
 
 public class CurrentGame {
@@ -8,18 +10,13 @@ public class CurrentGame {
     private List<Card> playerHand;
     private List<Card> dealerHand;
     private GameState gameState = GameState.ONGOING;
-    private Deck deck;
+    private DeckAPIInterface deck;
 
-    public CurrentGame(User player, Deck deck) {
+    public CurrentGame(User player, DeckAPIInterface deck) {
         this.player = player;
         this.deck = deck;
         this.playerHand = new ArrayList<>();
         this.dealerHand = new ArrayList<>();
-    }
-
-    public String returnDeckID() {
-        //Return the deckID
-        return deck.returnDeckID();
     }
 
     public void addCardPlayer(Card card) {
@@ -69,7 +66,7 @@ public class CurrentGame {
 
     public GameState getGameState() {return gameState;}
 
-    public Deck getDeck() {return deck;}
+    public DeckAPIInterface getDeck() {return deck;}
 
     public User getPlayer() {return player;}
 }

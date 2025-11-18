@@ -1,5 +1,6 @@
-package entity;
+package data_access;
 
+import entity.Card;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -7,32 +8,20 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.*;
 
-public class Deck {
+public class Deck implements DeckAPIInterface {
     private String deckID;
     private List<Card> drawnCards;
     private final OkHttpClient client = new OkHttpClient();
 
-    public Deck(){
+    public Deck() throws UnableToLoadDeck {
         //Constructor
         this.drawnCards = new ArrayList<>();
+        this.deckID = initializeNewDeck();
     }
 
-    public static class UnableToLoadDeck extends Exception{
-        //Exception thrown when API call fails
-        public UnableToLoadDeck(){
-            super("Unable to load deck");
-        }
-    }
-
-    public String returnDeckID(){
-        //Return deckID
-        return deckID;
-    }
-
-    public Deck initializeNewDeck() throws UnableToLoadDeck {
+    public String initializeNewDeck() throws UnableToLoadDeck {
         //Call the API to get a new deck, shuffled
         HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
 
@@ -43,8 +32,7 @@ public class Deck {
             final JSONObject responseBody = new JSONObject(response.body().string());
 
             if (responseBody.getString("success").equals("true")) {
-                this.deckID = responseBody.getString("deck_id");
-                return this;
+                return responseBody.getString("deck_id");
             }else{throw new UnableToLoadDeck();}
         }
         catch (Exception e) {
@@ -52,6 +40,7 @@ public class Deck {
         }
     }
 
+    @Override
     public List<Card> drawCards(int n) throws UnableToLoadDeck {
         //Calls the API to draws n cards from a deck and returns a list containing them.
         HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/" + deckID + "/draw/")

@@ -2,9 +2,8 @@ package use_case.StartNewGame;
 
 import entity.Card;
 import entity.CurrentGame;
-import entity.Deck;
+import data_access.Deck;
 import entity.User;
-import interface_adapter.StartNewGame.StartNewGamePresenter;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class StartNewGameInteractor implements StartNewGameInputBoundary {
     @Override
     public void execute(User currentUser) {
         try {
-            Deck deck = new Deck().initializeNewDeck();
+            Deck deck = new Deck();
             currentGame = new CurrentGame(currentUser, deck);
             List<Card> playerCard = deck.drawCards(2);
             List<Card> dealerCard = deck.drawCards(2);
