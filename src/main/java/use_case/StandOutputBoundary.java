@@ -4,13 +4,13 @@ import entity.Card;
 
 public interface StandOutputBoundary {
 
-    // Called every time the dealer draws a card
+    // NEW: match what StandInteractor is calling
     void presentDealerDrew(Card card, int dealerTotal);
 
-    // Called when the Stand use case is finished
+    // Already there (keep these)
     void presentResult(StandOutputData outputData);
 
-    // Called if something goes wrong (API issues etc.)
     void presentError(String message);
 }
+
 

@@ -8,8 +8,7 @@ public class ConsoleStandPresenter implements StandOutputBoundary {
 
     @Override
     public void presentDealerDrew(Card card, int dealerTotal) {
-        System.out.println("Dealer drew: " + card.getValue()
-                + " of " + card.getSuit()
+        System.out.println("Dealer drew: " + card.getValue() + " of " + card.getSuit()
                 + " | dealer total = " + dealerTotal);
     }
 
@@ -25,4 +24,5 @@ public class ConsoleStandPresenter implements StandOutputBoundary {
         System.out.println("Stand failed: " + message);
     }
 }
+
 
