@@ -1,6 +1,6 @@
 package interface_adapter;
 
-import entity.Deck;
+import data_access.Deck;
 import use_case.StandInputBoundary;
 import use_case.StandInputData;
 

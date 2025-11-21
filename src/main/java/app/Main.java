@@ -1,7 +1,7 @@
 package app;
 
 import entity.CurrentGame;
-import entity.Deck;
+import data_access.Deck;
 import entity.HistoryEntry;
 import entity.User;
 import interface_adapter.StartNewGame.StartNewGameController;

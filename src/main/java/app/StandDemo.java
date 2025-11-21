@@ -1,6 +1,6 @@
 package app;
 
-import entity.Deck;
+import data_access.Deck;
 import interface_adapter.ConsoleStandPresenter;
 import interface_adapter.StandController;
 import use_case.StandInputBoundary;

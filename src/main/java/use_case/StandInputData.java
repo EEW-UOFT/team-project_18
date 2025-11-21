@@ -1,6 +1,6 @@
 package use_case;
 
-import entity.Deck;
+import data_access.Deck;
 
 public class StandInputData {
     private final Deck deck;
