@@ -1,8 +1,8 @@
 package use_case.StartNewGame;
 
+import data_access.Deck;
 import entity.Card;
 import entity.CurrentGame;
-import data_access.Deck;
 import entity.User;
 
 import java.util.List;

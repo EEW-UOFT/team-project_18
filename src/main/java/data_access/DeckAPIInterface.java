@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface DeckAPIInterface {
 
-    class UnableToLoadDeck extends Exception{
+    //Draws n cards
+    public List<Card> drawCards(int n) throws UnableToLoadDeck;
+
+    class UnableToLoadDeck extends Exception {
         //Exception thrown when API call fails
-        public UnableToLoadDeck(){
+        public UnableToLoadDeck() {
             super("Unable to load deck");
         }
     }
-
-    //Draws n cards
-    public List<Card> drawCards(int n) throws UnableToLoadDeck;
 }

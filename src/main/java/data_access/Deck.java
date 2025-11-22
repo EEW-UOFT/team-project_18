@@ -8,12 +8,13 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Deck implements DeckAPIInterface {
+    private final OkHttpClient client = new OkHttpClient();
     private String deckID;
     private List<Card> drawnCards;
-    private final OkHttpClient client = new OkHttpClient();
 
     public Deck() throws UnableToLoadDeck {
         //Constructor
@@ -33,9 +34,10 @@ public class Deck implements DeckAPIInterface {
 
             if (responseBody.getString("success").equals("true")) {
                 return responseBody.getString("deck_id");
-            }else{throw new UnableToLoadDeck();}
-        }
-        catch (Exception e) {
+            } else {
+                throw new UnableToLoadDeck();
+            }
+        } catch (Exception e) {
             throw new UnableToLoadDeck();
         }
     }
@@ -66,8 +68,7 @@ public class Deck implements DeckAPIInterface {
                 }
             }
             return currDrawnCards;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new UnableToLoadDeck();
         }
     }

@@ -13,15 +13,21 @@ public class HistoryEntry {
         this.outcome = outcome;
     }
 
-    public int getTimeStamp() {return timeStamp;}
+    public int getTimeStamp() {
+        return timeStamp;
+    }
 
-    public int getPlayerTotal() {return playerTotal;}
+    public int getPlayerTotal() {
+        return playerTotal;
+    }
 
-    public int getDealerTotal() {return dealerTotal;}
+    public int getDealerTotal() {
+        return dealerTotal;
+    }
 
-    public String getOutcome(){return outcome;}
-
-
+    public String getOutcome() {
+        return outcome;
+    }
 
 
 }

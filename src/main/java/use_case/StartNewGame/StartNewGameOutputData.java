@@ -6,7 +6,11 @@ public class StartNewGameOutputData {
 
     private final CurrentGame currentGame;
 
-    public StartNewGameOutputData(CurrentGame currentGame) {this.currentGame = currentGame;}
+    public StartNewGameOutputData(CurrentGame currentGame) {
+        this.currentGame = currentGame;
+    }
 
-    public CurrentGame getCurrentGame() {return currentGame;}
+    public CurrentGame getCurrentGame() {
+        return currentGame;
+    }
 }

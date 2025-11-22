@@ -2,7 +2,8 @@ package entity;
 
 import data_access.DeckAPIInterface;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrentGame {
 
@@ -60,13 +61,23 @@ public class CurrentGame {
         }
     }
 
-    public List<Card> getPlayerHand() {return playerHand;}
+    public List<Card> getPlayerHand() {
+        return playerHand;
+    }
 
-    public List<Card> getDealerHand() {return dealerHand;}
+    public List<Card> getDealerHand() {
+        return dealerHand;
+    }
 
-    public GameState getGameState() {return gameState;}
+    public GameState getGameState() {
+        return gameState;
+    }
 
-    public DeckAPIInterface getDeck() {return deck;}
+    public DeckAPIInterface getDeck() {
+        return deck;
+    }
 
-    public User getPlayer() {return player;}
+    public User getPlayer() {
+        return player;
+    }
 }

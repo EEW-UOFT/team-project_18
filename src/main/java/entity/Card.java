@@ -14,9 +14,13 @@ public class Card {
         return this.suit;
     }
 
-    public void setFaceUp(boolean faceUp){ this.faceUp = faceUp; }
+    public boolean isFaceUp() {
+        return this.faceUp;
+    }
 
-    public boolean isFaceUp(){ return this.faceUp; }
+    public void setFaceUp(boolean faceUp) {
+        this.faceUp = faceUp;
+    }
 
     public String getValue() {
         return this.value;
