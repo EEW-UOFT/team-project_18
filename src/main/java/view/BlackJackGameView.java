@@ -5,15 +5,10 @@ import java.awt.*;
 
 public class BlackJackGameView extends JPanel {
 
-    private final JFrame frame = new JFrame("BlackJack Game");
+    public BlackJackGameView() {
 
-    public void BlackJackViewFrame() {
+        this.setLayout(new BorderLayout(5,5));
 
-        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.frame.setSize(new Dimension(800, 600));
-        this.frame.setLocationRelativeTo(null);
-        this.frame.setResizable(false);
-        this.frame.setLayout(new BorderLayout(5, 5));
         final JButton hitButton = new JButton("Hit");
         final JButton standButton = new JButton("Stand");
 
@@ -31,18 +26,9 @@ public class BlackJackGameView extends JPanel {
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
 
-        this.frame.add(dealerPanel, BorderLayout.NORTH);
-        this.frame.add(playerPanel, BorderLayout.CENTER);
-        this.frame.add(buttonPanel,  BorderLayout.SOUTH);
-        this.frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                BlackJackGameView bjframe = new BlackJackGameView();
-                bjframe.BlackJackViewFrame();
-            }
-        });
+        this.add(dealerPanel, BorderLayout.NORTH);
+        this.add(playerPanel, BorderLayout.CENTER);
+        this.add(buttonPanel,  BorderLayout.SOUTH);
+        this.setVisible(true);
     }
 }

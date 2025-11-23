@@ -1,5 +1,6 @@
 package use_case.StartNewGame;
 
+import data_access.DeckAPIInterface;
 import entity.Card;
 import entity.CurrentGame;
 import data_access.Deck;
@@ -11,15 +12,16 @@ public class StartNewGameInteractor implements StartNewGameInputBoundary {
 
     private CurrentGame currentGame;
     private StartNewGameOutputBoundary startNewGamePresenter;
+    private DeckAPIInterface deck;
 
-    public StartNewGameInteractor(StartNewGameOutputBoundary StartNewGamePresenter) {
+    public StartNewGameInteractor(StartNewGameOutputBoundary StartNewGamePresenter, DeckAPIInterface deck) {
         this.startNewGamePresenter = StartNewGamePresenter;
+        this.deck = deck;
     }
 
     @Override
     public void execute(User currentUser) {
         try {
-            Deck deck = new Deck();
             currentGame = new CurrentGame(currentUser, deck);
             List<Card> playerCard = deck.drawCards(2);
             List<Card> dealerCard = deck.drawCards(2);

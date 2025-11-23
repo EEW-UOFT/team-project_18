@@ -26,16 +26,21 @@ public class Deck implements DeckAPIInterface {
         HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
 
         Request request = new Request.Builder().url(url).build();
-
         try {
             final Response response = client.newCall(request).execute();
-            final JSONObject responseBody = new JSONObject(response.body().string());
 
-            if (responseBody.getString("success").equals("true")) {
-                return responseBody.getString("deck_id");
-            }else{throw new UnableToLoadDeck();}
+            final String responseBodyString = response.body().string();
+
+            final JSONObject responseBody = new JSONObject(responseBodyString);
+
+            if (responseBody.getBoolean("success")) {
+                String deckId = responseBody.getString("deck_id");
+                return deckId;
+            }else{
+                throw new UnableToLoadDeck();}
         }
         catch (Exception e) {
+            e.printStackTrace();
             throw new UnableToLoadDeck();
         }
     }
@@ -55,7 +60,7 @@ public class Deck implements DeckAPIInterface {
             final JSONObject responseBody = new JSONObject(response.body().string());
             List<Card> currDrawnCards = new ArrayList<>(n);
 
-            if (responseBody.getString("success").equals("true")) {
+            if (responseBody.getBoolean("success")) {
                 JSONArray drawCards = responseBody.getJSONArray("cards");
                 for (int i = 0; i < drawCards.length(); i++) {
                     String tempCardSuit = drawCards.getJSONObject(i).getString("suit");
