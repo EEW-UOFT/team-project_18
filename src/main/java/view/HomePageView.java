@@ -11,15 +11,14 @@ import java.awt.event.ActionListener;
 
 public class HomePageView extends JPanel {
 
-    private final StartNewGameViewModel startNewGameViewModel;
     private final JButton startNewGame;
     private final JButton gameRule;
-    private StartNewGameController startNewGameController= null;
+    private StartNewGameController startNewGameController;
 
     public HomePageView(StartNewGameViewModel startNewGameViewModel,
                         StartNewGameController startNewGameController) {
 
-        this.startNewGameViewModel = startNewGameViewModel;
+        this.startNewGameController = startNewGameController;
 
         JLabel title =  new JLabel("Home Page");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -35,16 +34,8 @@ public class HomePageView extends JPanel {
         this.add(buttons);
 
 
-        startNewGame.addActionListener(event -> {
-            startNewGameController.execute();
-
-            switchToGamePage();
-
-        });
-    }
-
-    private void switchToGamePage() {
-
+        startNewGame.addActionListener(event ->
+                startNewGameController.execute());
     }
 }
 

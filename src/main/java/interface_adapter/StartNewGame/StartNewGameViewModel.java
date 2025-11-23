@@ -6,11 +6,10 @@ import entity.GameState;
 public class StartNewGameViewModel{
 
     private CurrentGame currentGame;
-    public  String errorMessage;
+    private  String errorMessage;
     public static final String TITLE_LABEL = "HomePage";
 
-    public StartNewGameViewModel(CurrentGame currentGame){
-        this.currentGame = currentGame;
+    public StartNewGameViewModel(){
     }
 
     public CurrentGame getCurrentGame(){return currentGame;}
