@@ -1,4 +1,4 @@
-package use_case.Stand;
+package use_case.stand;
 
 import data_access.Deck;
 

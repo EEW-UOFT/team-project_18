@@ -3,8 +3,8 @@ package app;
 import data_access.Deck;
 import interface_adapter.Stand.ConsoleStandPresenter;
 import interface_adapter.Stand.StandController;
-import use_case.Stand.StandInputBoundary;
-import use_case.Stand.StandInteractor;
+import use_case.stand.StandInputBoundary;
+import use_case.stand.StandInteractor;
 
 public class StandDemo {
 

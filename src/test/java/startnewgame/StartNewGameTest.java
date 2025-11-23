@@ -1,15 +1,12 @@
-package StartNewGame;
+package startnewgame;
 
 import data_access.Deck;
 import data_access.DeckAPIInterface;
 import entity.*;
-import interface_adapter.StartNewGame.StartNewGamePresenter;
-import interface_adapter.StartNewGame.StartNewGameViewModel;
-import interface_adapter.ViewManagerModel;
 import org.junit.jupiter.api.Test;
-import use_case.StartNewGame.StartNewGameInteractor;
-import use_case.StartNewGame.StartNewGameOutputBoundary;
-import use_case.StartNewGame.StartNewGameOutputData;
+import use_case.startnewgame.StartNewGameInteractor;
+import use_case.startnewgame.StartNewGameOutputBoundary;
+import use_case.startnewgame.StartNewGameOutputData;
 
 import java.util.ArrayList;
 import java.util.List;

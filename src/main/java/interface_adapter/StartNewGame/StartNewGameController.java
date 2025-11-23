@@ -1,8 +1,7 @@
 package interface_adapter.StartNewGame;
 
 import entity.*;
-import use_case.StartNewGame.StartNewGameInputBoundary;
-import use_case.StartNewGame.StartNewGameInteractor;
+import use_case.startnewgame.StartNewGameInputBoundary;
 
 public class StartNewGameController{
 
