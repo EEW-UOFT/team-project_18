@@ -30,5 +30,6 @@ public class BlackJackGameView extends JPanel {
         this.add(playerPanel, BorderLayout.CENTER);
         this.add(buttonPanel,  BorderLayout.SOUTH);
         this.setVisible(true);
+
     }
 }

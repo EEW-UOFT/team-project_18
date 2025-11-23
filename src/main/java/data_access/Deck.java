@@ -40,7 +40,6 @@ public class Deck implements DeckAPIInterface {
                 throw new UnableToLoadDeck();}
         }
         catch (Exception e) {
-            e.printStackTrace();
             throw new UnableToLoadDeck();
         }
     }

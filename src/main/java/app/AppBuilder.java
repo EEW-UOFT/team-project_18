@@ -55,8 +55,8 @@ public class AppBuilder {
         HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController);
         BlackJackGameView gamePage = new BlackJackGameView();
 
-        mainPanel.add(homePage,"home");
-        mainPanel.add(gamePage,"game");
+        mainPanel.add(homePage,"Home");
+        mainPanel.add(gamePage,"Game");
 
         viewManagerModel.addPropertyChangeListener(evt ->{
             if("view".equals(evt.getPropertyName())){
