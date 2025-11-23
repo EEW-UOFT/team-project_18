@@ -1,4 +1,4 @@
-package use_case;
+package use_case.Stand;
 
 import entity.Card;
 

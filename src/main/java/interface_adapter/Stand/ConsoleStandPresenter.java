@@ -1,8 +1,8 @@
-package interface_adapter;
+package interface_adapter.Stand;
 
 import entity.Card;
-import use_case.StandOutputBoundary;
-import use_case.StandOutputData;
+import use_case.Stand.StandOutputBoundary;
+import use_case.Stand.StandOutputData;
 
 public class ConsoleStandPresenter implements StandOutputBoundary {
 

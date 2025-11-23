@@ -1,10 +1,10 @@
 package app;
 
 import data_access.Deck;
-import interface_adapter.ConsoleStandPresenter;
-import interface_adapter.StandController;
-import use_case.StandInputBoundary;
-import use_case.StandInteractor;
+import interface_adapter.Stand.ConsoleStandPresenter;
+import interface_adapter.Stand.StandController;
+import use_case.Stand.StandInputBoundary;
+import use_case.Stand.StandInteractor;
 
 public class StandDemo {
 

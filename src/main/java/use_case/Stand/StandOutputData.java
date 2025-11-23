@@ -1,4 +1,4 @@
-package use_case;
+package use_case.Stand;
 
 public class StandOutputData {
     private final int playerTotal;
