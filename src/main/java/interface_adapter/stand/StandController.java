@@ -1,4 +1,4 @@
-package interface_adapter.Stand;
+package interface_adapter.stand;
 
 import data_access.Deck;
 import data_access.DeckAPIInterface;

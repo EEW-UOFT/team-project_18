@@ -1,7 +1,7 @@
 package view;
 
 import javax.swing.*;
-import interface_adapter.ViewGameResult.ViewGameResultViewModel;
+import interface_adapter.viewgameresult.ViewGameResultViewModel;
 
 
 public class GameResultView extends JPanel {

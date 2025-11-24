@@ -1,7 +1,6 @@
-package interface_adapter.StartNewGame;
+package interface_adapter.startnewgame;
 
 import entity.CurrentGame;
-import entity.GameState;
 
 public class StartNewGameViewModel{
 

@@ -1,4 +1,4 @@
-package interface_adapter.Hit;
+package interface_adapter.hit;
 
 import interface_adapter.GameModel;
 import use_case.hit.HitOutputData;

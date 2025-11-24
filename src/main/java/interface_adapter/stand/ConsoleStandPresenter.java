@@ -1,4 +1,4 @@
-package interface_adapter.Stand;
+package interface_adapter.stand;
 
 import entity.Card;
 import use_case.stand.StandOutputBoundary;
