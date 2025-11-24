@@ -15,15 +15,16 @@ public class StandInteractor implements StandInputBoundary {
     }
 
     @Override
-    public void execute(StandInputData inputData) throws DeckAPIInterface.UnableToLoadDeck {
-        DeckAPIInterface deck = new Deck();
+    public void execute(StandInputData inputData) {
+        Deck deck = inputData.getDeck();
         int playerTotal = inputData.getPlayerTotal();
-        int dealerTotal = 0;
 
         try {
-            // Dealer auto-draws until total >= 17
+            int dealerTotal = 0;
+
+            // Dealer keeps drawing until they reach at least 17
             while (dealerTotal < 17) {
-                List<Card> drawn = deck.drawCards(1);
+                List<Card> drawn = deck.drawCards(1);  // may throw UnableToLoadDeck
 
                 if (drawn == null || drawn.isEmpty()) {
                     presenter.presentError("Deck returned no cards.");
@@ -31,12 +32,18 @@ public class StandInteractor implements StandInputBoundary {
                 }
 
                 Card card = drawn.get(0);
-                dealerTotal += cardValue(card);
+                int value = cardValue(card);      // convert String rank -> int
+                dealerTotal += value;
+
                 presenter.presentDealerDrew(card, dealerTotal);
             }
 
+            // Decide outcome
             String outcome;
-            if (playerTotal > 21) {
+            if (playerTotal > 21 && dealerTotal > 21) {
+                // both bust -> call it a push for now
+                outcome = "Push";
+            } else if (playerTotal > 21) {
                 outcome = "Dealer wins (player busts)";
             } else if (dealerTotal > 21) {
                 outcome = "Player wins (dealer busts)";
@@ -48,17 +55,22 @@ public class StandInteractor implements StandInputBoundary {
                 outcome = "Push";
             }
 
-            StandOutputData output = new StandOutputData(playerTotal, dealerTotal, outcome);
-            presenter.presentResult(output);
 
-        } catch (Deck.UnableToLoadDeck e) {
-            presenter.presentError("Could not draw from deck: " + e.getMessage());
+            StandOutputData outputData =
+                    new StandOutputData(playerTotal, dealerTotal, outcome);
+
+            presenter.presentResult(outputData);
+
+        } catch (DeckAPIInterface.UnableToLoadDeck e) {
+            presenter.presentError("Failed to draw from deck: " + e.getMessage());
         }
     }
 
-    // Convert API value string to Blackjack numeric value
+    /**
+     * Convert the card's String value from the API into a Blackjack point value.
+     */
     private int cardValue(Card card) {
-        String v = card.getValue();   // "2", "10", "KING", "ACE", etc.
+        String v = card.getValue();  // e.g. "2", "10", "KING", "ACE"
 
         switch (v) {
             case "KING":
@@ -66,10 +78,15 @@ public class StandInteractor implements StandInputBoundary {
             case "JACK":
                 return 10;
             case "ACE":
-                // simple version: ACE = 11
+                // for now we treat Ace as 11 (your group can refine later)
                 return 11;
             default:
-                return Integer.parseInt(v);
+                try {
+                    return Integer.parseInt(v); // "2".."10"
+                } catch (NumberFormatException e) {
+                    // if something weird comes back, fail safe with 0
+                    return 0;
+                }
         }
     }
 }

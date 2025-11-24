@@ -8,68 +8,107 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import data_access.DeckAPIInterface.UnableToLoadDeck;
+
 public class Deck implements DeckAPIInterface {
+
     private final OkHttpClient client = new OkHttpClient();
+
+    // deck_id from the API
     private String deckID;
-    private List<Card> drawnCards;
 
-    public Deck() throws UnableToLoadDeck {
-        //Constructor
-        this.drawnCards = new ArrayList<>();
-        this.deckID = initializeNewDeck();
-    }
+    // all cards drawn so far (optional helper)
+    private final List<Card> drawnCards = new ArrayList<>();
 
-    public String initializeNewDeck() throws UnableToLoadDeck {
-        //Call the API to get a new deck, shuffled
-        HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1");
-
-        Request request = new Request.Builder().url(url).build();
-
+    /**
+     * Draws n cards from the Deck of Cards API.
+     * If deckID is null, it first creates & shuffles a new deck.
+     */
+    @Override
+    public List<Card> drawCards(int n) throws UnableToLoadDeck {
         try {
-            final Response response = client.newCall(request).execute();
-            final JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getString("success").equals("true")) {
-                return responseBody.getString("deck_id");
-            } else {
-                throw new UnableToLoadDeck();
+            // lazily initialize the deck
+            if (deckID == null) {
+                deckID = initializeNewDeck();
             }
-        } catch (Exception e) {
+
+            HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/" + deckID + "/draw/")
+                    .newBuilder()
+                    .addQueryParameter("count", String.valueOf(n))
+                    .build();
+
+            Request request = new Request.Builder().url(url).build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful() || response.body() == null) {
+                    throw new UnableToLoadDeck();
+                }
+
+                JSONObject body = new JSONObject(response.body().string());
+
+                if (!body.getBoolean("success")) {
+                    throw new UnableToLoadDeck();
+                }
+
+                JSONArray cardsJson = body.getJSONArray("cards");
+                List<Card> result = new ArrayList<>(cardsJson.length());
+
+                for (int i = 0; i < cardsJson.length(); i++) {
+                    JSONObject c = cardsJson.getJSONObject(i);
+                    String suit = c.getString("suit");   // e.g. "CLUBS"
+                    String value = c.getString("value"); // e.g. "4", "KING", "ACE"
+                    result.add(new Card(suit, value));
+                }
+
+                drawnCards.addAll(result);
+                return result;
+            }
+
+        } catch (IOException e) {
             throw new UnableToLoadDeck();
         }
     }
 
-    @Override
-    public List<Card> drawCards(int n) throws UnableToLoadDeck {
-        //Calls the API to draws n cards from a deck and returns a list containing them.
-        HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/" + deckID + "/draw/")
+    /**
+     * Calls the API to create & shuffle a new deck and returns its deck_id.
+     */
+    private String initializeNewDeck() throws UnableToLoadDeck {
+        HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/")
                 .newBuilder()
-                .addQueryParameter("count", String.valueOf(n))
+                .addQueryParameter("deck_count", "1") // can change to "6" later
                 .build();
 
         Request request = new Request.Builder().url(url).build();
 
-        try {
-            final Response response = client.newCall(request).execute();
-            final JSONObject responseBody = new JSONObject(response.body().string());
-            List<Card> currDrawnCards = new ArrayList<>(n);
-
-            if (responseBody.getString("success").equals("true")) {
-                JSONArray drawCards = responseBody.getJSONArray("cards");
-                for (int i = 0; i < drawCards.length(); i++) {
-                    String tempCardSuit = drawCards.getJSONObject(i).getString("suit");
-                    String tempCardValue = drawCards.getJSONObject(i).getString("value");
-                    Card newCard = new Card(tempCardSuit, tempCardValue);
-                    currDrawnCards.add(newCard);
-                    drawnCards.add(newCard);
-                }
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful() || response.body() == null) {
+                throw new UnableToLoadDeck();
             }
-            return currDrawnCards;
-        } catch (Exception e) {
+
+            JSONObject body = new JSONObject(response.body().string());
+
+            if (!body.getBoolean("success")) {
+                throw new UnableToLoadDeck();
+            }
+
+            return body.getString("deck_id");
+        } catch (IOException e) {
             throw new UnableToLoadDeck();
         }
+    }
+
+
+
+    public String getDeckID() {
+        return deckID;
+    }
+
+    public List<Card> getDrawnCards() {
+        return Collections.unmodifiableList(drawnCards);
     }
 }
