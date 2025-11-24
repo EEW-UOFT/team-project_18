@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class BlackJackGameView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    BufferedImage cardBack = ImageIO.read(new File("src/images/back.png"));
+    BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
 
     public BlackJackGameView() throws IOException {
 
