@@ -17,20 +17,13 @@ public class Deck implements DeckAPIInterface {
 
     private final OkHttpClient client = new OkHttpClient();
 
-    // deck_id from the API
     private String deckID;
-
-    // all cards drawn so far (optional helper)
     private final List<Card> drawnCards = new ArrayList<>();
 
-    /**
-     * Draws n cards from the Deck of Cards API.
-     * If deckID is null, it first creates & shuffles a new deck.
-     */
     @Override
     public List<Card> drawCards(int n) throws UnableToLoadDeck {
         try {
-            // lazily initialize the deck
+            // lazily initialize deck if needed
             if (deckID == null) {
                 initializeNewDeck();
             }
@@ -58,8 +51,8 @@ public class Deck implements DeckAPIInterface {
 
                 for (int i = 0; i < cardsJson.length(); i++) {
                     JSONObject c = cardsJson.getJSONObject(i);
-                    String suit = c.getString("suit");   // e.g. "CLUBS"
-                    String value = c.getString("value"); // e.g. "4", "KING", "ACE"
+                    String suit = c.getString("suit");
+                    String value = c.getString("value");
                     result.add(new Card(suit, value));
                 }
 
@@ -72,15 +65,10 @@ public class Deck implements DeckAPIInterface {
         }
     }
 
-    /**
-     * Calls the API to create & shuffle a new deck and returns its deck_id.
-     *
-     * @return
-     */
-    public String initializeNewDeck() throws UnableToLoadDeck {
+    public void initializeNewDeck() throws UnableToLoadDeck {
         HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/")
                 .newBuilder()
-                .addQueryParameter("deck_count", "1") // can change to "6" later
+                .addQueryParameter("deck_count", "1")
                 .build();
 
         Request request = new Request.Builder().url(url).build();
@@ -96,13 +84,13 @@ public class Deck implements DeckAPIInterface {
                 throw new UnableToLoadDeck();
             }
 
-            return body.getString("deck_id");
-        } catch (IOException | UnableToLoadDeck e) {
+            // ✅ FIXED: STORE DECK ID
+            this.deckID = body.getString("deck_id");
+
+        } catch (IOException e) {
             throw new UnableToLoadDeck();
         }
     }
-
-
 
     public String getDeckID() {
         return deckID;
