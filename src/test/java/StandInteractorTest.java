@@ -191,3 +191,4 @@ class StandInteractorTest {
         assertNotNull(presenter.errorMessage, "Error message should be set on API failure");
     }
 }
+
