@@ -9,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CurrentGameTest {
 
     @Test
-    void testCurrentGameCreation() {
+    void testCurrentGameCreation() throws DeckAPIInterface.UnableToLoadDeck {
         DeckAPIInterface mockDeck = new MockDeck();
         User user = new User(new ArrayList<>());
 
-        CurrentGame game = new CurrentGame(user, mockDeck);
+        CurrentGame game = new CurrentGame(user);
 
         assertEquals(GameState.ONGOING, game.getGameState());
         assertTrue(game.getPlayerHand().isEmpty());
@@ -30,16 +30,15 @@ public class CurrentGameTest {
     }
 
     @Test
-    void testAddCardsToPlayer() {
-        DeckAPIInterface mockDeck = new MockDeck();
+    void testAddCardsToPlayer() throws DeckAPIInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
-        CurrentGame game = new CurrentGame(user, mockDeck);
+        CurrentGame game = new CurrentGame(user);
 
         Card card1 = new Card("HEARTS", "ACE");
         Card card2 = new Card("DIAMONDS", "10");
 
-        game.addCardPlayer(card1);
-        game.addCardPlayer(card2);
+        game.addSingleCardPlayer(card1);
+        game.addSingleCardPlayer(card2);
 
         List<Card> playerHand = game.getPlayerHand();
         assertEquals(2, playerHand.size());
@@ -48,16 +47,15 @@ public class CurrentGameTest {
     }
 
     @Test
-    void testAddCardsToDealer() {
-        DeckAPIInterface mockDeck = new MockDeck();
+    void testAddCardsToDealer() throws DeckAPIInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
-        CurrentGame game = new CurrentGame(user, mockDeck);
+        CurrentGame game = new CurrentGame(user);
 
         Card card1 = new Card("SPADES", "7");
         Card card2 = new Card("CLUBS", "KING");
 
-        game.addCardDealer(card1);
-        game.addCardDealer(card2);
+        game.addSingleCardDealer(card1);
+        game.addSingleCardDealer(card2);
 
         List<Card> dealerHand = game.getDealerHand();
         assertEquals(2, dealerHand.size());
@@ -66,10 +64,9 @@ public class CurrentGameTest {
     }
 
     @Test
-    void testGameStateChanges() {
-        DeckAPIInterface mockDeck = new MockDeck();
+    void testGameStateChanges() throws DeckAPIInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
-        CurrentGame game = new CurrentGame(user, mockDeck);
+        CurrentGame game = new CurrentGame(user);
 
         assertEquals(GameState.ONGOING, game.getGameState());
 
@@ -84,10 +81,9 @@ public class CurrentGameTest {
     }
 
     @Test
-    void testOutcomeMessages() {
-        DeckAPIInterface mockDeck = new MockDeck();
+    void testOutcomeMessages() throws DeckAPIInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
-        CurrentGame game = new CurrentGame(user, mockDeck);
+        CurrentGame game = new CurrentGame(user);
 
         game.gameWon();
         assertEquals("Player Won", game.outcome());
@@ -98,7 +94,7 @@ public class CurrentGameTest {
         game.gameDraw();
         assertEquals("Draw", game.outcome());
 
-        CurrentGame ongoingGame = new CurrentGame(user, mockDeck);
+        CurrentGame ongoingGame = new CurrentGame(user);
         assertEquals("Game is currently ongoing", ongoingGame.outcome());
     }
 }

@@ -1,33 +1,54 @@
 package entity;
 
 import data_access.DeckAPIInterface;
+import data_access.DeckFactory;
 
 import java.util.*;
 
 public class CurrentGame {
 
-    private User player;
+    private final User player;
     private List<Card> playerHand;
     private List<Card> dealerHand;
     private GameState gameState = GameState.ONGOING;
-    private DeckAPIInterface deck;
+    private final DeckAPIInterface deck;
 
-    public CurrentGame(User player, DeckAPIInterface deck) {
+    public CurrentGame(User player) throws DeckAPIInterface.UnableToLoadDeck {
         this.player = player;
-        this.deck = deck;
+        this.deck = DeckFactory.createDeck();
         this.playerHand = new ArrayList<>();
         this.dealerHand = new ArrayList<>();
     }
 
-    public void addCardPlayer(Card card) {
-        //Add a card to the player's hand
+    public void addCardPlayer(int n) throws DeckAPIInterface.UnableToLoadDeck {
+        //Add cards to the player's hand
+        List<Card> tempCards = deck.drawCards(n);
+        playerHand.addAll(tempCards);
+    }
+
+    public void addSingleCardPlayer(Card card) {
         playerHand.add(card);
     }
 
-    public void addCardDealer(Card card) {
-        //Add a card to the dealer's hand
+    public void addCardDealer(int n, boolean faceUp) throws DeckAPIInterface.UnableToLoadDeck {
+        //Add cards to the dealer's hand
+        List<Card> tempCards = deck.drawCards(n);
+        for (Card card : tempCards) {
+            card.setFaceUp(faceUp);
+        }
+        dealerHand.addAll(tempCards);
+    }
+
+    public void dealerReveal() {
+        for  (Card card : dealerHand) {
+            card.setFaceUp(true);
+        }
+    }
+
+    public void addSingleCardDealer(Card card) {
         dealerHand.add(card);
     }
+
 
     public void gameWon() {
         //Change the game state to "WIN"
