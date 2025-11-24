@@ -1,26 +1,26 @@
-import data_access.DeckAPIInterface;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import data_access.Deck;
 import entity.Card;
-import use_case.StandInputData;
-import use_case.StandInteractor;
-import use_case.StandOutputBoundary;
-import use_case.StandOutputData;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import data_access.Deck;
+import use_case.StandInputData;
+import use_case.StandInteractor;
+import use_case.StandOutputBoundary;
+import use_case.StandOutputData;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 class StandInteractorTest {
 
     /**
      * Fake deck that returns pre-programmed cards instead of calling the real API.
-     * IMPORTANT: it EXTENDS Deck so we can pass it where a Deck is required.
+     * IMPORTANT: It extends Deck but does NOT override initializeNewDeck().
      */
     private static class FakeDeck extends Deck {
+
         private final List<Card> scriptedCards;
         private int index = 0;
 
@@ -29,31 +29,29 @@ class StandInteractorTest {
         }
 
         @Override
-        public List<Card> drawCards(int n) throws DeckAPIInterface.UnableToLoadDeck {
+        public List<Card> drawCards(int n) {
             List<Card> result = new ArrayList<>();
-            for (int i = 0; i < n && index < scriptedCards.size(); i++) {
-                result.add(scriptedCards.get(index++));
+
+            for (int i = 0; i < n && index < scriptedCards.size(); i++, index++) {
+                result.add(scriptedCards.get(index));
             }
             return result;
         }
-
-        // we don’t need initializeNewDeck or getDeckID in this fake
-        // so we just leave the inherited behaviour alone and never call them
     }
 
     /**
-     * Presenter that records what the interactor told the UI.
+     * Simple presenter that stores everything for assertions.
      */
     private static class RecordingPresenter implements StandOutputBoundary {
 
-        private final List<String> dealerDrawLog = new ArrayList<>();
-        private StandOutputData finalOutput;
-        private String errorMessage;
+        final List<String> dealerDrawEvents = new ArrayList<>();
+        StandOutputData finalOutput;
+        String errorMessage;
 
         @Override
         public void presentDealerDrew(Card card, int dealerTotal) {
-            dealerDrawLog.add(card.getValue() + " of " + card.getSuit()
-                    + " -> dealer total " + dealerTotal);
+            dealerDrawEvents.add(card.getValue() + " of " + card.getSuit()
+                    + " | dealer total = " + dealerTotal);
         }
 
         @Override
@@ -68,35 +66,32 @@ class StandInteractorTest {
     }
 
     @Test
-    void dealerHitsUntilAtLeast17AndPushesOnEqualTotals() {
-        // Player stands on 17
-        int playerTotal = 17;
+    void dealerHitsUntilAtLeast17_AndResultIsPushWhenTotalsEqual() {
 
-        // Dealer will draw 10 then 7 => total 17 (so it should be a push)
+        int playerTotal = 17; // user stands on 17
+
+        // Dealer draws 10 → 17 total → stops → PUSH
         Card tenHearts = new Card("HEARTS", "10");
         Card sevenClubs = new Card("CLUBS", "7");
 
-        // NOTE: variable type is Deck, instance is FakeDeck (polymorphism)
-        Deck deck = new FakeDeck(Arrays.asList(tenHearts, sevenClubs));
+        FakeDeck deck = new FakeDeck(Arrays.asList(tenHearts, sevenClubs));
 
         RecordingPresenter presenter = new RecordingPresenter();
         StandInteractor interactor = new StandInteractor(presenter);
 
         StandInputData inputData = new StandInputData(deck, playerTotal);
-
-        // run the use case
         interactor.execute(inputData);
 
-        // 1) no error
+        // No errors expected
         assertNull(presenter.errorMessage);
 
-        // 2) dealer actually drew multiple times (logged 2 draws)
-        assertEquals(2, presenter.dealerDrawLog.size());
+        // Dealer should have drawn exactly 2 cards
+        assertEquals(2, presenter.dealerDrawEvents.size());
 
-        // 3) final result is a push with correct totals
+        // Final result should be a push
         assertNotNull(presenter.finalOutput);
         assertEquals("Push", presenter.finalOutput.getOutcome());
-        assertEquals(playerTotal, presenter.finalOutput.getPlayerTotal());
+        assertEquals(17, presenter.finalOutput.getPlayerTotal());
         assertEquals(17, presenter.finalOutput.getDealerTotal());
     }
 }
