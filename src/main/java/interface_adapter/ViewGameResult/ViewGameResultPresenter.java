@@ -1,7 +1,6 @@
 package interface_adapter.ViewGameResult;
 
-import entity.CurrentGame;
-import use_case.ViewGameResult.ViewGameResultOutputData;
+import use_case.viewgameresult.ViewGameResultOutputData;
 
 public class ViewGameResultPresenter {
     ViewGameResultViewModel viewGameResultViewModel;

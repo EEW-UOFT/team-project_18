@@ -1,7 +1,7 @@
 package interface_adapter.ViewGameResult;
 
 import entity.*;
-import use_case.ViewGameResult.ViewGameResultInteractor;
+import use_case.viewgameresult.ViewGameResultInteractor;
 
 public class ViewGameResultController {
     private ViewGameResultInteractor viewGameResultInteractor;

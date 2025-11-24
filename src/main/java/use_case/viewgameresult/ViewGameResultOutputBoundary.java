@@ -1,4 +1,4 @@
-package use_case.ViewGameResult;
+package use_case.viewgameresult;
 
 public interface ViewGameResultOutputBoundary {
     void prepareGameResultView(ViewGameResultOutputData outputData);
