@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import data_access.DeckAPIInterface.UnableToLoadDeck;
-
 public class Deck implements DeckAPIInterface {
 
     private final OkHttpClient client = new OkHttpClient();
@@ -34,7 +32,7 @@ public class Deck implements DeckAPIInterface {
         try {
             // lazily initialize the deck
             if (deckID == null) {
-                deckID = initializeNewDeck();
+                initializeNewDeck();
             }
 
             HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/" + deckID + "/draw/")
@@ -76,6 +74,8 @@ public class Deck implements DeckAPIInterface {
 
     /**
      * Calls the API to create & shuffle a new deck and returns its deck_id.
+     *
+     * @return
      */
     public String initializeNewDeck() throws UnableToLoadDeck {
         HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/")
@@ -97,7 +97,7 @@ public class Deck implements DeckAPIInterface {
             }
 
             return body.getString("deck_id");
-        } catch (IOException e) {
+        } catch (IOException | UnableToLoadDeck e) {
             throw new UnableToLoadDeck();
         }
     }
