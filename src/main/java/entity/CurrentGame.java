@@ -1,7 +1,6 @@
 package entity;
 
 import data_access.DeckAPIInterface;
-import data_access.DeckFactory;
 
 import java.util.*;
 
@@ -13,11 +12,27 @@ public class CurrentGame {
     private GameState gameState = GameState.ONGOING;
     private final DeckAPIInterface deck;
 
+    Map<String, Integer> blackjackMap = new HashMap<>();
+
+
     public CurrentGame(User player) throws DeckAPIInterface.UnableToLoadDeck {
         this.player = player;
         this.deck = DeckFactory.createDeck();
         this.playerHand = new ArrayList<>();
         this.dealerHand = new ArrayList<>();
+        blackjackMap.put("ACE", 1);
+        blackjackMap.put("2", 2);
+        blackjackMap.put("3", 3);
+        blackjackMap.put("4", 4);
+        blackjackMap.put("5", 5);
+        blackjackMap.put("6", 6);
+        blackjackMap.put("7", 7);
+        blackjackMap.put("8", 8);
+        blackjackMap.put("9", 9);
+        blackjackMap.put("10", 10);
+        blackjackMap.put("KING", 10);
+        blackjackMap.put("QUEEN", 10);
+        blackjackMap.put("JACK", 10);
     }
 
     public void addCardPlayer(int n) throws DeckAPIInterface.UnableToLoadDeck {
@@ -49,6 +64,20 @@ public class CurrentGame {
         dealerHand.add(card);
     }
 
+    public int calculateScore(List<Card> hand) {
+        int score = 0;
+        boolean ace = false;
+        for  (Card card : hand) {
+            score += blackjackMap.get(card.getSuit());
+            if (card.getSuit().equals("ACE")) {
+                ace = true;
+            }
+        }
+        if (ace && score <= 11) {
+            score += 10;
+        }
+        return score;
+    }
 
     public void gameWon() {
         //Change the game state to "WIN"

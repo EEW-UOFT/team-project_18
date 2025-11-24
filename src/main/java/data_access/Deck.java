@@ -64,7 +64,8 @@ public class Deck implements DeckAPIInterface {
                 for (int i = 0; i < drawCards.length(); i++) {
                     String tempCardSuit = drawCards.getJSONObject(i).getString("suit");
                     String tempCardValue = drawCards.getJSONObject(i).getString("value");
-                    Card newCard = new Card(tempCardSuit, tempCardValue);
+                    String imageUrl = drawCards.getJSONObject(i).getString("image");
+                    Card newCard = new Card(tempCardSuit, tempCardValue, imageUrl);
                     currDrawnCards.add(newCard);
                     drawnCards.add(newCard);
                 }

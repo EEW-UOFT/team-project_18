@@ -16,6 +16,7 @@ import view.HomePageView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AppBuilder {
@@ -45,7 +46,7 @@ public class AppBuilder {
 
     }
 
-    JFrame build() {
+    JFrame build() throws IOException {
         JFrame frame = new JFrame("BlackJack");
 
         CardLayout cardLayout = new CardLayout();
