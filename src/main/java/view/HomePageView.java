@@ -39,12 +39,11 @@ public class HomePageView extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(0, 0, 10, 0); // 底部间距
+        gbc.insets = new Insets(0, 0, 10, 0);
         this.add(buttons, gbc);
 
-        // 错误消息位置 (row 1 - 直接在按钮下面)
         gbc.gridy = 1;
-        gbc.insets = new Insets(0, 0, 0, 0); // 无间距
+        gbc.insets = new Insets(0, 0, 0, 0);
         this.add(errorLabel, gbc);
 
         startNewGame.addActionListener(event ->{

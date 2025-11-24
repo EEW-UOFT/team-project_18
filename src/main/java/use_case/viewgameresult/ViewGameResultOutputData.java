@@ -1,10 +1,6 @@
-package use_case.ViewGameResult;
+package use_case.viewgameresult;
 
-import entity.Card;
 import entity.CurrentGame;
-import entity.GameState;
-
-import java.util.List;
 
 public class ViewGameResultOutputData {
     private final CurrentGame currentGame;

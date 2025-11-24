@@ -1,4 +1,4 @@
-package use_case.ViewGameResult;
+package use_case.viewgameresult;
 import entity.Card;
 import entity.GameState;
 import entity.CurrentGame;
