@@ -1,12 +1,10 @@
 package view;
 
-import interface_adapter.StartNewGame.StartNewGameController;
-import interface_adapter.StartNewGame.StartNewGameViewModel;
+import interface_adapter.startnewgame.StartNewGameController;
+import interface_adapter.startnewgame.StartNewGameViewModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 public class HomePageView extends JPanel {

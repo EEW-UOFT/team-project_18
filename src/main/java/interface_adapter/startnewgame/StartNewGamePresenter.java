@@ -1,4 +1,4 @@
-package interface_adapter.StartNewGame;
+package interface_adapter.startnewgame;
 
 import interface_adapter.ViewManagerModel;
 import use_case.startnewgame.StartNewGameOutputBoundary;

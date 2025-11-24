@@ -2,8 +2,8 @@ package use_case.viewgameresult;
 import entity.Card;
 import entity.GameState;
 import entity.CurrentGame;
-import interface_adapter.ViewGameResult.ViewGameResultPresenter;
-import interface_adapter.ViewGameResult.ViewGameResultViewModel;
+import interface_adapter.viewgameresult.ViewGameResultPresenter;
+import interface_adapter.viewgameresult.ViewGameResultViewModel;
 
 import java.util.ArrayList;
 

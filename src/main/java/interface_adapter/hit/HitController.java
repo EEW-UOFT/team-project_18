@@ -1,10 +1,8 @@
-package interface_adapter.Hit;
+package interface_adapter.hit;
 
 import data_access.DeckAPIInterface;
 import entity.CurrentGame;
 import use_case.hit.HitInputBoundary;
-import use_case.hit.HitInteractor;
-import use_case.stand.StandInputData;
 
 public class HitController {
 

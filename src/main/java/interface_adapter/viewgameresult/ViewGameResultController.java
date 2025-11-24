@@ -1,4 +1,4 @@
-package interface_adapter.ViewGameResult;
+package interface_adapter.viewgameresult;
 
 import entity.*;
 import use_case.viewgameresult.ViewGameResultInteractor;

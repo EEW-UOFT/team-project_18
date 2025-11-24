@@ -1,8 +1,8 @@
 package app;
 
 import data_access.Deck;
-import interface_adapter.Stand.ConsoleStandPresenter;
-import interface_adapter.Stand.StandController;
+import interface_adapter.stand.ConsoleStandPresenter;
+import interface_adapter.stand.StandController;
 import use_case.stand.StandInputBoundary;
 import use_case.stand.StandInteractor;
 
