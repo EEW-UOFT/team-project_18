@@ -77,7 +77,7 @@ public class Deck implements DeckAPIInterface {
     /**
      * Calls the API to create & shuffle a new deck and returns its deck_id.
      */
-    private String initializeNewDeck() throws UnableToLoadDeck {
+    public String initializeNewDeck() throws UnableToLoadDeck {
         HttpUrl url = HttpUrl.parse("https://deckofcardsapi.com/api/deck/new/shuffle/")
                 .newBuilder()
                 .addQueryParameter("deck_count", "1") // can change to "6" later
