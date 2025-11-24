@@ -1,31 +1,43 @@
 package use_case.startnewgame;
 
 import data_access.DeckAPIInterface;
+import entity.Card;
 import entity.CurrentGame;
+import data_access.Deck;
 import entity.User;
+
+import java.util.List;
 
 public class StartNewGameInteractor implements StartNewGameInputBoundary {
 
     private CurrentGame currentGame;
     private StartNewGameOutputBoundary startNewGamePresenter;
+    private DeckAPIInterface deck;
 
-    public StartNewGameInteractor(StartNewGameOutputBoundary StartNewGamePresenter) {
+    public StartNewGameInteractor(StartNewGameOutputBoundary StartNewGamePresenter, DeckAPIInterface deck) {
         this.startNewGamePresenter = StartNewGamePresenter;
+        this.deck = deck;
     }
 
     @Override
     public void execute(User currentUser) {
         try {
-            currentGame = new CurrentGame(currentUser);
+            currentGame = new CurrentGame(currentUser, deck);
+            List<Card> playerCard = deck.drawCards(2);
+            List<Card> dealerCard = deck.drawCards(2);
 
-            currentGame.addCardPlayer(2);
+            currentGame.addCardPlayer(playerCard.get(0));
+            currentGame.addCardPlayer(playerCard.get(1));
 
-            currentGame.addCardDealer(2, false);
+            dealerCard.get(0).setFaceUp(false);
+            currentGame.addCardDealer(dealerCard.get(0));
+            dealerCard.get(1).setFaceUp(true);
+            currentGame.addCardDealer(dealerCard.get(1));
 
             final StartNewGameOutputData startNewGameOutputData = new StartNewGameOutputData(currentGame);
             this.startNewGamePresenter.prepareSuccessView(startNewGameOutputData);
 
-        } catch (DeckAPIInterface.UnableToLoadDeck e) {
+        } catch (Deck.UnableToLoadDeck e) {
             this.startNewGamePresenter.prepareFailView("Failed to Start New Game, Please Try Again");
         }
     }

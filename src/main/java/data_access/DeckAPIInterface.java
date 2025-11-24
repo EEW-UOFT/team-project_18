@@ -14,11 +14,5 @@ public interface DeckAPIInterface {
     }
 
     //Draws n cards
-    List<Card> drawCards(int n) throws UnableToLoadDeck;
+    public List<Card> drawCards(int n) throws UnableToLoadDeck;
 }
-
-    public class DeckFactory {
-        public static Deck createDeck() throws DeckAPIInterface.UnableToLoadDeck {
-            return new Deck();
-        }
-    }

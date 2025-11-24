@@ -35,7 +35,7 @@ public class AppBuilder {
             StartNewGameOutputBoundary presenter = new StartNewGamePresenter(viewModel, viewManagerModel);
 
             DeckAPIInterface deck = new Deck();
-            StartNewGameInputBoundary interactor = new StartNewGameInteractor(presenter);
+            StartNewGameInputBoundary interactor = new StartNewGameInteractor(presenter, deck);
             ArrayList<HistoryEntry> history = new ArrayList<>();
             this.startNewGameController = new StartNewGameController(interactor, new User(history));
             this.startNewGameViewModel = viewModel;

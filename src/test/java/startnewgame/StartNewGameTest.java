@@ -18,18 +18,19 @@ public class StartNewGameTest {
     void testExecuteSuccess() {
 
         TestPresenter presenter = new TestPresenter();
+        TestDeck deck = new TestDeck();
         User user = new User(new ArrayList<>());
 
-        StartNewGameInteractor interactor = new StartNewGameInteractor(presenter);
+        StartNewGameInteractor interactor = new StartNewGameInteractor(presenter, deck);
         interactor.execute(user);
 
         assertTrue(presenter.successWasCalled);
     }
 
     @Test
-    void testOutputDataCreation() throws DeckAPIInterface.UnableToLoadDeck {
+    void testOutputDataCreation() {
         User user = new User(new ArrayList<>());
-        CurrentGame game = new CurrentGame(user);
+        CurrentGame game = new CurrentGame(user, new TestDeck());
 
         StartNewGameOutputData outputData = new StartNewGameOutputData(game);
 
@@ -42,10 +43,11 @@ public class StartNewGameTest {
     void testExecuteWhenDeckFails() {
         // 创建会抛出异常的Presenter和Deck
         TestPresenter presenter = new TestPresenter();
+        FailingDeck deck = new FailingDeck();
         User user = new User(new ArrayList<>());
 
         // 执行测试 - 应该调用prepareFailView
-        StartNewGameInteractor interactor = new StartNewGameInteractor(presenter);
+        StartNewGameInteractor interactor = new StartNewGameInteractor(presenter, deck);
         interactor.execute(user);
 
         // 验证失败方法被调用 - 使用正确的变量名
