@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GameHistory {
 
-    private List<HistoryEntry> history;
+    private final List<HistoryEntry> history;
 
     public GameHistory() {
         this.history = new ArrayList<>();

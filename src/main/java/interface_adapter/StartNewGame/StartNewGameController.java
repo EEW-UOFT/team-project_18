@@ -5,8 +5,8 @@ import use_case.StartNewGame.StartNewGameInputBoundary;
 
 public class StartNewGameController {
 
-    private StartNewGameInputBoundary StartNewGameInteractor;
-    private User currentUser;
+    private final StartNewGameInputBoundary StartNewGameInteractor;
+    private final User currentUser;
 
     public StartNewGameController(StartNewGameInputBoundary StartNewGameInteractor, User currentUser) {
         this.StartNewGameInteractor = StartNewGameInteractor;

@@ -7,11 +7,11 @@ import java.util.List;
 
 public class CurrentGame {
 
-    private User player;
-    private List<Card> playerHand;
-    private List<Card> dealerHand;
+    private final User player;
+    private final List<Card> playerHand;
+    private final List<Card> dealerHand;
     private GameState gameState = GameState.ONGOING;
-    private DeckAPIInterface deck;
+    private final DeckAPIInterface deck;
 
     public CurrentGame(User player, DeckAPIInterface deck) {
         this.player = player;

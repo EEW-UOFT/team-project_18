@@ -16,9 +16,8 @@ import java.util.List;
 public class Deck implements DeckAPIInterface {
 
     private final OkHttpClient client = new OkHttpClient();
-
-    private String deckID;
     private final List<Card> drawnCards = new ArrayList<>();
+    private String deckID;
 
     @Override
     public List<Card> drawCards(int n) throws UnableToLoadDeck {

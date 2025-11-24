@@ -7,6 +7,17 @@ import java.util.List;
 public interface DeckAPIInterface {
 
     /**
+     * Initialize a new shuffled deck from the Deck of Cards API.
+     * Implementations should set their internal deckID.
+     */
+    void initializeNewDeck() throws UnableToLoadDeck;
+
+    /**
+     * Draw n cards from the current deck.
+     */
+    List<Card> drawCards(int n) throws UnableToLoadDeck;
+
+    /**
      * Exception thrown when the deck API cannot be reached
      * or returns an invalid response.
      */
@@ -23,15 +34,4 @@ public interface DeckAPIInterface {
             super(message, cause);
         }
     }
-
-    /**
-     * Initialize a new shuffled deck from the Deck of Cards API.
-     * Implementations should set their internal deckID.
-     */
-    void initializeNewDeck() throws UnableToLoadDeck;
-
-    /**
-     * Draw n cards from the current deck.
-     */
-    List<Card> drawCards(int n) throws UnableToLoadDeck;
 }
