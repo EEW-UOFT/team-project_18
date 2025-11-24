@@ -1,4 +1,4 @@
-package use_case.StartNewGame;
+package use_case.startnewgame;
 
 import data_access.DeckAPIInterface;
 import entity.Card;

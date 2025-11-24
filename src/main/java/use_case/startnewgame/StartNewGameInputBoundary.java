@@ -1,4 +1,4 @@
-package use_case.StartNewGame;
+package use_case.startnewgame;
 
 import entity.User;
 

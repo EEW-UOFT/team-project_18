@@ -1,9 +1,9 @@
-package interface_adapter;
+package interface_adapter.Stand;
 
 import data_access.Deck;
 import data_access.DeckAPIInterface;
-import use_case.StandInputBoundary;
-import use_case.StandInputData;
+import use_case.stand.StandInputBoundary;
+import use_case.stand.StandInputData;
 
 public class StandController {
 

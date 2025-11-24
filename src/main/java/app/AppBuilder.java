@@ -8,9 +8,9 @@ import interface_adapter.StartNewGame.StartNewGameController;
 import interface_adapter.StartNewGame.StartNewGamePresenter;
 import interface_adapter.StartNewGame.StartNewGameViewModel;
 import interface_adapter.ViewManagerModel;
-import use_case.StartNewGame.StartNewGameInputBoundary;
-import use_case.StartNewGame.StartNewGameInteractor;
-import use_case.StartNewGame.StartNewGameOutputBoundary;
+import use_case.startnewgame.StartNewGameInputBoundary;
+import use_case.startnewgame.StartNewGameInteractor;
+import use_case.startnewgame.StartNewGameOutputBoundary;
 import view.BlackJackGameView;
 import view.HomePageView;
 

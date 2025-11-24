@@ -1,4 +1,4 @@
-package use_case;
+package use_case.stand;
 
 import data_access.DeckAPIInterface;
 

@@ -1,8 +1,8 @@
 package interface_adapter.StartNewGame;
 
 import interface_adapter.ViewManagerModel;
-import use_case.StartNewGame.StartNewGameOutputBoundary;
-import use_case.StartNewGame.StartNewGameOutputData;
+import use_case.startnewgame.StartNewGameOutputBoundary;
+import use_case.startnewgame.StartNewGameOutputData;
 
 public class StartNewGamePresenter implements StartNewGameOutputBoundary {
 
