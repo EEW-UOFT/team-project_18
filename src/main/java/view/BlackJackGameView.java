@@ -1,5 +1,6 @@
 package view;
 
+import entity.Card;
 import entity.CurrentGame;
 import use_case.hit.HitOutputData;
 
@@ -13,10 +14,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlackJackGameView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
+    final CardPanel dealerPanel = new CardPanel("Dealer");
+    final CardPanel playerPanel = new CardPanel("Player");
+    private CurrentGame currentGame;
 
     public BlackJackGameView() throws IOException {
 
@@ -24,26 +29,22 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
 
         final JButton hitButton = new JButton("Hit");
         hitButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-
+                e -> {
+                    Card card1 = new Card("HEARTs", "ACE");
+                    List<Card> test = new ArrayList<>();
+                    test.add(card1);
+                    try {
+                        playerPanel.drawCards(test);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
                     }
                 }
         );
         final JButton standButton = new JButton("Stand");
 
-        final JPanel dealerPanel = new JPanel();
-        dealerPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
-        dealerPanel.setPreferredSize(new Dimension(800, 250));
-        dealerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),"Dealer"));
-        final JPanel playerPanel = new JPanel();
-        playerPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
-        playerPanel.setPreferredSize(new Dimension(800, 250));
-        playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),"Player"));
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setPreferredSize(new Dimension(800, 50));
-        buttonPanel.setLayout(new BorderLayout(5,5));
+        buttonPanel.setLayout(new GridLayout(1,1));
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
 
@@ -51,7 +52,10 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         this.add(playerPanel, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);
         this.setVisible(true);
+    }
 
+    public void setCurrentGame(CurrentGame currentGame) {
+        this.currentGame = currentGame;
     }
 
     @Override
