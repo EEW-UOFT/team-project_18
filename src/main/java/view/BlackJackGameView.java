@@ -57,6 +57,7 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         buttonPanel.add(standButton);
 
         // Invisible view game result button that appears when the game ends
+        // TODO: toggle the visibility when the game ends, currently always visible for testing
         final JButton viewGameResultButton = new JButton("View Game Result");
 //        viewGameResultButton.setVisible(false);
         buttonPanel.add(viewGameResultButton, BorderLayout.EAST);
@@ -66,8 +67,8 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         // Trigger the view game result use case
-                        System.out.println("BlackJackGameView viewGameResultController hash in viewGameResultButton:");
-                        System.out.println(System.identityHashCode(viewGameResultController));
+//                        System.out.println("BlackJackGameView viewGameResultController hash in viewGameResultButton:");
+//                        System.out.println(System.identityHashCode(viewGameResultController));
                         viewGameResultController.execute(startNewGameViewModel.getCurrentGame());
                     }
                 }

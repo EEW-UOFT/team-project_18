@@ -18,6 +18,7 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
     @Override
     public void execute(CurrentGame currentGame) {
         GameState gameState = currentGame.getGameState();
+        // TODO: toggle this back on later, for testing purposes only
 //        if (gameState == GameState.ONGOING) {
 //            throw new IllegalStateException("Game is still ongoing. Result cannot be viewed.");
 //        }
@@ -29,8 +30,6 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
         int dealerScore = currentGame.calculateScore(dealerHand);
 
         ViewGameResultViewModel viewGameResultViewModel = new ViewGameResultViewModel();
-//        ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewGameResultViewModel, new ViewManagerModel());
-        // THE UNHOLY BUG
 
         ViewGameResultOutputData outputData = new ViewGameResultOutputData(currentGame, gameResult, playerScore, dealerScore);
         presenter.presentGameResult(outputData);

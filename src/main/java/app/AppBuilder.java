@@ -61,8 +61,6 @@ public class AppBuilder {
         ViewGameResultInteractor viewGameResultInteractor = new ViewGameResultInteractor(presenter);
         this.viewGameResultController = new ViewGameResultController(viewGameResultInteractor);
         this.viewGameResultViewModel = viewModel;
-        System.out.println("AppBuilder viewManagerModel hash in addViewGameResultUseCase:");
-        System.out.println(System.identityHashCode(viewManagerModel));
     }
 
     JFrame build() throws IOException {
@@ -76,15 +74,9 @@ public class AppBuilder {
         BlackJackGameView gamePage = new BlackJackGameView(viewGameResultController, startNewGameViewModel);
         GameResultView resultPage = new GameResultView(viewGameResultViewModel);
 
-        System.out.println("Appbuilder viewGameResultController hash in build()");
-        System.out.println(System.identityHashCode(viewGameResultController));
-
         mainPanel.add(homePage,"Home");
         mainPanel.add(gamePage,"Game");
         mainPanel.add(resultPage, "Result");
-
-        System.out.println("AppBuilder viewManagerModel hash in build():");
-        System.out.println(System.identityHashCode(viewManagerModel));
 
         viewManagerModel.addPropertyChangeListener(evt ->{
             System.out.println("Property changed: " + evt.getPropertyName());
@@ -93,15 +85,11 @@ public class AppBuilder {
                 System.out.println("Switching to view: " + activeView);
                 cardLayout.show(mainPanel, activeView);
             }
-
-            System.out.println("Current viewManagerModel hash in listener:");
-            System.out.println(System.identityHashCode(viewManagerModel) + "\n" );
         });
 
         frame.add(mainPanel);
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        System.out.println("hi");
         return frame;
     }
 }

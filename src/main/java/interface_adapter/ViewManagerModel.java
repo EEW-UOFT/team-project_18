@@ -18,8 +18,6 @@ public class ViewManagerModel {
     public void setActiveView(String activeView) {
         String oldValue = this.activeView;
         this.activeView = activeView;
-        System.out.println("Setting active view to: " + activeView);
-        System.out.println("Old active view was: " + oldValue);
         support.firePropertyChange("view", oldValue, activeView);
     }
 
