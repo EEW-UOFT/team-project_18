@@ -1,4 +1,4 @@
-package interfaceadapter.ViewGameResult;
+package interfaceadapter.viewgameresult;
 
 import use.Case.viewgameresult.ViewGameResultOutputData;
 
