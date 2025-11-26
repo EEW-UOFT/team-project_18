@@ -1,15 +1,20 @@
 package app;
 
-import javax.swing.*;
 import java.io.IOException;
+
+import javax.swing.*;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        AppBuilder appBuilder = new AppBuilder();
-        JFrame application = appBuilder.build();
-        application.setVisible(true);
+        final JFrame app = new AppBuilder()
+                .addStartNewGameUseCase()
+                .addHomePageView()
+                .addBlackJackGameView()
+                .setupViewManager()
+                .build();
 
+        app.setVisible(true);
     }
 
 }

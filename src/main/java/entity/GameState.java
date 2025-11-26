@@ -1,6 +1,8 @@
 package entity;
 
-//Enum of the various game states
+/**
+ * Enum of the various game states.
+ */
 public enum GameState {
     WIN,
     LOST,

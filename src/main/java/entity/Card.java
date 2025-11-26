@@ -1,7 +1,5 @@
 package entity;
 
-import java.net.URL;
-
 public class Card {
     private final String suit;
     private final String value;
@@ -23,15 +21,21 @@ public class Card {
         return this.suit;
     }
 
-    public void setFaceUp(boolean faceUp){ this.faceUp = faceUp; }
+    public void setFaceUp(boolean faceUp) {
+        this.faceUp = faceUp;
+    }
 
-    public boolean isFaceUp(){ return this.faceUp; }
+    public boolean isFaceUp() {
+        return this.faceUp;
+    }
 
     public String getValue() {
+
         return this.value;
     }
 
     public String getImageUrl() {
+
         return this.imageUrl;
     }
 }
