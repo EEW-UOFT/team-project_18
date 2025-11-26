@@ -2,7 +2,7 @@ package view;
 
 import javax.swing.*;
 
-import interfaceadapter.ViewGameResult.ViewGameResultViewModel;
+import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
 public class GameResultView extends JPanel {
     // Game outcome message

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import entity.Card;
 import entity.CurrentGame;
 import entity.GameState;
-import interfaceadapter.ViewGameResult.ViewGameResultPresenter;
-import interfaceadapter.ViewGameResult.ViewGameResultViewModel;
+import interfaceadapter.viewgameresult.ViewGameResultPresenter;
+import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
 public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
 
