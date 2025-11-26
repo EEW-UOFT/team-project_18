@@ -50,7 +50,7 @@ public class ViewGameResultViewModel {
         }
         this.dealerScore = dealerScore;
     }
-    public  void setCurrentGame(CurrentGame currentGame) {
+    public void setCurrentGame(CurrentGame currentGame) {
         this.currentGame = currentGame;
     }
 }

@@ -9,7 +9,5 @@ public class Main {
         AppBuilder appBuilder = new AppBuilder();
         JFrame application = appBuilder.build();
         application.setVisible(true);
-
     }
-
 }

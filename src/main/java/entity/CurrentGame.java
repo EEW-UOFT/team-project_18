@@ -68,8 +68,8 @@ public class CurrentGame {
         int score = 0;
         boolean ace = false;
         for  (Card card : hand) {
-            score += blackjackMap.get(card.getSuit());
-            if (card.getSuit().equals("ACE")) {
+            score += blackjackMap.get(card.getValue());
+            if (card.getValue().equals("ACE")) {
                 ace = true;
             }
         }

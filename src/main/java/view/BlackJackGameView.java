@@ -1,6 +1,9 @@
 package view;
 
 import entity.CurrentGame;
+import interface_adapter.StartNewGame.StartNewGameController;
+import interface_adapter.StartNewGame.StartNewGameViewModel;
+import interface_adapter.ViewGameResult.ViewGameResultController;
 import use_case.hit.HitOutputData;
 
 import javax.imageio.ImageIO;
@@ -17,8 +20,14 @@ import java.io.IOException;
 public class BlackJackGameView extends JPanel implements ActionListener, PropertyChangeListener {
 
     BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
+    private ViewGameResultController viewGameResultController;
+    private StartNewGameViewModel startNewGameViewModel;  // For the current game state, maybe not great design
 
-    public BlackJackGameView() throws IOException {
+    public BlackJackGameView(ViewGameResultController viewGameResultController,
+                             StartNewGameViewModel startNewGameViewModel) throws IOException {
+
+        this.startNewGameViewModel = startNewGameViewModel;
+        this.viewGameResultController = viewGameResultController;
 
         this.setLayout(new BorderLayout(5,5));
 
@@ -46,6 +55,23 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         buttonPanel.setLayout(new BorderLayout(5,5));
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
+
+        // Invisible view game result button that appears when the game ends
+        final JButton viewGameResultButton = new JButton("View Game Result");
+//        viewGameResultButton.setVisible(false);
+        buttonPanel.add(viewGameResultButton, BorderLayout.EAST);
+
+        viewGameResultButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // Trigger the view game result use case
+                        System.out.println("BlackJackGameView viewGameResultController hash in viewGameResultButton:");
+                        System.out.println(System.identityHashCode(viewGameResultController));
+                        viewGameResultController.execute(startNewGameViewModel.getCurrentGame());
+                    }
+                }
+        );
 
         this.add(dealerPanel, BorderLayout.NORTH);
         this.add(playerPanel, BorderLayout.CENTER);

@@ -7,11 +7,16 @@ import entity.User;
 import interface_adapter.StartNewGame.StartNewGameController;
 import interface_adapter.StartNewGame.StartNewGamePresenter;
 import interface_adapter.StartNewGame.StartNewGameViewModel;
+import interface_adapter.ViewGameResult.ViewGameResultController;
+import interface_adapter.ViewGameResult.ViewGameResultPresenter;
+import interface_adapter.ViewGameResult.ViewGameResultViewModel;
 import interface_adapter.ViewManagerModel;
 import use_case.startnewgame.StartNewGameInputBoundary;
 import use_case.startnewgame.StartNewGameInteractor;
 import use_case.startnewgame.StartNewGameOutputBoundary;
+import use_case.viewgameresult.ViewGameResultInteractor;
 import view.BlackJackGameView;
+import view.GameResultView;
 import view.HomePageView;
 
 import javax.swing.*;
@@ -25,9 +30,13 @@ public class AppBuilder {
     private StartNewGameViewModel startNewGameViewModel;
     private final ViewManagerModel viewManagerModel;
 
+    private ViewGameResultController viewGameResultController;
+    private ViewGameResultViewModel viewGameResultViewModel;
+
     public AppBuilder() {
         this.viewManagerModel = new ViewManagerModel();
         addStartNewGameUseCase();
+        addViewGameResultUseCase();
     }
 
     public void addStartNewGameUseCase() {
@@ -46,6 +55,16 @@ public class AppBuilder {
 
     }
 
+    public void addViewGameResultUseCase() {
+        ViewGameResultViewModel viewModel = new ViewGameResultViewModel();
+        ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewModel, viewManagerModel);
+        ViewGameResultInteractor viewGameResultInteractor = new ViewGameResultInteractor(presenter);
+        this.viewGameResultController = new ViewGameResultController(viewGameResultInteractor);
+        this.viewGameResultViewModel = viewModel;
+        System.out.println("AppBuilder viewManagerModel hash in addViewGameResultUseCase:");
+        System.out.println(System.identityHashCode(viewManagerModel));
+    }
+
     JFrame build() throws IOException {
         JFrame frame = new JFrame("BlackJack");
 
@@ -54,14 +73,24 @@ public class AppBuilder {
 
 
         HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController);
-        BlackJackGameView gamePage = new BlackJackGameView();
+        BlackJackGameView gamePage = new BlackJackGameView(viewGameResultController, startNewGameViewModel);
+        GameResultView resultPage = new GameResultView(viewGameResultViewModel);
+
+        System.out.println("Appbuilder viewGameResultController hash in build()");
+        System.out.println(System.identityHashCode(viewGameResultController));
 
         mainPanel.add(homePage,"Home");
         mainPanel.add(gamePage,"Game");
+        mainPanel.add(resultPage, "Result");
+
+        System.out.println("AppBuilder viewManagerModel hash in build():");
+        System.out.println(System.identityHashCode(viewManagerModel));
 
         viewManagerModel.addPropertyChangeListener(evt ->{
+            System.out.println("Property changed: " + evt.getPropertyName());
             if("view".equals(evt.getPropertyName())){
                 String activeView = (String) evt.getNewValue();
+                System.out.println("Switching to view: " + activeView);
                 cardLayout.show(mainPanel, activeView);
             }
         });
