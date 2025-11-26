@@ -29,7 +29,8 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
         int dealerScore = currentGame.calculateScore(dealerHand);
 
         ViewGameResultViewModel viewGameResultViewModel = new ViewGameResultViewModel();
-        ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewGameResultViewModel, new ViewManagerModel());
+//        ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewGameResultViewModel, new ViewManagerModel());
+        // THE UNHOLY BUG
 
         ViewGameResultOutputData outputData = new ViewGameResultOutputData(currentGame, gameResult, playerScore, dealerScore);
         presenter.presentGameResult(outputData);

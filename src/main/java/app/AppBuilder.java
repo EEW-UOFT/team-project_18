@@ -93,6 +93,9 @@ public class AppBuilder {
                 System.out.println("Switching to view: " + activeView);
                 cardLayout.show(mainPanel, activeView);
             }
+
+            System.out.println("Current viewManagerModel hash in listener:");
+            System.out.println(System.identityHashCode(viewManagerModel) + "\n" );
         });
 
         frame.add(mainPanel);

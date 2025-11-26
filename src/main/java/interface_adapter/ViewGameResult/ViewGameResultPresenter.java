@@ -20,6 +20,8 @@ public class ViewGameResultPresenter {
         viewGameResultViewModel.setDealerScore(outputData.getDealerScore());
         viewGameResultViewModel.setCurrentGame(outputData.getCurrentGame());
         viewGameResultViewModel.setGameResult(outputData.getOutcome());
+        System.out.println("viewManagerModel hash in presenter presentGameResult before calling setActiveView:");
+        System.out.println(System.identityHashCode(viewManagerModel));
         viewManagerModel.setActiveView("Result");
         System.out.println("viewManagerModel hash in presenter presentGameResult:");
         System.out.println(System.identityHashCode(viewManagerModel));
