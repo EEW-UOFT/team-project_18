@@ -1,6 +1,6 @@
 package use_case.Stand;
 
-import data_access.DeckAPIInterface;
+import data_access.DeckApiInterface;
 import entity.Card;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class StandInteractor implements StandInputBoundary {
     @Override
     public void execute(StandInputData inputData) {
         int playerTotal = inputData.getPlayerTotal();
-        DeckAPIInterface deck = inputData.getDeck();
+        DeckApiInterface deck = inputData.getDeck();
 
         int dealerTotal = 0;
 
@@ -51,7 +51,7 @@ public class StandInteractor implements StandInputBoundary {
                     new StandOutputData(playerTotal, dealerTotal, outcome);
             presenter.presentResult(outputData);
 
-        } catch (DeckAPIInterface.UnableToLoadDeck e) {
+        } catch (DeckApiInterface.UnableToLoadDeck e) {
             presenter.presentError("Failed to draw from deck: " + e.getMessage());
         }
     }

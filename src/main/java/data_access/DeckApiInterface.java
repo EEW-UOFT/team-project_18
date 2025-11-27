@@ -4,7 +4,7 @@ import entity.Card;
 
 import java.util.List;
 
-public interface DeckAPIInterface {
+public interface DeckApiInterface {
 
     // Checked exception for any API / HTTP failure.
     class UnableToLoadDeck extends Exception {
@@ -21,3 +21,4 @@ public interface DeckAPIInterface {
 
     List<Card> drawCards(int n) throws UnableToLoadDeck;
 }
+
