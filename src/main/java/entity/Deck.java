@@ -7,27 +7,20 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Deck {
-    private String deckID;
-    private List<Card> drawnCards;
     private final OkHttpClient client = new OkHttpClient();
+    private String deckID;
+    private final List<Card> drawnCards;
 
-    public Deck(){
+    public Deck() {
         //Constructor
         this.drawnCards = new ArrayList<>();
     }
 
-    public static class UnableToLoadDeck extends Exception{
-        //Exception thrown when API call fails
-        public UnableToLoadDeck(){
-            super("Unable to load deck");
-        }
-    }
-
-    public String returnDeckID(){
+    public String returnDeckID() {
         //Return deckID
         return deckID;
     }
@@ -45,9 +38,10 @@ public class Deck {
             if (responseBody.getString("success").equals("true")) {
                 this.deckID = responseBody.getString("deck_id");
                 return this;
-            }else{throw new UnableToLoadDeck();}
-        }
-        catch (Exception e) {
+            } else {
+                throw new UnableToLoadDeck();
+            }
+        } catch (Exception e) {
             throw new UnableToLoadDeck();
         }
     }
@@ -77,9 +71,15 @@ public class Deck {
                 }
             }
             return currDrawnCards;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new UnableToLoadDeck();
+        }
+    }
+
+    public static class UnableToLoadDeck extends Exception {
+        //Exception thrown when API call fails
+        public UnableToLoadDeck() {
+            super("Unable to load deck");
         }
     }
 }

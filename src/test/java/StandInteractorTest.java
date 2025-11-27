@@ -1,102 +1,19 @@
+import data_access.DeckApiInterface;
 import entity.Card;
 import org.junit.jupiter.api.Test;
+import use_case.Stand.StandInputData;
+import use_case.Stand.StandInteractor;
+import use_case.Stand.StandOutputBoundary;
+import use_case.Stand.StandOutputData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import data_access.DeckApiInterface;
-import use_case.Stand.StandInputData;
-import use_case.Stand.StandInteractor;
-import use_case.Stand.StandOutputBoundary;
-import use_case.Stand.StandOutputData;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class StandInteractorTest {
-
-    // Fake deck for tests: no HTTP, just returns scripted cards.
-    private static class FakeDeck implements DeckApiInterface {
-
-        private final List<Card> scriptedCards;
-        private int index = 0;
-
-        FakeDeck(List<Card> scriptedCards) {
-            this.scriptedCards = new ArrayList<>(scriptedCards);
-        }
-
-        @Override
-        public String initializeNewDeck() {
-            // Not needed in tests
-            return "FAKE_DECK_ID";
-        }
-
-        @Override
-        public List<Card> drawCards(int n) {
-            List<Card> result = new ArrayList<>();
-            for (int i = 0; i < n && index < scriptedCards.size(); i++, index++) {
-                result.add(scriptedCards.get(index));
-            }
-            return result;
-        }
-    }
-
-    /**
-     * Deck that always returns an empty list on drawCards.
-     */
-    private static class EmptyDeck implements DeckApiInterface {
-
-        @Override
-        public String initializeNewDeck() {
-            return "EMPTY_DECK";
-        }
-
-        @Override
-        public List<Card> drawCards(int n) {
-            return Collections.emptyList();
-        }
-    }
-
-    /**
-     * Deck that always throws UnableToLoadDeck when drawCards is called.
-     */
-    private static class ErrorDeck implements DeckApiInterface {
-
-        @Override
-        public String initializeNewDeck() throws UnableToLoadDeck {
-            throw new UnableToLoadDeck("boom");
-        }
-
-        @Override
-        public List<Card> drawCards(int n) throws UnableToLoadDeck {
-            throw new UnableToLoadDeck("boom");
-        }
-    }
-
-    // Presenter that just records what was sent.
-    private static class RecordingPresenter implements StandOutputBoundary {
-
-        final List<String> dealerDrawEvents = new ArrayList<>();
-        StandOutputData finalOutput;
-        String errorMessage;
-
-        @Override
-        public void presentDealerDrew(Card card, int dealerTotal) {
-            dealerDrawEvents.add(card.getValue() + " of " + card.getSuit()
-                    + " | dealer total = " + dealerTotal);
-        }
-
-        @Override
-        public void presentResult(StandOutputData outputData) {
-            this.finalOutput = outputData;
-        }
-
-        @Override
-        public void presentError(String message) {
-            this.errorMessage = message;
-        }
-    }
 
     @Test
     void dealerReaches17AndPushWhenTotalsEqual() {
@@ -222,6 +139,88 @@ class StandInteractorTest {
         assertNull(presenter.finalOutput);
         assertNotNull(presenter.errorMessage);
         assertTrue(presenter.errorMessage.startsWith("Failed to draw from deck"));
+    }
+
+    // Fake deck for tests: no HTTP, just returns scripted cards.
+    private static class FakeDeck implements DeckApiInterface {
+
+        private final List<Card> scriptedCards;
+        private int index = 0;
+
+        FakeDeck(List<Card> scriptedCards) {
+            this.scriptedCards = new ArrayList<>(scriptedCards);
+        }
+
+        @Override
+        public String initializeNewDeck() {
+            // Not needed in tests
+            return "FAKE_DECK_ID";
+        }
+
+        @Override
+        public List<Card> drawCards(int n) {
+            List<Card> result = new ArrayList<>();
+            for (int i = 0; i < n && index < scriptedCards.size(); i++, index++) {
+                result.add(scriptedCards.get(index));
+            }
+            return result;
+        }
+    }
+
+    /**
+     * Deck that always returns an empty list on drawCards.
+     */
+    private static class EmptyDeck implements DeckApiInterface {
+
+        @Override
+        public String initializeNewDeck() {
+            return "EMPTY_DECK";
+        }
+
+        @Override
+        public List<Card> drawCards(int n) {
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Deck that always throws UnableToLoadDeck when drawCards is called.
+     */
+    private static class ErrorDeck implements DeckApiInterface {
+
+        @Override
+        public String initializeNewDeck() throws UnableToLoadDeck {
+            throw new UnableToLoadDeck("boom");
+        }
+
+        @Override
+        public List<Card> drawCards(int n) throws UnableToLoadDeck {
+            throw new UnableToLoadDeck("boom");
+        }
+    }
+
+    // Presenter that just records what was sent.
+    private static class RecordingPresenter implements StandOutputBoundary {
+
+        final List<String> dealerDrawEvents = new ArrayList<>();
+        StandOutputData finalOutput;
+        String errorMessage;
+
+        @Override
+        public void presentDealerDrew(Card card, int dealerTotal) {
+            dealerDrawEvents.add(card.getValue() + " of " + card.getSuit()
+                    + " | dealer total = " + dealerTotal);
+        }
+
+        @Override
+        public void presentResult(StandOutputData outputData) {
+            this.finalOutput = outputData;
+        }
+
+        @Override
+        public void presentError(String message) {
+            this.errorMessage = message;
+        }
     }
 }
 

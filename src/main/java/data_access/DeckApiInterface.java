@@ -6,6 +6,10 @@ import java.util.List;
 
 public interface DeckApiInterface {
 
+    String initializeNewDeck() throws UnableToLoadDeck;
+
+    List<Card> drawCards(int n) throws UnableToLoadDeck;
+
     // Checked exception for any API / HTTP failure.
     class UnableToLoadDeck extends Exception {
         public UnableToLoadDeck() {
@@ -16,9 +20,5 @@ public interface DeckApiInterface {
             super(message);
         }
     }
-
-    String initializeNewDeck() throws UnableToLoadDeck;
-
-    List<Card> drawCards(int n) throws UnableToLoadDeck;
 }
 

@@ -1,14 +1,15 @@
 package entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrentGame {
 
-    private User player;
-    private List<Card> playerHand;
-    private List<Card> dealerHand;
+    private final User player;
+    private final List<Card> playerHand;
+    private final List<Card> dealerHand;
     private GameState gameState = GameState.ONGOING;
-    private Deck deck;
+    private final Deck deck;
 
     public CurrentGame(User player, Deck deck) {
         this.player = player;
@@ -63,13 +64,23 @@ public class CurrentGame {
         }
     }
 
-    public List<Card> getPlayerHand() {return playerHand;}
+    public List<Card> getPlayerHand() {
+        return playerHand;
+    }
 
-    public List<Card> getDealerHand() {return dealerHand;}
+    public List<Card> getDealerHand() {
+        return dealerHand;
+    }
 
-    public GameState getGameState() {return gameState;}
+    public GameState getGameState() {
+        return gameState;
+    }
 
-    public Deck getDeck() {return deck;}
+    public Deck getDeck() {
+        return deck;
+    }
 
-    public User getPlayer() {return player;}
+    public User getPlayer() {
+        return player;
+    }
 }

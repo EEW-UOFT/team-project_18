@@ -4,14 +4,13 @@ import entity.Card;
 import entity.CurrentGame;
 import entity.Deck;
 import entity.User;
-import interface_adapter.StartNewGame.StartNewGamePresenter;
 
 import java.util.List;
 
 public class StartNewGameInteractor implements StartNewGameInputBoundary {
 
     private CurrentGame currentGame;
-    private StartNewGameOutputBoundary startNewGamePresenter;
+    private final StartNewGameOutputBoundary startNewGamePresenter;
 
     public StartNewGameInteractor(StartNewGameOutputBoundary StartNewGamePresenter) {
         this.startNewGamePresenter = StartNewGamePresenter;
