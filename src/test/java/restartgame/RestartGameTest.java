@@ -3,9 +3,9 @@ package restartgame;
 import entity.CurrentGame;
 import entity.User;
 import org.junit.jupiter.api.Test;
-import use_case.restartgame.RestartGameInteractor;
-import use_case.restartgame.RestartGameOutputBoundary;
-import use_case.restartgame.RestartGameOutputData;
+import use.Case.restartgame.RestartGameInteractor;
+import use.Case.restartgame.RestartGameOutputBoundary;
+import use.Case.restartgame.RestartGameOutputData;
 
 import java.util.ArrayList;
 

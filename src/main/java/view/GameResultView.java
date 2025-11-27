@@ -2,19 +2,22 @@ package view;
 
 import javax.swing.*;
 
+import interfaceadapter.restartgame.RestartGameController;
+import interfaceadapter.startnewgame.StartNewGameController;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
 public class GameResultView extends JPanel {
     // Game outcome message
     private final JLabel resultMessage;
     private final JButton newGameButton;
-    private final JButton statsButton;
     private final JButton historyButton;
     private final JLabel playerFinalScore;
     private final JLabel dealerFinalScore;
+    private RestartGameController restartGameController;
 
-    public GameResultView(ViewGameResultViewModel viewGameResultViewModel) {
+    public GameResultView(ViewGameResultViewModel viewGameResultViewModel,RestartGameController restartGameController ) {
 
+        this.restartGameController =  restartGameController;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         // Centered game result message
         resultMessage = new JLabel(viewGameResultViewModel.getGameResult());
@@ -32,11 +35,14 @@ public class GameResultView extends JPanel {
         this.add(dealerFinalScore);
 
         final JPanel buttonPanel = new JPanel();
-        newGameButton = new JButton("New Game");
-        statsButton = new JButton("Stats");
+        newGameButton = new JButton("Play Again");
         historyButton = new JButton("Game History");
+
+
+        newGameButton.addActionListener(event ->
+           this.restartGameController.execute());
+
         buttonPanel.add(newGameButton);
-        buttonPanel.add(statsButton);
         buttonPanel.add(historyButton);
         this.add(buttonPanel);
     }

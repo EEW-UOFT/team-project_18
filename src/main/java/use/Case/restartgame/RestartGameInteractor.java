@@ -1,6 +1,6 @@
-package use_case.restartgame;
+package use.Case.restartgame;
 
-import data_access.DeckAPIInterface;
+import data.Access.DeckApiInterface;
 import entity.CurrentGame;
 import entity.User;
 
@@ -24,7 +24,7 @@ public class RestartGameInteractor implements RestartGameInputBoundary {
             RestartGameOutputData outputData = new RestartGameOutputData(currentGame);
             presenter.prepareSuccessView(outputData);
 
-        } catch (DeckAPIInterface.UnableToLoadDeck e) {
+        } catch (DeckApiInterface.UnableToLoadDeck e) {
             presenter.prepareFailView("Unable to fetch new deck. Try again later.");
         }
     }

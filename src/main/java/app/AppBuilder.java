@@ -25,12 +25,12 @@ import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 import view.BlackJackGameView;
 import view.GameResultView;
 import view.HomePageView;
-import interface_adapter.restartgame.RestartGameController;
-import interface_adapter.restartgame.RestartGamePresenter;
-import interface_adapter.restartgame.RestartGameViewModel;
-import use_case.restartgame.RestartGameInputBoundary;
-import use_case.restartgame.RestartGameInteractor;
-import use_case.restartgame.RestartGameOutputBoundary;
+import interfaceadapter.restartgame.RestartGameController;
+import interfaceadapter.restartgame.RestartGamePresenter;
+import interfaceadapter.restartgame.RestartGameViewModel;
+import use.Case.restartgame.RestartGameInputBoundary;
+import use.Case.restartgame.RestartGameInteractor;
+import use.Case.restartgame.RestartGameOutputBoundary;
 
 
 public class AppBuilder {
@@ -52,17 +52,12 @@ public class AppBuilder {
     private RestartGameViewModel restartGameViewModel;
 
     public AppBuilder() {
-        this.viewManagerModel = new ViewManagerModel();
-
+        cardPanel.setLayout(cardLayout);
         addStartNewGameUseCase();
         addRestartGameUseCase();
+        addViewGameResultUseCase();
     }
 
-    /**
-     * Adds the Start New Game Use Case to the application.
-     *
-     * @return this builder
-     */
     public AppBuilder addStartNewGameUseCase() {
         final StartNewGameViewModel viewModel = new StartNewGameViewModel();
         final StartNewGameOutputBoundary presenter = new StartNewGamePresenter(viewModel, viewManagerModel);
@@ -72,28 +67,22 @@ public class AppBuilder {
 
         this.startNewGameController = new StartNewGameController(interactor, new User(history));
         this.startNewGameViewModel = viewModel;
+
         return this;
     }
 
-    public void addRestartGameUseCase() {
-        RestartGameViewModel viewModel = new RestartGameViewModel();
-        RestartGameOutputBoundary presenter =
-                new RestartGamePresenter(viewModel, viewManagerModel);
+    public AppBuilder addRestartGameUseCase() {
+        final RestartGameViewModel viewModel = new RestartGameViewModel();
+        final RestartGameOutputBoundary presenter = new RestartGamePresenter(viewModel, viewManagerModel);
 
-        RestartGameInputBoundary interactor =
-                new RestartGameInteractor(presenter);
+        final RestartGameInputBoundary interactor = new RestartGameInteractor(presenter);
+        final ArrayList<HistoryEntry> history = new ArrayList<>();
 
-        ArrayList<HistoryEntry> history = new ArrayList<>();
-        this.restartGameController =
-                new RestartGameController(interactor, new User(history));
+        this.restartGameController = new RestartGameController(interactor, new User(history));
         this.restartGameViewModel = viewModel;
+
+        return this;
     }
-
-
-
-
-    JFrame build() throws IOException {
-        JFrame frame = new JFrame("BlackJack");
 
     public AppBuilder addViewGameResultUseCase() {
         final ViewGameResultViewModel viewModel = new ViewGameResultViewModel();
@@ -103,24 +92,27 @@ public class AppBuilder {
         this.viewGameResultController = new ViewGameResultController(viewGameResultInteractor);
         this.viewGameResultViewModel = viewModel;
 
-        HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController);
-        BlackJackGameView gamePage = new BlackJackGameView(restartGameController, restartGameViewModel);
+        return this;
+    }
 
-    /**
-     * Adds the BlackJack Game View to the application.
-     * @return this builder
-     * @throws IOException if there's an IO error during adding
-     */
+    public AppBuilder addHomePageView() {
+        final HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController);
+        cardPanel.add(homePage, "Home");
+        return this;
+    }
+
     public AppBuilder addBlackJackGameView() throws IOException {
         final BlackJackGameView blackJackGameView = new BlackJackGameView(viewGameResultController, startNewGameViewModel);
         cardPanel.add(blackJackGameView, "Game");
         return this;
     }
 
-    /**
-     * Sets up the view manager to handle view switching.
-     * @return this builder
-     */
+    public AppBuilder addGameResultView() {
+        GameResultView gameResultView = new GameResultView(viewGameResultViewModel, restartGameController);
+        cardPanel.add(gameResultView, "GameResult");
+        return this;
+    }
+
     public AppBuilder setupViewManager() {
         viewManagerModel.addPropertyChangeListener(evt -> {
             if ("view".equals(evt.getPropertyName())) {
@@ -131,10 +123,6 @@ public class AppBuilder {
         return this;
     }
 
-    /**
-     * Builds and returns the complete application frame.
-     * @return the built JFrame
-     */
     public JFrame build() {
         final JFrame frame = new JFrame("BlackJack Game");
 
