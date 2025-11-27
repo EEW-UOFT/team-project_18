@@ -13,6 +13,13 @@ import use_case.startnewgame.StartNewGameInteractor;
 import use_case.startnewgame.StartNewGameOutputBoundary;
 import view.BlackJackGameView;
 import view.HomePageView;
+import interface_adapter.restartgame.RestartGameController;
+import interface_adapter.restartgame.RestartGamePresenter;
+import interface_adapter.restartgame.RestartGameViewModel;
+import use_case.restartgame.RestartGameInputBoundary;
+import use_case.restartgame.RestartGameInteractor;
+import use_case.restartgame.RestartGameOutputBoundary;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +32,14 @@ public class AppBuilder {
     private StartNewGameViewModel startNewGameViewModel;
     private final ViewManagerModel viewManagerModel;
 
+    private RestartGameController restartGameController;
+    private RestartGameViewModel restartGameViewModel;
+
     public AppBuilder() {
         this.viewManagerModel = new ViewManagerModel();
+
         addStartNewGameUseCase();
+        addRestartGameUseCase();
     }
 
     public void addStartNewGameUseCase() {
@@ -46,6 +58,23 @@ public class AppBuilder {
 
     }
 
+    public void addRestartGameUseCase() {
+        RestartGameViewModel viewModel = new RestartGameViewModel();
+        RestartGameOutputBoundary presenter =
+                new RestartGamePresenter(viewModel, viewManagerModel);
+
+        RestartGameInputBoundary interactor =
+                new RestartGameInteractor(presenter);
+
+        ArrayList<HistoryEntry> history = new ArrayList<>();
+        this.restartGameController =
+                new RestartGameController(interactor, new User(history));
+        this.restartGameViewModel = viewModel;
+    }
+
+
+
+
     JFrame build() throws IOException {
         JFrame frame = new JFrame("BlackJack");
 
@@ -54,7 +83,7 @@ public class AppBuilder {
 
 
         HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController);
-        BlackJackGameView gamePage = new BlackJackGameView();
+        BlackJackGameView gamePage = new BlackJackGameView(restartGameController, restartGameViewModel);
 
         mainPanel.add(homePage,"Home");
         mainPanel.add(gamePage,"Game");
