@@ -1,20 +1,14 @@
-package entity;
+package use.Case.stand;
 
-public class HistoryEntry {
-    private final int timeStamp;
+public class StandOutputData {
     private final int playerTotal;
     private final int dealerTotal;
     private final String outcome;
 
-    public HistoryEntry(int timeStamp, int playerTotal, int dealerTotal, String outcome) {
-        this.timeStamp = timeStamp;
+    public StandOutputData(int playerTotal, int dealerTotal, String outcome) {
         this.playerTotal = playerTotal;
         this.dealerTotal = dealerTotal;
         this.outcome = outcome;
-    }
-
-    public int getTimeStamp() {
-        return timeStamp;
     }
 
     public int getPlayerTotal() {
@@ -29,3 +23,4 @@ public class HistoryEntry {
         return outcome;
     }
 }
+

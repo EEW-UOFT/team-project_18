@@ -1,17 +1,12 @@
 package view;
 
-import entity.CurrentGame;
-import use_case.hit.HitOutputData;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import interface_adapter.restartgame.RestartGameController;
 import interface_adapter.restartgame.RestartGameViewModel;
@@ -29,44 +24,58 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         this.restartGameController = restartGameController;
         this.restartGameViewModel = restartGameViewModel;
 
-        this.setLayout(new BorderLayout(5,5));
+        this.viewGameResultController = viewGameResultController;
+        this.startNewGameViewModel = startNewGameViewModel;
+
+        this.setLayout(new BorderLayout(HGAP, VGAP));
 
         final JButton hitButton = new JButton("Hit");
         hitButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-
+                evt -> {
+                    final Card card1 = new Card("HEARTs", "ACE");
+                    final List<Card> test = new ArrayList<>();
+                    test.add(card1);
+                    try {
+                        playerPanel.drawCards(test);
+                    }
+                    catch (IOException ex) {
+                        throw new RuntimeException(ex);
                     }
                 }
         );
         final JButton standButton = new JButton("Stand");
 
-        final JButton restartButton = new JButton("Play Again");
-        restartButton.addActionListener(e -> restartGameController.execute());
-
-
-        final JPanel dealerPanel = new JPanel();
-        dealerPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
-        dealerPanel.setPreferredSize(new Dimension(800, 250));
-        dealerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),"Dealer"));
-        final JPanel playerPanel = new JPanel();
-        playerPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
-        playerPanel.setPreferredSize(new Dimension(800, 250));
-        playerPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),"Player"));
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setPreferredSize(new Dimension(800, 50));
-        buttonPanel.setLayout(new BorderLayout(5,5));
+        buttonPanel.setLayout(new GridLayout(1, 1));
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
         buttonPanel.add(restartButton);
 
 
+        // Invisible view game result button that appears when the game ends
+        // TODO: toggle the visibility when the game ends, currently always visible for testing
+        final JButton viewGameResultButton = new JButton("View Game Result");
+//        viewGameResultButton.setVisible(false);
+        buttonPanel.add(viewGameResultButton, BorderLayout.EAST);
+
+        viewGameResultButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        viewGameResultController.execute(startNewGameViewModel.getCurrentGame());
+                    }
+                }
+        );
+
         this.add(dealerPanel, BorderLayout.NORTH);
         this.add(playerPanel, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);
         this.setVisible(true);
+    }
 
+    public void setCurrentGame(CurrentGame currentGame) {
+        this.currentGame = currentGame;
     }
 
     @Override

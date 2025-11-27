@@ -1,11 +1,11 @@
 package entity;
 
-import data_access.Deck;
-import data_access.DeckAPIInterface;
+import data.Access.Deck;
+import data.Access.DeckApiInterface;
 
 public class DeckFactory {
 
-    public static Deck createDeck() throws DeckAPIInterface.UnableToLoadDeck {
+    public static Deck createDeck() throws DeckApiInterface.UnableToLoadDeck {
         return new Deck();
     }
 }
