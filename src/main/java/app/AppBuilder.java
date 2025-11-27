@@ -8,9 +8,15 @@ import interface_adapter.startnewgame.StartNewGameController;
 import interface_adapter.startnewgame.StartNewGamePresenter;
 import interface_adapter.startnewgame.StartNewGameViewModel;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.statistics.StatisticsController;
+import interface_adapter.statistics.StatisticsPresenter;
+import interface_adapter.statistics.StatisticsViewModel;
 import use_case.startnewgame.StartNewGameInputBoundary;
 import use_case.startnewgame.StartNewGameInteractor;
 import use_case.startnewgame.StartNewGameOutputBoundary;
+import use_case.statistics.StatisticsInputBoundary;
+import use_case.statistics.StatisticsInteractor;
+import use_case.statistics.StatisticsOutputBoundary;
 import view.BlackJackGameView;
 import view.HomePageView;
 import interface_adapter.restartgame.RestartGameController;
@@ -35,11 +41,15 @@ public class AppBuilder {
     private RestartGameController restartGameController;
     private RestartGameViewModel restartGameViewModel;
 
+    private StatisticsController statisticsController;
+    private StatisticsViewModel statisticsViewModel;
+
     public AppBuilder() {
         this.viewManagerModel = new ViewManagerModel();
 
         addStartNewGameUseCase();
         addRestartGameUseCase();
+        addStatisticsUseCase();
     }
 
     public void addStartNewGameUseCase() {
@@ -72,7 +82,19 @@ public class AppBuilder {
         this.restartGameViewModel = viewModel;
     }
 
+    public void addStatisticsUseCase() {
+        StatisticsViewModel viewModel = new StatisticsViewModel();
+        StatisticsOutputBoundary presenter =
+                new StatisticsPresenter(viewModel, viewManagerModel);
 
+        StatisticsInputBoundary interactor =
+                new StatisticsInteractor(presenter);
+
+        ArrayList<HistoryEntry> history = new ArrayList<>();
+        this.statisticsController =
+                new StatisticsController(interactor, new User(history));
+        this.statisticsViewModel = viewModel;
+    }
 
 
     JFrame build() throws IOException {
@@ -82,7 +104,7 @@ public class AppBuilder {
         JPanel mainPanel = new JPanel(cardLayout);
 
 
-        HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController);
+        HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController, statisticsViewModel, statisticsController);
         BlackJackGameView gamePage = new BlackJackGameView(restartGameController, restartGameViewModel);
 
         mainPanel.add(homePage,"Home");
