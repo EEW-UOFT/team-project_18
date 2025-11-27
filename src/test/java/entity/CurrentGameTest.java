@@ -1,6 +1,6 @@
 package entity;
 
-import data_access.DeckAPIInterface;
+import data.Access.DeckApiInterface;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CurrentGameTest {
 
     @Test
-    void testCurrentGameCreation() throws DeckAPIInterface.UnableToLoadDeck {
-        DeckAPIInterface mockDeck = new MockDeck();
+    void testCurrentGameCreation() throws DeckApiInterface.UnableToLoadDeck {
+        DeckApiInterface mockDeck = new MockDeck();
         User user = new User(new ArrayList<>());
 
         CurrentGame game = new CurrentGame(user);
@@ -22,15 +22,15 @@ public class CurrentGameTest {
         assertEquals(mockDeck, game.getDeck());
     }
 
-    private static class MockDeck implements DeckAPIInterface {
+    private static class MockDeck implements DeckApiInterface {
         @Override
-        public List<Card> drawCards(int n) {
+        public List<Card> drawCards(int cardNumber) {
             return new ArrayList<>();
         }
     }
 
     @Test
-    void testAddCardsToPlayer() throws DeckAPIInterface.UnableToLoadDeck {
+    void testAddCardsToPlayer() throws DeckApiInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
         CurrentGame game = new CurrentGame(user);
 
@@ -47,7 +47,7 @@ public class CurrentGameTest {
     }
 
     @Test
-    void testAddCardsToDealer() throws DeckAPIInterface.UnableToLoadDeck {
+    void testAddCardsToDealer() throws DeckApiInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
         CurrentGame game = new CurrentGame(user);
 
@@ -64,7 +64,7 @@ public class CurrentGameTest {
     }
 
     @Test
-    void testGameStateChanges() throws DeckAPIInterface.UnableToLoadDeck {
+    void testGameStateChanges() throws DeckApiInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
         CurrentGame game = new CurrentGame(user);
 
@@ -81,7 +81,7 @@ public class CurrentGameTest {
     }
 
     @Test
-    void testOutcomeMessages() throws DeckAPIInterface.UnableToLoadDeck {
+    void testOutcomeMessages() throws DeckApiInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
         CurrentGame game = new CurrentGame(user);
 

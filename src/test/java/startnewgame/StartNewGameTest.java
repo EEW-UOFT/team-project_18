@@ -1,12 +1,12 @@
 package startnewgame;
 
-import data_access.Deck;
-import data_access.DeckAPIInterface;
+import data.Access.Deck;
+import data.Access.DeckApiInterface;
 import entity.*;
 import org.junit.jupiter.api.Test;
-import use_case.startnewgame.StartNewGameInteractor;
-import use_case.startnewgame.StartNewGameOutputBoundary;
-import use_case.startnewgame.StartNewGameOutputData;
+import use.Case.startnewgame.StartNewGameInteractor;
+import use.Case.startnewgame.StartNewGameOutputBoundary;
+import use.Case.startnewgame.StartNewGameOutputData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class StartNewGameTest {
     }
 
     @Test
-    void testOutputDataCreation() throws DeckAPIInterface.UnableToLoadDeck {
+    void testOutputDataCreation() throws DeckApiInterface.UnableToLoadDeck {
         User user = new User(new ArrayList<>());
         CurrentGame game = new CurrentGame(user);
 
@@ -54,9 +54,9 @@ public class StartNewGameTest {
     }
 
     // 会抛出异常的Deck
-    static class FailingDeck implements DeckAPIInterface {
+    static class FailingDeck implements DeckApiInterface {
         @Override
-        public List<Card> drawCards(int n) throws Deck.UnableToLoadDeck {
+        public List<Card> drawCards(int cardNumber) throws Deck.UnableToLoadDeck {
             throw new Deck.UnableToLoadDeck();
         }
     }
@@ -81,8 +81,8 @@ public class StartNewGameTest {
         }
     }
 
-    static class TestDeck implements data_access.DeckAPIInterface {
-        public java.util.List<entity.Card> drawCards(int n) {
+    static class TestDeck implements DeckApiInterface {
+        public java.util.List<entity.Card> drawCards(int cardNumber) {
             return java.util.List.of(
                     new entity.Card("HEARTS", "ACE"),
                     new entity.Card("SPADES", "10")

@@ -1,8 +1,8 @@
 package view;
 
 import javax.swing.*;
-import interface_adapter.ViewGameResult.ViewGameResultViewModel;
 
+import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
 public class GameResultView extends JPanel {
     // Game outcome message
@@ -31,11 +31,10 @@ public class GameResultView extends JPanel {
         dealerFinalScore.setAlignmentX(CENTER_ALIGNMENT);
         this.add(dealerFinalScore);
 
-        // Horizontally aligned buttons for new game, stats, and history
-        JPanel buttonPanel = new JPanel();
+        final JPanel buttonPanel = new JPanel();
         newGameButton = new JButton("New Game");
         statsButton = new JButton("Stats");
-        historyButton = new JButton("History");
+        historyButton = new JButton("Game History");
         buttonPanel.add(newGameButton);
         buttonPanel.add(statsButton);
         buttonPanel.add(historyButton);
