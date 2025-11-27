@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 
 import entity.Card;
 import entity.CurrentGame;
+import interfaceadapter.startnewgame.StartNewGameViewModel;
+import interfaceadapter.viewgameresult.ViewGameResultController;
 
 public class BlackJackGameView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -24,8 +26,13 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
     private final CardPanel dealerPanel = new CardPanel("Dealer");
     private final CardPanel playerPanel = new CardPanel("Player");
     private CurrentGame currentGame;
+    private ViewGameResultController viewGameResultController;
+    private StartNewGameViewModel startNewGameViewModel;
 
-    public BlackJackGameView() throws IOException {
+    public BlackJackGameView(ViewGameResultController viewGameResultController, StartNewGameViewModel startNewGameViewModel) throws IOException {
+
+        this.viewGameResultController = viewGameResultController;
+        this.startNewGameViewModel = startNewGameViewModel;
 
         this.setLayout(new BorderLayout(HGAP, VGAP));
 
@@ -50,6 +57,21 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         buttonPanel.setLayout(new GridLayout(1, 1));
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
+
+        // Invisible view game result button that appears when the game ends
+        // TODO: toggle the visibility when the game ends, currently always visible for testing
+        final JButton viewGameResultButton = new JButton("View Game Result");
+//        viewGameResultButton.setVisible(false);
+        buttonPanel.add(viewGameResultButton, BorderLayout.EAST);
+
+        viewGameResultButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        viewGameResultController.execute(startNewGameViewModel.getCurrentGame());
+                    }
+                }
+        );
 
         this.add(dealerPanel, BorderLayout.NORTH);
         this.add(playerPanel, BorderLayout.CENTER);

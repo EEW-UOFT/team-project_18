@@ -4,10 +4,10 @@ import entity.*;
 import use.Case.viewgameresult.ViewGameResultInteractor;
 
 public class ViewGameResultController {
-    private ViewGameResultInteractor viewGameResultInteractor;
+    private final ViewGameResultInteractor viewGameResultInteractor;
 
-    public ViewGameResultController() {
-        this.viewGameResultInteractor = new ViewGameResultInteractor();
+    public ViewGameResultController(ViewGameResultInteractor viewGameResultInteractor) {
+        this.viewGameResultInteractor = viewGameResultInteractor;
     }
 
     public void execute(CurrentGame currentGame) {

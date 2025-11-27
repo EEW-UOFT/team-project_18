@@ -17,7 +17,13 @@ import interfaceadapter.startnewgame.StartNewGameViewModel;
 import use.Case.startnewgame.StartNewGameInputBoundary;
 import use.Case.startnewgame.StartNewGameInteractor;
 import use.Case.startnewgame.StartNewGameOutputBoundary;
+import use.Case.viewgameresult.ViewGameResultInteractor;
+import interfaceadapter.viewgameresult.ViewGameResultController;
+import interfaceadapter.viewgameresult.ViewGameResultPresenter;
+import interfaceadapter.viewgameresult.ViewGameResultViewModel;
+
 import view.BlackJackGameView;
+import view.GameResultView;
 import view.HomePageView;
 
 public class AppBuilder {
@@ -31,6 +37,9 @@ public class AppBuilder {
 
     private StartNewGameController startNewGameController;
     private StartNewGameViewModel startNewGameViewModel;
+
+    private ViewGameResultController viewGameResultController;
+    private ViewGameResultViewModel viewGameResultViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -64,13 +73,26 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addViewGameResultUseCase() {
+        final ViewGameResultViewModel viewModel = new ViewGameResultViewModel();
+        final ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewModel, viewManagerModel);
+        final ViewGameResultInteractor viewGameResultInteractor = new ViewGameResultInteractor(presenter);
+
+        this.viewGameResultController = new ViewGameResultController(viewGameResultInteractor);
+        this.viewGameResultViewModel = viewModel;
+
+        final GameResultView gameResultView = new GameResultView(viewGameResultViewModel);
+        cardPanel.add(gameResultView, "Result");
+        return this;
+    }
+
     /**
      * Adds the BlackJack Game View to the application.
      * @return this builder
      * @throws IOException if there's an IO error during adding
      */
     public AppBuilder addBlackJackGameView() throws IOException {
-        final BlackJackGameView blackJackGameView = new BlackJackGameView();
+        final BlackJackGameView blackJackGameView = new BlackJackGameView(viewGameResultController, startNewGameViewModel);
         cardPanel.add(blackJackGameView, "Game");
         return this;
     }

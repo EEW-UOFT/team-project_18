@@ -60,7 +60,6 @@ public class ViewGameResultViewModel {
     }
 
     public void setCurrentGame(CurrentGame currentGame) {
-
         this.currentGame = currentGame;
     }
 }

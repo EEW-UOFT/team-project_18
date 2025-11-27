@@ -10,6 +10,7 @@ public class Main {
         final JFrame app = new AppBuilder()
                 .addStartNewGameUseCase()
                 .addHomePageView()
+                .addViewGameResultUseCase()
                 .addBlackJackGameView()
                 .setupViewManager()
                 .build();

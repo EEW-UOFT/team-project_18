@@ -10,21 +10,26 @@ import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
 public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
 
+    private final ViewGameResultPresenter presenter;
+    public ViewGameResultInteractor(ViewGameResultPresenter presenter) {
+        this.presenter = presenter;
+    }
+
     @Override
     public void execute(CurrentGame currentGame) {
         final GameState gameState = currentGame.getGameState();
-        if (gameState == GameState.ONGOING) {
-            throw new IllegalStateException("Game is still ongoing. Result cannot be viewed.");
-        }
+        // TODO: toggle this back on later, for testing purposes only
+//        if (gameState == GameState.ONGOING) {
+//            throw new IllegalStateException("Game is still ongoing. Result cannot be viewed.");
+//        }
         final String gameResult = currentGame.outcome();
         final ArrayList<Card> playerHand = (ArrayList<Card>) currentGame.getPlayerHand();
         final ArrayList<Card> dealerHand = (ArrayList<Card>) currentGame.getDealerHand();
 
-        final int playerScore = calculateScore(playerHand);
-        final int dealerScore = calculateScore(dealerHand);
+        final int playerScore = currentGame.calculateScore(playerHand);
+        final int dealerScore = currentGame.calculateScore(dealerHand);
 
         final ViewGameResultViewModel viewGameResultViewModel = new ViewGameResultViewModel();
-        final ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewGameResultViewModel);
 
         final ViewGameResultOutputData outputData = new ViewGameResultOutputData(currentGame,
                 gameResult,
@@ -33,25 +38,4 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
         presenter.presentGameResult(outputData);
     }
 
-    private int calculateScore(ArrayList<Card> hand) {
-        int score = 0;
-        int numAces = 0;
-        for (Card card : hand) {
-            final String value = card.getValue();
-            if (value.equals("J") || value.equals("Q") || value.equals("K")) {
-                score += 10;
-            } else if (value.equals("A")) {
-                score += 11;
-                numAces++;
-            } else {
-                score += Integer.parseInt(value);
-            }
-        }
-
-        while (score > 21 && numAces > 0) {
-            score -= 10;
-            numAces--;
-        }
-        return score;
-    }
 }
