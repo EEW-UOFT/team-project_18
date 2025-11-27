@@ -8,28 +8,21 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import interface_adapter.restartgame.RestartGameController;
+import interface_adapter.restartgame.RestartGameViewModel;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-import entity.Card;
-import entity.CurrentGame;
-import interfaceadapter.startnewgame.StartNewGameViewModel;
-import interfaceadapter.viewgameresult.ViewGameResultController;
 
 public class BlackJackGameView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public static final int HGAP = 5;
-    public static final int VGAP = 5;
-    private final CardPanel dealerPanel = new CardPanel("Dealer");
-    private final CardPanel playerPanel = new CardPanel("Player");
-    private CurrentGame currentGame;
-    private ViewGameResultController viewGameResultController;
-    private StartNewGameViewModel startNewGameViewModel;
+    BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
+    private final RestartGameController restartGameController;
+    private final RestartGameViewModel restartGameViewModel;
 
-    public BlackJackGameView(ViewGameResultController viewGameResultController, StartNewGameViewModel startNewGameViewModel) throws IOException {
+    public BlackJackGameView(RestartGameController restartGameController,
+                             RestartGameViewModel restartGameViewModel) throws IOException {
+
+        this.restartGameController = restartGameController;
+        this.restartGameViewModel = restartGameViewModel;
 
         this.viewGameResultController = viewGameResultController;
         this.startNewGameViewModel = startNewGameViewModel;
@@ -57,6 +50,8 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         buttonPanel.setLayout(new GridLayout(1, 1));
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
+        buttonPanel.add(restartButton);
+
 
         // Invisible view game result button that appears when the game ends
         // TODO: toggle the visibility when the game ends, currently always visible for testing
