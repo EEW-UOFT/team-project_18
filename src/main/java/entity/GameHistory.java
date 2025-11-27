@@ -7,11 +7,12 @@ public class GameHistory {
 
     private List<HistoryEntry> history;
 
-    public GameHistory(){
+    public GameHistory() {
         this.history = new ArrayList<>();
     }
 
-    public void addEntry(HistoryEntry entry){
+    public void addEntry(HistoryEntry entry) {
+
         this.history.add(entry);
     }
 

@@ -1,8 +1,8 @@
 package entity;
 
-import data_access.DeckAPIInterface;
-
 import java.util.*;
+
+import data.Access.DeckApiInterface;
 
 public class CurrentGame {
 
@@ -10,12 +10,12 @@ public class CurrentGame {
     private List<Card> playerHand;
     private List<Card> dealerHand;
     private GameState gameState = GameState.ONGOING;
-    private final DeckAPIInterface deck;
+    private final DeckApiInterface deck;
 
     Map<String, Integer> blackjackMap = new HashMap<>();
 
 
-    public CurrentGame(User player) throws DeckAPIInterface.UnableToLoadDeck {
+    public CurrentGame(User player) throws DeckApiInterface.UnableToLoadDeck {
         this.player = player;
         this.deck = DeckFactory.createDeck();
         this.playerHand = new ArrayList<>();
@@ -35,9 +35,9 @@ public class CurrentGame {
         blackjackMap.put("JACK", 10);
     }
 
-    public void addCardPlayer(int n) throws DeckAPIInterface.UnableToLoadDeck {
-        //Add cards to the player's hand
-        List<Card> tempCards = deck.drawCards(n);
+    public void addCardPlayer(int cardNumber) throws DeckApiInterface.UnableToLoadDeck {
+
+        final List<Card> tempCards = deck.drawCards(cardNumber);
         playerHand.addAll(tempCards);
     }
 
@@ -45,9 +45,9 @@ public class CurrentGame {
         playerHand.add(card);
     }
 
-    public void addCardDealer(int n, boolean faceUp) throws DeckAPIInterface.UnableToLoadDeck {
-        //Add cards to the dealer's hand
-        List<Card> tempCards = deck.drawCards(n);
+    public void addCardDealer(int cardNumber, boolean faceUp) throws DeckApiInterface.UnableToLoadDeck {
+
+        final List<Card> tempCards = deck.drawCards(cardNumber);
         for (Card card : tempCards) {
             card.setFaceUp(faceUp);
         }
@@ -55,7 +55,7 @@ public class CurrentGame {
     }
 
     public void dealerReveal() {
-        for  (Card card : dealerHand) {
+        for (Card card : dealerHand) {
             card.setFaceUp(true);
         }
     }
@@ -68,8 +68,8 @@ public class CurrentGame {
         int score = 0;
         boolean ace = false;
         for  (Card card : hand) {
-            score += blackjackMap.get(card.getSuit());
-            if (card.getSuit().equals("ACE")) {
+            score += blackjackMap.get(card.getValue());
+            if (card.getValue().equals("ACE")) {
                 ace = true;
             }
         }
@@ -80,22 +80,18 @@ public class CurrentGame {
     }
 
     public void gameWon() {
-        //Change the game state to "WIN"
         gameState = GameState.WIN;
     }
 
     public void gameLost() {
-        //Change the game state to "LOST", aka Dealer won
         gameState = GameState.LOST;
     }
 
     public void gameDraw() {
-        //Change the game state to "DRAW"
         gameState = GameState.DRAW;
     }
 
     public String outcome() {
-        //Return a string concerning the current game state
         switch (gameState) {
             case WIN:
                 return "Player Won";
@@ -110,13 +106,23 @@ public class CurrentGame {
         }
     }
 
-    public List<Card> getPlayerHand() {return playerHand;}
+    public List<Card> getPlayerHand() {
+        return playerHand;
+    }
 
-    public List<Card> getDealerHand() {return dealerHand;}
+    public List<Card> getDealerHand() {
+        return dealerHand;
+    }
 
-    public GameState getGameState() {return gameState;}
+    public GameState getGameState() {
+        return gameState;
+    }
 
-    public DeckAPIInterface getDeck() {return deck;}
+    public DeckApiInterface getDeck() {
+        return deck;
+    }
 
-    public User getPlayer() {return player;}
+    public User getPlayer() {
+        return player;
+    }
 }

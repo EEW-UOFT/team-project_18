@@ -6,8 +6,9 @@ import interface_adapter.statistics.StatisticsController;
 import interface_adapter.statistics.StatisticsViewModel;
 
 import javax.swing.*;
-import java.awt.*;
 
+import interfaceadapter.startnewgame.StartNewGameController;
+import interfaceadapter.startnewgame.StartNewGameViewModel;
 
 public class HomePageView extends JPanel {
 
@@ -25,13 +26,13 @@ public class HomePageView extends JPanel {
         this.startNewGameController = startNewGameController;
         this.statisticsController = statisticsController;
 
-        JLabel title =  new JLabel("Home Page");
+        final JLabel title = new JLabel("Home Page");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
 
-        final JPanel  buttons = new JPanel();
+        final JPanel buttons = new JPanel();
         this.gameRule = new JButton("？");
         buttons.add(gameRule);
         this.startNewGame = new JButton("Start New Game");
@@ -52,7 +53,7 @@ public class HomePageView extends JPanel {
         gbc.insets = new Insets(0, 0, 0, 0);
         this.add(errorLabel, gbc);
 
-        startNewGame.addActionListener(event ->{
+        startNewGame.addActionListener(event -> {
             errorLabel.setVisible(false);
             errorLabel.setText("");
             startNewGameController.execute();
@@ -68,12 +69,14 @@ public class HomePageView extends JPanel {
             statisticsController.execute();
         });
     }
+
     public void showError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
         this.revalidate();
         this.repaint();
     }
+
     public void setController(StartNewGameController controller) {
         this.startNewGameController = controller;
     }
