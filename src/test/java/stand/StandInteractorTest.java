@@ -105,4 +105,36 @@ public class StandInteractorTest {
             }
         });
     }
+
+    // ---------- EXTRA TESTS FOR MORE COVERAGE ----------
+
+    @Test
+    void tenCardIsWorthTen() throws Exception {
+        Card tenDiamonds = new Card("DIAMONDS", "10", "url");
+        assertEquals(10, invokeCardValue(tenDiamonds));
+    }
+
+    @Test
+    void multipleNumberedCardsAreIndependent() throws Exception {
+        Card three = new Card("CLUBS", "3", "url");
+        Card seven = new Card("HEARTS", "7", "url");
+        Card eight = new Card("SPADES", "8", "url");
+
+        assertEquals(3, invokeCardValue(three));
+        assertEquals(7, invokeCardValue(seven));
+        assertEquals(8, invokeCardValue(eight));
+    }
+
+    @Test
+    void aceAndFaceCardHaveDifferentValues() throws Exception {
+        Card ace = new Card("HEARTS", "ACE", "url");
+        Card king = new Card("SPADES", "KING", "url");
+
+        int aceValue = invokeCardValue(ace);
+        int kingValue = invokeCardValue(king);
+
+        assertEquals(11, aceValue);
+        assertEquals(10, kingValue);
+        assertTrue(aceValue > kingValue);
+    }
 }
