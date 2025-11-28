@@ -1,30 +1,22 @@
 package view;
 
-import interface_adapter.startnewgame.StartNewGameController;
-import interface_adapter.startnewgame.StartNewGameViewModel;
-import interface_adapter.statistics.StatisticsController;
-import interface_adapter.statistics.StatisticsViewModel;
-
-import javax.swing.*;
-
 import interfaceadapter.startnewgame.StartNewGameController;
 import interfaceadapter.startnewgame.StartNewGameViewModel;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class HomePageView extends JPanel {
 
     private final JButton startNewGame;
     private final JButton gameRule;
-    private final JButton statisticsButton;
     private StartNewGameController startNewGameController;
-    private final StatisticsController statisticsController;
     private final JLabel errorLabel;
 
     public HomePageView(StartNewGameViewModel startNewGameViewModel,
-                        StartNewGameController startNewGameController, StatisticsViewModel statisticsViewModel,
-                        StatisticsController statisticsController) {
+                        StartNewGameController startNewGameController) {
 
         this.startNewGameController = startNewGameController;
-        this.statisticsController = statisticsController;
 
         final JLabel title = new JLabel("Home Page");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -37,8 +29,6 @@ public class HomePageView extends JPanel {
         buttons.add(gameRule);
         this.startNewGame = new JButton("Start New Game");
         buttons.add(startNewGame);
-        this.statisticsButton = new JButton("Statistics");
-        buttons.add(statisticsButton);
 
         errorLabel = new JLabel("", SwingConstants.CENTER);
         errorLabel.setForeground(Color.RED);
@@ -57,16 +47,6 @@ public class HomePageView extends JPanel {
             errorLabel.setVisible(false);
             errorLabel.setText("");
             this.startNewGameController.execute();
-        });
-
-        startNewGame.addActionListener(event ->{
-            errorLabel.setVisible(false);
-            errorLabel.setText("");
-            startNewGameController.execute();
-        });
-
-        statisticsButton.addActionListener(event -> {
-            statisticsController.execute();
         });
     }
 

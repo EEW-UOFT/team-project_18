@@ -3,7 +3,9 @@ package statistics;
 import entity.HistoryEntry;
 import entity.User;
 import org.junit.jupiter.api.Test;
-import use_case.statistics.*;
+import use.Case.statistics.StatisticsInteractor;
+import use.Case.statistics.StatisticsOutputBoundary;
+import use.Case.statistics.StatisticsOutputData;
 
 import java.util.ArrayList;
 import java.util.List;

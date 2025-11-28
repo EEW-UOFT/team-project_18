@@ -1,4 +1,4 @@
-package interface_adapter.statistics;
+package interfaceadapter.statistics;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

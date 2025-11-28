@@ -1,50 +1,38 @@
 package app;
 
-import java.awt.CardLayout;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-
 import entity.HistoryEntry;
 import entity.User;
-import interface_adapter.startnewgame.StartNewGameController;
-import interface_adapter.startnewgame.StartNewGamePresenter;
-import interface_adapter.startnewgame.StartNewGameViewModel;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.statistics.StatisticsController;
-import interface_adapter.statistics.StatisticsPresenter;
-import interface_adapter.statistics.StatisticsViewModel;
-import use_case.startnewgame.StartNewGameInputBoundary;
-import use_case.startnewgame.StartNewGameInteractor;
-import use_case.startnewgame.StartNewGameOutputBoundary;
-import use_case.statistics.StatisticsInputBoundary;
-import use_case.statistics.StatisticsInteractor;
-import use_case.statistics.StatisticsOutputBoundary;
 import interfaceadapter.ViewManagerModel;
-import interfaceadapter.startnewgame.StartNewGameController;
-import interfaceadapter.startnewgame.StartNewGamePresenter;
-import interfaceadapter.startnewgame.StartNewGameViewModel;
-import use.Case.startnewgame.StartNewGameInputBoundary;
-import use.Case.startnewgame.StartNewGameInteractor;
-import use.Case.startnewgame.StartNewGameOutputBoundary;
-import use.Case.viewgameresult.ViewGameResultInteractor;
-import interfaceadapter.viewgameresult.ViewGameResultController;
-import interfaceadapter.viewgameresult.ViewGameResultPresenter;
-import interfaceadapter.viewgameresult.ViewGameResultViewModel;
-
-import view.BlackJackGameView;
-import view.GameResultView;
-import view.HomePageView;
 import interfaceadapter.restartgame.RestartGameController;
 import interfaceadapter.restartgame.RestartGamePresenter;
 import interfaceadapter.restartgame.RestartGameViewModel;
+import interfaceadapter.startnewgame.StartNewGameController;
+import interfaceadapter.startnewgame.StartNewGamePresenter;
+import interfaceadapter.startnewgame.StartNewGameViewModel;
+import interfaceadapter.statistics.StatisticsController;
+import interfaceadapter.statistics.StatisticsPresenter;
+import interfaceadapter.statistics.StatisticsViewModel;
+import interfaceadapter.viewgameresult.ViewGameResultController;
+import interfaceadapter.viewgameresult.ViewGameResultPresenter;
+import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 import use.Case.restartgame.RestartGameInputBoundary;
 import use.Case.restartgame.RestartGameInteractor;
 import use.Case.restartgame.RestartGameOutputBoundary;
+import use.Case.startnewgame.StartNewGameInputBoundary;
+import use.Case.startnewgame.StartNewGameInteractor;
+import use.Case.startnewgame.StartNewGameOutputBoundary;
+import use.Case.statistics.StatisticsInputBoundary;
+import use.Case.statistics.StatisticsInteractor;
+import use.Case.statistics.StatisticsOutputBoundary;
+import use.Case.viewgameresult.ViewGameResultInteractor;
+import view.BlackJackGameView;
+import view.GameResultView;
+import view.HomePageView;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class AppBuilder {
 
@@ -100,12 +88,10 @@ public class AppBuilder {
 
         return this;
     }
-    }
-
-    public void addStatisticsUseCase() {
+    public AppBuilder addStatisticsUseCase() {
         StatisticsViewModel viewModel = new StatisticsViewModel();
         StatisticsOutputBoundary presenter =
-                new StatisticsPresenter(viewModel, viewManagerModel);
+                new StatisticsPresenter(viewModel);
 
         StatisticsInputBoundary interactor =
                 new StatisticsInteractor(presenter);
@@ -114,11 +100,8 @@ public class AppBuilder {
         this.statisticsController =
                 new StatisticsController(interactor, new User(history));
         this.statisticsViewModel = viewModel;
+        return this;
     }
-
-
-    JFrame build() throws IOException {
-        JFrame frame = new JFrame("BlackJack");
 
     public AppBuilder addViewGameResultUseCase() {
         final ViewGameResultViewModel viewModel = new ViewGameResultViewModel();
@@ -136,8 +119,6 @@ public class AppBuilder {
         cardPanel.add(homePage, "Home");
         return this;
     }
-        HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController, statisticsViewModel, statisticsController);
-        BlackJackGameView gamePage = new BlackJackGameView(restartGameController, restartGameViewModel);
 
     public AppBuilder addBlackJackGameView() throws IOException {
         final BlackJackGameView blackJackGameView = new BlackJackGameView(viewGameResultController, startNewGameViewModel);
@@ -146,7 +127,8 @@ public class AppBuilder {
     }
 
     public AppBuilder addGameResultView() {
-        GameResultView gameResultView = new GameResultView(viewGameResultViewModel, restartGameController);
+        GameResultView gameResultView = new GameResultView(viewGameResultViewModel, restartGameController,
+                statisticsController);
         cardPanel.add(gameResultView, "GameResult");
         return this;
     }
@@ -173,3 +155,4 @@ public class AppBuilder {
         return frame;
     }
 }
+

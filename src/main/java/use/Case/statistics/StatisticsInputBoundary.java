@@ -1,4 +1,4 @@
-package use_case.statistics;
+package use.Case.statistics;
 
 import entity.User;
 
