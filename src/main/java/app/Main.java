@@ -13,6 +13,7 @@ public class Main {
                 .addViewGameResultUseCase()
                 .addHomePageView()
                 .addBlackJackGameView()
+                .addStatisticsUseCase()
                 .addGameResultView()
                 .setupViewManager()
                 .build();

@@ -1,7 +1,7 @@
-package interface_adapter.statistics;
+package interfaceadapter.statistics;
 
 import entity.User;
-import use_case.statistics.StatisticsInputBoundary;
+import use.Case.statistics.StatisticsInputBoundary;
 
 public class StatisticsController {
 
