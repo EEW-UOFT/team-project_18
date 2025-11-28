@@ -1,26 +1,27 @@
 package interfaceadapter.stand;
 
 import entity.Card;
+import interfaceadapter.ViewManagerModel;
 import use.Case.stand.StandOutputBoundary;
 import use.Case.stand.StandOutputData;
 
+import java.io.Console;
+
 public class ConsoleStandPresenter implements StandOutputBoundary {
 
-    @Override
-    public void presentDealerDrew(Card card, int dealerTotal) {
-        System.out.println("Dealer drew: " + card.getValue() + " of " + card.getSuit()
-                + " | dealer total = " + dealerTotal);
+    private final ViewManagerModel viewManagerModel;
+
+    public ConsoleStandPresenter(ViewManagerModel viewManagerModel) {
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
-    public void presentResult(StandOutputData outputData) {
-        System.out.println("RESULT: " + outputData.getOutcome()
-                + " (Player " + outputData.getPlayerTotal()
-                + " vs Dealer " + outputData.getDealerTotal() + ")");
+    public void prepareSuccessView(StandOutputData outputData) {
+
     }
 
     @Override
-    public void presentError(String message) {
+    public void prepareFailView(String message) {
         System.out.println("Stand failed: " + message);
     }
 }

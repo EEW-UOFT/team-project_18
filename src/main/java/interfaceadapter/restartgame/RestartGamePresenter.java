@@ -19,6 +19,9 @@ public class RestartGamePresenter implements RestartGameOutputBoundary {
     @Override
     public void prepareSuccessView(RestartGameOutputData response) {
         restartGameViewModel.setCurrentGame(response.getCurrentGame());
+
+        restartGameViewModel.firePropertyChanged();
+
         viewManagerModel.setActiveView("Game");
     }
 

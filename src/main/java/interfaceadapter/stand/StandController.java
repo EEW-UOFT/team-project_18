@@ -1,9 +1,8 @@
 package interfaceadapter.stand;
 
-import data.Access.Deck;
 import data.Access.DeckApiInterface;
+import entity.CurrentGame;
 import use.Case.stand.StandInputBoundary;
-import use.Case.stand.StandInputData;
 
 public class StandController {
 
@@ -14,8 +13,12 @@ public class StandController {
     }
 
     // This will be called by the UI (e.g., when player presses STAND)
-    public void onStand(Deck deck, int playerTotal) throws DeckApiInterface.UnableToLoadDeck {
-        final StandInputData input = new StandInputData(deck, playerTotal);
-        interactor.execute(input);
+    public void execute(CurrentGame currentGame) {
+        try {
+            interactor.execute(currentGame);
+        } catch (DeckApiInterface.UnableToLoadDeck e) {
+            System.err.println("Stand failed: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
