@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface DeckApiInterface {
 
+    String initializeNewDeck() throws UnableToLoadDeck;
+
     List<Card> drawCards(int cardNumber) throws UnableToLoadDeck;
 
     class UnableToLoadDeck extends Exception {
