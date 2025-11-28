@@ -19,6 +19,7 @@ public class RestartGameInteractor implements RestartGameInputBoundary {
             currentGame = new CurrentGame(currentUser);
 
             currentGame.addCardPlayer(2);
+
             currentGame.addCardDealer(2, false);
 
             RestartGameOutputData outputData = new RestartGameOutputData(currentGame);

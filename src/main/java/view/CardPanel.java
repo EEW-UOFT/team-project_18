@@ -23,14 +23,16 @@ public class CardPanel extends JPanel {
 
 
     public CardPanel(String entity) throws IOException {
-        this.setLayout(new GridLayout(1, 1));
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
         this.setPreferredSize(new Dimension(800, 250));
+
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), entity));
     }
 
     public void drawCards(List<Card> cards) throws IOException {
         this.removeAll();
+
         for (Card card : cards) {
             try {
                 if (!card.isFaceUp()) {
@@ -54,5 +56,12 @@ public class CardPanel extends JPanel {
         JLabel label = new JLabel(new ImageIcon(image));
         label.setPreferredSize(new Dimension(150, 200));
         return label;
+    }
+
+    public void clearCards() {
+        this.removeAll();
+        this.add(cardBackJLabel);
+        this.revalidate();
+        this.repaint();
     }
 }

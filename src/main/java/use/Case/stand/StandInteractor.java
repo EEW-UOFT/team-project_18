@@ -5,6 +5,7 @@ import java.util.List;
 import data.Access.Deck;
 import data.Access.DeckApiInterface;
 import entity.Card;
+import entity.CurrentGame;
 
 public class StandInteractor implements StandInputBoundary {
 
@@ -15,44 +16,43 @@ public class StandInteractor implements StandInputBoundary {
     }
 
     @Override
-    public void execute(StandInputData inputData) throws DeckApiInterface.UnableToLoadDeck {
-        final DeckApiInterface deck = new Deck();
-        final int playerTotal = inputData.getPlayerTotal();
-        int dealerTotal = 0;
+    public void execute(CurrentGame currentGame) throws DeckApiInterface.UnableToLoadDeck {
 
         try {
+
+            int dealerTotal = currentGame.calculateScore(currentGame.getDealerHand());
+
             // Dealer auto-draws until total >= 17
             while (dealerTotal < 17) {
-                final List<Card> drawn = deck.drawCards(1);
-
-                if (drawn == null || drawn.isEmpty()) {
-                    presenter.presentError("Deck returned no cards.");
-                    return;
-                }
-
-                final Card card = drawn.get(0);
-                dealerTotal += cardValue(card);
-                presenter.presentDealerDrew(card, dealerTotal);
+                currentGame.addCardDealer(1, true);
+                dealerTotal = currentGame.calculateScore(currentGame.getDealerHand());
             }
+
+            int playerTotal = currentGame.calculateScore(currentGame.getPlayerHand());
 
             final String outcome;
             if (playerTotal > 21) {
                 outcome = "Dealer wins (player busts)";
+                currentGame.gameLost();
             } else if (dealerTotal > 21) {
                 outcome = "Player wins (dealer busts)";
+                currentGame.gameWon();
             } else if (playerTotal > dealerTotal) {
                 outcome = "Player wins";
+                currentGame.gameWon();
             } else if (dealerTotal > playerTotal) {
                 outcome = "Dealer wins";
+                currentGame.gameLost();
             } else {
                 outcome = "Push";
+                currentGame.gameDraw();
             }
 
-            final StandOutputData output = new StandOutputData(playerTotal, dealerTotal, outcome);
-            presenter.presentResult(output);
+            final StandOutputData output = new StandOutputData(currentGame, outcome);
+            presenter.prepareSuccessView(output);
 
         } catch (Deck.UnableToLoadDeck e) {
-            presenter.presentError("Could not draw from deck: " + e.getMessage());
+            presenter.prepareFailView("Could not draw from deck: " + e.getMessage());
         }
     }
 

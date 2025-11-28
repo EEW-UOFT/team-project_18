@@ -12,7 +12,7 @@ public class HitController {
         this.hitInputBoundary = hitInputBoundary;
     }
 
-    public void onHit(CurrentGame currentGame) throws DeckApiInterface.UnableToLoadDeck {
+    public void execute(CurrentGame currentGame) throws DeckApiInterface.UnableToLoadDeck {
         hitInputBoundary.execute(currentGame);
     }
 

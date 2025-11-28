@@ -19,6 +19,10 @@ import javax.swing.JPanel;
 
 import entity.Card;
 import entity.CurrentGame;
+import interfaceadapter.GameModel;
+import interfaceadapter.hit.HitController;
+import interfaceadapter.restartgame.RestartGameViewModel;
+import interfaceadapter.stand.StandController;
 import interfaceadapter.startnewgame.StartNewGameViewModel;
 import interfaceadapter.viewgameresult.ViewGameResultController;
 
@@ -33,33 +37,61 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
     private CurrentGame currentGame;
     private ViewGameResultController viewGameResultController;
     private StartNewGameViewModel startNewGameViewModel;
-    BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
-    public BlackJackGameView(ViewGameResultController viewGameResultController, StartNewGameViewModel startNewGameViewModel) throws IOException {
+    private RestartGameViewModel restartGameViewModel;
+    private HitController hitController;
+    private StandController standController;
+    private GameModel gameModel;
+    private final JButton hitButton;
+    private final JButton standButton;
+
+    private BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
+
+    public BlackJackGameView(ViewGameResultController viewGameResultController,
+                             StartNewGameViewModel startNewGameViewModel,
+                             RestartGameViewModel restartGameViewModel,
+                             HitController hitController, GameModel gameModel,
+                             StandController standController) throws IOException {
 
         this.viewGameResultController = viewGameResultController;
         this.startNewGameViewModel = startNewGameViewModel;
+        this.restartGameViewModel = restartGameViewModel;
+        this.hitController = hitController;
+        this.standController = standController;
+        this.gameModel = gameModel;
+        hitButton = new JButton("Hit");
+        standButton = new JButton("Stand");
+
 
         this.setLayout(new BorderLayout(HGAP, VGAP));
 
-        final JButton hitButton = new JButton("Hit");
         hitButton.addActionListener(
                 evt -> {
-                    final Card card1 = new Card("HEARTs", "ACE");
-                    final List<Card> test = new ArrayList<>();
-                    test.add(card1);
                     try {
-                        playerPanel.drawCards(test);
-                    }
-                    catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                        hitController.execute(currentGame);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 }
         );
-        final JButton standButton = new JButton("Stand");
+
+        standButton.addActionListener(evt -> {
+            try {
+                standController.execute(currentGame);
+
+                hitButton.setEnabled(false);
+                standButton.setEnabled(false);
+                updateGameDisplay(currentGame);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
         final JPanel buttonPanel = new JPanel();
+
         buttonPanel.setPreferredSize(new Dimension(800, 50));
         buttonPanel.setLayout(new GridLayout(1, 1));
+
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
 
@@ -83,6 +115,18 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         this.add(playerPanel, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);
         this.setVisible(true);
+
+        startNewGameViewModel.addPropertyChangeListener(this);
+        restartGameViewModel.addPropertyChangeListener(this);
+
+        if (gameModel != null) {
+            gameModel.addPropertyChangeListener(this);
+        }
+    }
+
+    private void enableGameButtons(boolean enabled) {
+        hitButton.setEnabled(enabled);
+        standButton.setEnabled(enabled);
     }
 
     public void setCurrentGame(CurrentGame currentGame) {
@@ -94,8 +138,36 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
 
     }
 
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
+        if ("currentGame".equals(evt.getPropertyName())) {
+            CurrentGame newGame = (CurrentGame) evt.getNewValue();
+            this.currentGame = newGame;
+            updateGameDisplay(newGame);
+            enableGameButtons(true);
+        }else if ("playerHand".equals(evt.getPropertyName())) {
+            if (currentGame != null) {
+                updateGameDisplay(currentGame);
+            }
+        }
+    }
+
+    private void updateGameDisplay(CurrentGame game) {
+        if (game == null) {
+            return;
+        }
+
+        try {
+            if (game.getPlayerHand() != null) {
+                playerPanel.drawCards(game.getPlayerHand());
+            }
+            if (game.getDealerHand() != null) {
+                dealerPanel.drawCards(game.getDealerHand());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

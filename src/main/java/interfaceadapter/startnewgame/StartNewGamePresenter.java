@@ -17,6 +17,7 @@ public class StartNewGamePresenter implements StartNewGameOutputBoundary {
     @Override
     public void prepareSuccessView(StartNewGameOutputData response) {
         startNewGameViewModel.setCurrentGame(response.getCurrentGame());
+        startNewGameViewModel.firePropertyChanged();
         viewManagerModel.setActiveView("Game");
     }
 

@@ -43,18 +43,12 @@ public class ViewGameResultViewModel {
         if (playerScore < 0) {
             throw new IllegalArgumentException("Score cannot be negative");
         }
-        else if (playerScore >= 31) {
-            throw new IllegalArgumentException("Score cannot be greater than 30");
-        }
         this.playerScore = playerScore;
     }
 
     public void setDealerScore(int dealerScore) {
         if (dealerScore < 0) {
             throw new IllegalArgumentException("Score cannot be negative");
-        }
-        else if (dealerScore >= 31) {
-            throw new IllegalArgumentException("Score cannot be greater than 30");
         }
         this.dealerScore = dealerScore;
     }
