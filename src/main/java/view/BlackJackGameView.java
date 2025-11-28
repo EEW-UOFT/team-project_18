@@ -73,20 +73,6 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
 
             int playerTotal = game.calculateScore(game.getPlayerHand());
 
-            try {
-                // Controller API wants a Deck; CurrentGame internally holds one.
-                standController.onStand((Deck) game.getDeck(), playerTotal);
-            } catch (DeckApiInterface.UnableToLoadDeck e) {
-                JOptionPane.showMessageDialog(this,
-                        "Could not complete stand action: failed to draw cards.",
-                        "Stand Error",
-                        JOptionPane.ERROR_MESSAGE);
-            } catch (ClassCastException e) {
-                JOptionPane.showMessageDialog(this,
-                        "Unexpected deck type; cannot perform stand.",
-                        "Stand Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
         });
 
         final JPanel buttonPanel = new JPanel();
