@@ -1,9 +1,8 @@
-package interface_adapter.restartgame;
+package interfaceadapter.restartgame;
 
-import interface_adapter.ViewManagerModel;
-import use_case.restartgame.RestartGameOutputBoundary;
-import use_case.restartgame.RestartGameOutputData;
-import interface_adapter.restartgame.RestartGameViewModel;
+import interfaceadapter.ViewManagerModel;
+import use.Case.restartgame.RestartGameOutputBoundary;
+import use.Case.restartgame.RestartGameOutputData;
 
 
 public class RestartGamePresenter implements RestartGameOutputBoundary {

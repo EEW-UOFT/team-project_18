@@ -56,7 +56,7 @@ public class HomePageView extends JPanel {
         startNewGame.addActionListener(event -> {
             errorLabel.setVisible(false);
             errorLabel.setText("");
-            startNewGameController.execute();
+            this.startNewGameController.execute();
         });
 
         startNewGame.addActionListener(event ->{

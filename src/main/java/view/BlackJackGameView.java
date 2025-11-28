@@ -5,24 +5,36 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
-import interface_adapter.restartgame.RestartGameController;
-import interface_adapter.restartgame.RestartGameViewModel;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import entity.Card;
+import entity.CurrentGame;
+import interfaceadapter.startnewgame.StartNewGameViewModel;
+import interfaceadapter.viewgameresult.ViewGameResultController;
+
 
 
 public class BlackJackGameView extends JPanel implements ActionListener, PropertyChangeListener {
 
+    public static final int HGAP = 5;
+    public static final int VGAP = 5;
+    private final CardPanel dealerPanel = new CardPanel("Dealer");
+    private final CardPanel playerPanel = new CardPanel("Player");
+    private CurrentGame currentGame;
+    private ViewGameResultController viewGameResultController;
+    private StartNewGameViewModel startNewGameViewModel;
     BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
-    private final RestartGameController restartGameController;
-    private final RestartGameViewModel restartGameViewModel;
-
-    public BlackJackGameView(RestartGameController restartGameController,
-                             RestartGameViewModel restartGameViewModel) throws IOException {
-
-        this.restartGameController = restartGameController;
-        this.restartGameViewModel = restartGameViewModel;
+    public BlackJackGameView(ViewGameResultController viewGameResultController, StartNewGameViewModel startNewGameViewModel) throws IOException {
 
         this.viewGameResultController = viewGameResultController;
         this.startNewGameViewModel = startNewGameViewModel;
@@ -50,7 +62,6 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         buttonPanel.setLayout(new GridLayout(1, 1));
         buttonPanel.add(hitButton);
         buttonPanel.add(standButton);
-        buttonPanel.add(restartButton);
 
 
         // Invisible view game result button that appears when the game ends

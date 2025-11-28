@@ -35,7 +35,7 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
                 gameResult,
                 playerScore,
                 dealerScore);
-        presenter.presentGameResult(outputData);
+        presenter.prepareSuccessView(outputData);
     }
 
 }

@@ -1,4 +1,4 @@
-package use_case.restartgame;
+package use.Case.restartgame;
 
 import entity.CurrentGame;
 

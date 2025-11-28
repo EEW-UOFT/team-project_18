@@ -1,4 +1,4 @@
-package interface_adapter.restartgame;
+package interfaceadapter.restartgame;
 
 import entity.CurrentGame;
 

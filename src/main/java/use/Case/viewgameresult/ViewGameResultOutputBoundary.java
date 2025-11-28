@@ -1,5 +1,5 @@
 package use.Case.viewgameresult;
 
 public interface ViewGameResultOutputBoundary {
-    void prepareGameResultView(ViewGameResultOutputData outputData);
+    void prepareSuccessView(ViewGameResultOutputData outputData);
 }

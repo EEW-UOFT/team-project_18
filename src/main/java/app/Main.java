@@ -9,9 +9,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         final JFrame app = new AppBuilder()
                 .addStartNewGameUseCase()
-                .addHomePageView()
+                .addRestartGameUseCase()
                 .addViewGameResultUseCase()
+                .addHomePageView()
                 .addBlackJackGameView()
+                .addGameResultView()
                 .setupViewManager()
                 .build();
 

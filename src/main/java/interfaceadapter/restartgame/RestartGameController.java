@@ -1,7 +1,7 @@
-package interface_adapter.restartgame;
+package interfaceadapter.restartgame;
 
 import entity.User;
-import use_case.restartgame.RestartGameInputBoundary;
+import use.Case.restartgame.RestartGameInputBoundary;
 
 public class RestartGameController {
 
