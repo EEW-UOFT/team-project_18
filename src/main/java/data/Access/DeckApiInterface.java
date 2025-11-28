@@ -1,12 +1,10 @@
 package data.Access;
 
-import entity.Card;
-
 import java.util.List;
 
-public interface DeckApiInterface {
+import entity.Card;
 
-    String initializeNewDeck() throws UnableToLoadDeck;
+public interface DeckApiInterface {
 
     List<Card> drawCards(int cardNumber) throws UnableToLoadDeck;
 

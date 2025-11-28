@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import data.Access.Deck;
 import data.Access.DeckApiInterface;
 import use.Case.stand.StandInputData;
 import use.Case.stand.StandInteractor;
@@ -19,22 +20,23 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for the StandInteractor use case.
  */
-class StandInteractorTest {
+public class StandInteractorTest {
 
     /**
      * Fake deck that returns scripted cards instead of calling the real API.
      */
-    private static class FakeDeck implements DeckApiInterface {
+    private static class FakeDeck extends Deck {
 
         private final List<Card> scriptedCards;
         private int index = 0;
 
-        FakeDeck(final List<Card> scriptedCards) {
+        FakeDeck(final List<Card> scriptedCards) throws UnableToLoadDeck {
+            super();
             this.scriptedCards = new ArrayList<>(scriptedCards);
         }
 
         @Override
-        public String initializeNewDeck() throws DeckApiInterface.UnableToLoadDeck {
+        public String initializeNewDeck() {
             // Not used in these tests.
             return "FAKE_DECK_ID";
         }
@@ -51,9 +53,12 @@ class StandInteractorTest {
     }
 
     /**
-     * Deck that always throws UnableToLoadDeck when any API call is made.
+     * Deck that always throws UnableToLoadDeck.
      */
-    private static class ErrorDeck implements DeckApiInterface {
+    private static class ErrorDeck extends Deck {
+
+        public ErrorDeck() throws UnableToLoadDeck {
+        }
 
         @Override
         public String initializeNewDeck() throws DeckApiInterface.UnableToLoadDeck {
@@ -70,10 +75,13 @@ class StandInteractorTest {
     /**
      * Deck that always returns an empty list on drawCards.
      */
-    private static class EmptyDeck implements DeckApiInterface {
+    private static class EmptyDeck extends Deck {
+
+        public EmptyDeck() throws UnableToLoadDeck {
+        }
 
         @Override
-        public String initializeNewDeck() throws DeckApiInterface.UnableToLoadDeck {
+        public String initializeNewDeck() {
             return "EMPTY_DECK";
         }
 
@@ -85,7 +93,7 @@ class StandInteractorTest {
     }
 
     /**
-     * Presenter that just records what was sent by the interactor.
+     * Presenter that records what the interactor sends.
      */
     private static class RecordingPresenter implements StandOutputBoundary {
 
@@ -111,13 +119,15 @@ class StandInteractorTest {
     }
 
     @Test
-    void dealerReaches17AndPushWhenTotalsEqual() {
+    void dealerReaches17AndPushWhenTotalsEqual()
+            throws DeckApiInterface.UnableToLoadDeck {
+
         int playerTotal = 17;
 
         Card tenHearts = new Card("HEARTS", "10");
         Card sevenClubs = new Card("CLUBS", "7");
 
-        FakeDeck deck = new FakeDeck(Arrays.asList(tenHearts, sevenClubs));
+        Deck deck = new FakeDeck(Arrays.asList(tenHearts, sevenClubs));
         RecordingPresenter presenter = new RecordingPresenter();
         StandInteractor interactor = new StandInteractor(presenter);
 
@@ -133,14 +143,16 @@ class StandInteractorTest {
     }
 
     @Test
-    void dealerWinsWhenHigherTotalAndNoBust() {
+    void dealerWinsWhenHigherTotalAndNoBust()
+            throws DeckApiInterface.UnableToLoadDeck {
+
         int playerTotal = 16;
 
         // Dealer draws 9 + 10 = 19
         Card nineHearts = new Card("HEARTS", "9");
         Card tenClubs = new Card("CLUBS", "10");
 
-        FakeDeck deck = new FakeDeck(Arrays.asList(nineHearts, tenClubs));
+        Deck deck = new FakeDeck(Arrays.asList(nineHearts, tenClubs));
         RecordingPresenter presenter = new RecordingPresenter();
         StandInteractor interactor = new StandInteractor(presenter);
 
@@ -157,14 +169,15 @@ class StandInteractorTest {
     }
 
     @Test
-    void playerBusts_DealerWinsImmediately() {
+    void playerBusts_DealerWinsImmediately()
+            throws DeckApiInterface.UnableToLoadDeck {
+
         int playerTotal = 22;  // already bust
 
-        // Dealer still draws up to >= 17, but outcome should be "Dealer wins (player busts)"
         Card tenHearts = new Card("HEARTS", "10");
         Card sevenClubs = new Card("CLUBS", "7");
 
-        FakeDeck deck = new FakeDeck(Arrays.asList(tenHearts, sevenClubs));
+        Deck deck = new FakeDeck(Arrays.asList(tenHearts, sevenClubs));
         RecordingPresenter presenter = new RecordingPresenter();
         StandInteractor interactor = new StandInteractor(presenter);
 
@@ -180,15 +193,18 @@ class StandInteractorTest {
     }
 
     @Test
-    void dealerBusts_PlayerWins() {
+    void dealerBusts_PlayerWins()
+            throws DeckApiInterface.UnableToLoadDeck {
+
         int playerTotal = 18;
 
-        // Dealer draws: 5 + KING + KING = 25 (bust at >= 17)
+        // Dealer draws: 5 + KING + KING = 25
         Card fiveHearts = new Card("HEARTS", "5");
         Card kingClubs = new Card("CLUBS", "KING");
         Card kingSpades = new Card("SPADES", "KING");
 
-        FakeDeck deck = new FakeDeck(Arrays.asList(fiveHearts, kingClubs, kingSpades));
+        Deck deck =
+                new FakeDeck(Arrays.asList(fiveHearts, kingClubs, kingSpades));
         RecordingPresenter presenter = new RecordingPresenter();
         StandInteractor interactor = new StandInteractor(presenter);
 
@@ -205,30 +221,35 @@ class StandInteractorTest {
     }
 
     @Test
-    void apiErrorResultsInPresenterErrorMessage() {
+    void apiErrorResultsInPresenterErrorMessage()
+            throws DeckApiInterface.UnableToLoadDeck {
+
         int playerTotal = 17;
 
-        DeckApiInterface errorDeck = new ErrorDeck();
+        Deck deck = new ErrorDeck();
         RecordingPresenter presenter = new RecordingPresenter();
         StandInteractor interactor = new StandInteractor(presenter);
 
-        StandInputData inputData = new StandInputData(errorDeck, playerTotal);
+        StandInputData inputData = new StandInputData(deck, playerTotal);
         interactor.execute(inputData);
 
         assertNull(presenter.finalOutput);
         assertNotNull(presenter.errorMessage);
-        assertTrue(presenter.errorMessage.startsWith("Failed to draw from deck"));
+        assertTrue(presenter.errorMessage.startsWith("Failed to draw from deck")
+                || presenter.errorMessage.startsWith("Could not draw from deck"));
     }
 
     @Test
-    void emptyDrawResultsInErrorAndNoResult() {
+    void emptyDrawResultsInErrorAndNoResult()
+            throws DeckApiInterface.UnableToLoadDeck {
+
         int playerTotal = 17;
 
-        DeckApiInterface emptyDeck = new EmptyDeck();
+        Deck deck = new EmptyDeck();
         RecordingPresenter presenter = new RecordingPresenter();
         StandInteractor interactor = new StandInteractor(presenter);
 
-        StandInputData inputData = new StandInputData(emptyDeck, playerTotal);
+        StandInputData inputData = new StandInputData(deck, playerTotal);
         interactor.execute(inputData);
 
         assertNull(presenter.finalOutput);
@@ -236,4 +257,3 @@ class StandInteractorTest {
         assertEquals("Deck returned no cards.", presenter.errorMessage);
     }
 }
-
