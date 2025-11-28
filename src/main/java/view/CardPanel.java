@@ -18,34 +18,28 @@ import entity.Card;
 
 public class CardPanel extends JPanel {
 
-    private final List<JLabel> cardImages = new ArrayList<>();
+    final Image cardBackUnscaled = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
+    final JLabel cardBackJLabel = toJLabel(cardBackUnscaled);
+
 
     public CardPanel(String entity) throws IOException {
         this.setLayout(new GridLayout(1, 1));
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         this.setPreferredSize(new Dimension(800, 250));
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), entity));
-
-        final Image cardBackUnscaled = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
-        final Image cardBack = cardBackUnscaled.getScaledInstance(150, 200, Image.SCALE_DEFAULT);
-        final JLabel tempLabel = new JLabel(new ImageIcon(cardBack));
-        tempLabel.setPreferredSize(new Dimension(150, 200));
-        this.cardImages.add(tempLabel);
-        this.add(tempLabel);
     }
 
     public void drawCards(List<Card> cards) throws IOException {
         this.removeAll();
-        for (JLabel card : cardImages) {
-            this.add(card);
-        }
         for (Card card : cards) {
             try {
-                final Image tempImage = ImageIO.read(new URL(card.getImageUrl()));
-                final JLabel tempLabel = new JLabel(new ImageIcon(tempImage));
-                resize(tempLabel);
-                this.cardImages.add(tempLabel);
-                this.add(tempLabel);
+                if (!card.isFaceUp()) {
+                    this.add(cardBackJLabel);
+                }
+                else {
+                    final Image tempImage = ImageIO.read(new URL(card.getImageUrl()));
+                    this.add(toJLabel(tempImage));
+                }
             }
             catch (MalformedURLException evt) {
                 evt.printStackTrace();
@@ -55,7 +49,10 @@ public class CardPanel extends JPanel {
         }
     }
 
-    private void resize(JLabel label) {
+    private static JLabel toJLabel(Image image) {
+
+        JLabel label = new JLabel(new ImageIcon(image));
         label.setPreferredSize(new Dimension(150, 200));
+        return label;
     }
 }
