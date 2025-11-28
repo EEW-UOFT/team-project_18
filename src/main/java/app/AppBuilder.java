@@ -120,11 +120,12 @@ public class AppBuilder {
     }
 
     public AppBuilder addStandUseCase() {
-        final StandOutputBoundary presenter = new ConsoleStandPresenter(viewManagerModel);
-        final StandInputBoundary interactor = new StandInteractor(presenter);
+        final StandOutputBoundary presenter =
+                new ConsoleStandPresenter(viewManagerModel);
+        final StandInputBoundary interactor =
+                new StandInteractor(presenter);
 
         this.standController = new StandController(interactor);
-
         return this;
     }
 
