@@ -2,7 +2,10 @@ package app;
 
 import entity.HistoryEntry;
 import entity.User;
+import interfaceadapter.GameModel;
 import interfaceadapter.ViewManagerModel;
+import interfaceadapter.hit.ConsoleHitPresenter;
+import interfaceadapter.hit.HitController;
 import interfaceadapter.restartgame.RestartGameController;
 import interfaceadapter.restartgame.RestartGamePresenter;
 import interfaceadapter.restartgame.RestartGameViewModel;
@@ -17,6 +20,9 @@ import interfaceadapter.viewgameresult.ViewGameResultPresenter;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 import interfaceadapter.stand.ConsoleStandPresenter;
 import interfaceadapter.stand.StandController;
+import use.Case.hit.HitInputBoundary;
+import use.Case.hit.HitInteractor;
+import use.Case.hit.HitOutputBoundary;
 import use.Case.restartgame.RestartGameInputBoundary;
 import use.Case.restartgame.RestartGameInteractor;
 import use.Case.restartgame.RestartGameOutputBoundary;
@@ -60,11 +66,17 @@ public class AppBuilder {
     private StatisticsController statisticsController;
     private StatisticsViewModel statisticsViewModel;
 
+    private HitController hitController;
+
     private StandController standController;
+
+    private GameModel gameModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
         addStartNewGameUseCase();
+        addHitUseCase();
+        addStandUseCase();
         addRestartGameUseCase();
         addViewGameResultUseCase();
         addStatisticsUseCase();
@@ -84,6 +96,15 @@ public class AppBuilder {
                 new StartNewGameController(interactor, new User(history));
         this.startNewGameViewModel = viewModel;
 
+        return this;
+    }
+
+    public AppBuilder addHitUseCase() {
+        this.gameModel = new GameModel();
+        HitOutputBoundary presenter = new ConsoleHitPresenter(gameModel);
+        HitInputBoundary interactor = new HitInteractor(presenter);
+
+        this.hitController = new HitController(interactor);
         return this;
     }
 
@@ -154,8 +175,7 @@ public class AppBuilder {
     public AppBuilder addBlackJackGameView() throws IOException {
         final BlackJackGameView blackJackGameView =
                 new BlackJackGameView(viewGameResultController,
-                        startNewGameViewModel,
-                        standController);
+                        startNewGameViewModel,restartGameViewModel,hitController,gameModel,standController);
         cardPanel.add(blackJackGameView, "Game");
         return this;
     }
