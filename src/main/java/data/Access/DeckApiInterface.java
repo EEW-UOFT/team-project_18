@@ -1,8 +1,8 @@
 package data.Access;
 
-import java.util.List;
-
 import entity.Card;
+
+import java.util.List;
 
 public interface DeckApiInterface {
 

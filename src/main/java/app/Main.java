@@ -1,8 +1,7 @@
 package app;
 
-import java.io.IOException;
-
 import javax.swing.*;
+import java.io.IOException;
 
 public class Main {
 

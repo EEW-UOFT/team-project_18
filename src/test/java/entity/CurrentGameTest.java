@@ -2,9 +2,12 @@ package entity;
 
 import data.Access.DeckApiInterface;
 import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CurrentGameTest {
 
@@ -20,13 +23,6 @@ public class CurrentGameTest {
         assertTrue(game.getDealerHand().isEmpty());
         assertEquals(user, game.getPlayer());
         assertEquals(mockDeck, game.getDeck());
-    }
-
-    private static class MockDeck implements DeckApiInterface {
-        @Override
-        public List<Card> drawCards(int cardNumber) {
-            return new ArrayList<>();
-        }
     }
 
     @Test
@@ -96,5 +92,12 @@ public class CurrentGameTest {
 
         CurrentGame ongoingGame = new CurrentGame(user);
         assertEquals("Game is currently ongoing", ongoingGame.outcome());
+    }
+
+    private static class MockDeck implements DeckApiInterface {
+        @Override
+        public List<Card> drawCards(int cardNumber) {
+            return new ArrayList<>();
+        }
     }
 }

@@ -1,16 +1,17 @@
 package use.Case.viewgameresult;
 
-import java.util.ArrayList;
-
 import entity.Card;
 import entity.CurrentGame;
 import entity.GameState;
 import interfaceadapter.viewgameresult.ViewGameResultPresenter;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
+import java.util.ArrayList;
+
 public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
 
     private final ViewGameResultPresenter presenter;
+
     public ViewGameResultInteractor(ViewGameResultPresenter presenter) {
         this.presenter = presenter;
     }

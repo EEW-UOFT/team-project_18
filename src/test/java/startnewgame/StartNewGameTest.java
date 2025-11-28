@@ -1,13 +1,15 @@
 package startnewgame;
 
 import data.Access.DeckApiInterface;
-import entity.*;
+import entity.CurrentGame;
+import entity.User;
 import org.junit.jupiter.api.Test;
 import use.Case.startnewgame.StartNewGameInteractor;
 import use.Case.startnewgame.StartNewGameOutputBoundary;
 import use.Case.startnewgame.StartNewGameOutputData;
 
 import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StartNewGameTest {

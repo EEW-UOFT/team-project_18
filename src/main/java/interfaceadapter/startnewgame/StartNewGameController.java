@@ -1,12 +1,12 @@
 package interfaceadapter.startnewgame;
 
-import entity.*;
+import entity.User;
 import use.Case.startnewgame.StartNewGameInputBoundary;
 
 public class StartNewGameController {
 
-    private StartNewGameInputBoundary startNewGameInteractor;
-    private User currentUser;
+    private final StartNewGameInputBoundary startNewGameInteractor;
+    private final User currentUser;
 
     public StartNewGameController(StartNewGameInputBoundary StartNewGameInteractor, User currentUser) {
         this.startNewGameInteractor = StartNewGameInteractor;

@@ -1,11 +1,11 @@
 package use.Case.stand;
 
-import java.util.List;
-
 import data.Access.Deck;
 import data.Access.DeckApiInterface;
 import entity.Card;
 import entity.CurrentGame;
+
+import java.util.List;
 
 public class StandInteractor implements StandInputBoundary {
 

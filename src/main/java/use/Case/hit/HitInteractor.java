@@ -15,8 +15,7 @@ public class HitInteractor implements HitInputBoundary {
     public void execute(CurrentGame currentGame) throws DeckApiInterface.UnableToLoadDeck {
         try {
             currentGame.addCardPlayer(1);
-        }
-        catch (DeckApiInterface.UnableToLoadDeck ex) {
+        } catch (DeckApiInterface.UnableToLoadDeck ex) {
             this.hitPresenter.prepareFailView("Unable to draw card");
         }
 

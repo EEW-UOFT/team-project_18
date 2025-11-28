@@ -1,12 +1,12 @@
 package interfaceadapter.viewgameresult;
 
+import interfaceadapter.ViewManagerModel;
 import use.Case.viewgameresult.ViewGameResultOutputBoundary;
 import use.Case.viewgameresult.ViewGameResultOutputData;
-import interfaceadapter.ViewManagerModel;
 
 public class ViewGameResultPresenter implements ViewGameResultOutputBoundary {
-    private ViewGameResultViewModel viewGameResultViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final ViewGameResultViewModel viewGameResultViewModel;
 
 
     public ViewGameResultPresenter(ViewGameResultViewModel viewGameResultViewModel, ViewManagerModel viewManagerModel) {

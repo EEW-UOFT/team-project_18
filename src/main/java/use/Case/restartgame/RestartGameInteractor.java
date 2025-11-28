@@ -6,8 +6,8 @@ import entity.User;
 
 public class RestartGameInteractor implements RestartGameInputBoundary {
 
-    private CurrentGame currentGame;
     private final RestartGameOutputBoundary presenter;
+    private CurrentGame currentGame;
 
     public RestartGameInteractor(RestartGameOutputBoundary presenter) {
         this.presenter = presenter;

@@ -48,10 +48,27 @@ public class Statistics {
         this.longestWinStreak = longestStreak;
     }
 
-    public int getTotalGames() { return totalGames; }
-    public int getWins() { return wins; }
-    public int getLosses() { return losses; }
-    public int getTies() { return ties; }
-    public double getWinRate() { return winRate; }
-    public int getLongestWinStreak() { return longestWinStreak; }
+    public int getTotalGames() {
+        return totalGames;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public int getTies() {
+        return ties;
+    }
+
+    public double getWinRate() {
+        return winRate;
+    }
+
+    public int getLongestWinStreak() {
+        return longestWinStreak;
+    }
 }

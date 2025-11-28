@@ -10,8 +10,8 @@ public class HomePageView extends JPanel {
 
     private final JButton startNewGame;
     private final JButton gameRule;
-    private StartNewGameController startNewGameController;
     private final JLabel errorLabel;
+    private StartNewGameController startNewGameController;
 
     public HomePageView(StartNewGameViewModel startNewGameViewModel,
                         StartNewGameController startNewGameController) {
