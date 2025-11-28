@@ -27,18 +27,38 @@ public class StatisticsViewModel {
         support.firePropertyChange("statistics", null, null);
     }
 
+    public int getTotalGames() {
+        return totalGames;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
+    public int getTies() {
+        return ties;
+    }
+
+    public double getWinRate() {
+        return winRate;
+    }
+
+    public int getLongestWinStreak() {
+        return longestWinStreak;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
     public void setMessage(String message) {
         this.message = message;
         support.firePropertyChange("statisticsMessage", null, message);
     }
-
-    public int getTotalGames() { return totalGames; }
-    public int getWins() { return wins; }
-    public int getLosses() { return losses; }
-    public int getTies() { return ties; }
-    public double getWinRate() { return winRate; }
-    public int getLongestWinStreak() { return longestWinStreak; }
-    public String getMessage() { return message; }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);

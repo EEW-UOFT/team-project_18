@@ -1,6 +1,6 @@
 package interfaceadapter.viewgameresult;
 
-import entity.*;
+import entity.CurrentGame;
 import use.Case.viewgameresult.ViewGameResultInteractor;
 
 public class ViewGameResultController {

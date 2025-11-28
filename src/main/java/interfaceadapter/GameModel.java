@@ -1,21 +1,21 @@
 package interfaceadapter;
 
-import java.beans.PropertyChangeSupport;
-import java.util.*;
-
-import entity.*;
+import entity.Card;
+import entity.CurrentGame;
 import use.Case.hit.HitOutputData;
+
+import java.beans.PropertyChangeSupport;
+import java.util.List;
 
 public class GameModel {
 
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private CurrentGame currentGame;
-
     private List<Card> playerCards;
     private List<Card> dealerCards;
     private int playerScore;
     private int dealerScore;
     private boolean playerTurn;
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public GameModel(CurrentGame currentGame) {
         this.currentGame = currentGame;
@@ -53,12 +53,12 @@ public class GameModel {
         return dealerScore;
     }
 
-    public void setPlayerTurn(boolean playerTurn) {
-        this.playerTurn = playerTurn;
-    }
-
     public boolean getPlayerTurn() {
         return playerTurn;
+    }
+
+    public void setPlayerTurn(boolean playerTurn) {
+        this.playerTurn = playerTurn;
     }
 
 }

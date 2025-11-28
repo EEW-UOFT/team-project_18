@@ -1,21 +1,21 @@
 package data.Access;
 
-import java.io.IOException;
-import java.util.*;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import entity.Card;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Deck implements DeckApiInterface {
-    private String deckID;
-    private List<Card> drawnCards;
     private final OkHttpClient client = new OkHttpClient();
+    private final String deckID;
+    private final List<Card> drawnCards;
 
     public Deck() throws UnableToLoadDeck {
         this.drawnCards = new ArrayList<>();
@@ -37,12 +37,10 @@ public class Deck implements DeckApiInterface {
             if (responseBody.getBoolean("success")) {
                 final String deckId = responseBody.getString("deck_id");
                 return deckId;
-            }
-            else {
+            } else {
                 throw new UnableToLoadDeck();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new UnableToLoadDeck();
         }
     }
@@ -74,8 +72,7 @@ public class Deck implements DeckApiInterface {
                 }
             }
             return currDrawnCards;
-        }
-        catch (IOException evt) {
+        } catch (IOException evt) {
             throw new UnableToLoadDeck();
         }
     }

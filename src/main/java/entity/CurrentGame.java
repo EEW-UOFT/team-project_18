@@ -1,18 +1,20 @@
 package entity;
 
-import java.util.*;
-
 import data.Access.DeckApiInterface;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CurrentGame {
 
     private final User player;
-    private List<Card> playerHand;
-    private List<Card> dealerHand;
-    private GameState gameState = GameState.ONGOING;
     private final DeckApiInterface deck;
-
     Map<String, Integer> blackjackMap = new HashMap<>();
+    private final List<Card> playerHand;
+    private final List<Card> dealerHand;
+    private GameState gameState = GameState.ONGOING;
 
 
     public CurrentGame(User player) throws DeckApiInterface.UnableToLoadDeck {
@@ -67,7 +69,7 @@ public class CurrentGame {
     public int calculateScore(List<Card> hand) {
         int score = 0;
         boolean ace = false;
-        for  (Card card : hand) {
+        for (Card card : hand) {
             score += blackjackMap.get(card.getValue());
             if (card.getValue().equals("ACE")) {
                 ace = true;

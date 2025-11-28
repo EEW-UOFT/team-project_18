@@ -4,7 +4,7 @@ import interfaceadapter.GameModel;
 import use.Case.hit.HitOutputData;
 
 public class ConsoleHitPresenter {
-    private GameModel gameModel;
+    private final GameModel gameModel;
 
     public ConsoleHitPresenter(GameModel gameModel) {
         this.gameModel = gameModel;

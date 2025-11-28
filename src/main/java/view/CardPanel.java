@@ -1,5 +1,9 @@
 package view;
 
+import entity.Card;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -7,14 +11,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import entity.Card;
 
 public class CardPanel extends JPanel {
 
@@ -46,8 +42,7 @@ public class CardPanel extends JPanel {
                 resize(tempLabel);
                 this.cardImages.add(tempLabel);
                 this.add(tempLabel);
-            }
-            catch (MalformedURLException evt) {
+            } catch (MalformedURLException evt) {
                 evt.printStackTrace();
             }
             this.revalidate();

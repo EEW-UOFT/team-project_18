@@ -88,6 +88,7 @@ public class AppBuilder {
 
         return this;
     }
+
     public AppBuilder addStatisticsUseCase() {
         StatisticsViewModel viewModel = new StatisticsViewModel();
         StatisticsOutputBoundary presenter =

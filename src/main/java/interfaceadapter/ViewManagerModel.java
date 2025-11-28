@@ -10,8 +10,8 @@ import java.beans.PropertyChangeSupport;
  */
 public class ViewManagerModel {
 
-    private String activeView = "";
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private String activeView = "";
 
     public void setActiveView(String activeView) {
         final String oldValue = this.activeView;

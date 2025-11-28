@@ -1,8 +1,13 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import entity.Card;
+import entity.CurrentGame;
+import interfaceadapter.startnewgame.StartNewGameViewModel;
+import interfaceadapter.viewgameresult.ViewGameResultController;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -13,16 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-import entity.Card;
-import entity.CurrentGame;
-import interfaceadapter.startnewgame.StartNewGameViewModel;
-import interfaceadapter.viewgameresult.ViewGameResultController;
-
-
 
 public class BlackJackGameView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -30,10 +25,11 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
     public static final int VGAP = 5;
     private final CardPanel dealerPanel = new CardPanel("Dealer");
     private final CardPanel playerPanel = new CardPanel("Player");
-    private CurrentGame currentGame;
-    private ViewGameResultController viewGameResultController;
-    private StartNewGameViewModel startNewGameViewModel;
     BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
+    private CurrentGame currentGame;
+    private final ViewGameResultController viewGameResultController;
+    private final StartNewGameViewModel startNewGameViewModel;
+
     public BlackJackGameView(ViewGameResultController viewGameResultController, StartNewGameViewModel startNewGameViewModel) throws IOException {
 
         this.viewGameResultController = viewGameResultController;
@@ -49,8 +45,7 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
                     test.add(card1);
                     try {
                         playerPanel.drawCards(test);
-                    }
-                    catch (IOException ex) {
+                    } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
