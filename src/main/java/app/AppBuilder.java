@@ -15,6 +15,8 @@ import interfaceadapter.statistics.StatisticsViewModel;
 import interfaceadapter.viewgameresult.ViewGameResultController;
 import interfaceadapter.viewgameresult.ViewGameResultPresenter;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
+import interfaceadapter.stand.ConsoleStandPresenter;
+import interfaceadapter.stand.StandController;
 import use.Case.restartgame.RestartGameInputBoundary;
 import use.Case.restartgame.RestartGameInteractor;
 import use.Case.restartgame.RestartGameOutputBoundary;
@@ -25,6 +27,9 @@ import use.Case.statistics.StatisticsInputBoundary;
 import use.Case.statistics.StatisticsInteractor;
 import use.Case.statistics.StatisticsOutputBoundary;
 import use.Case.viewgameresult.ViewGameResultInteractor;
+import use.Case.stand.StandInputBoundary;
+import use.Case.stand.StandInteractor;
+import use.Case.stand.StandOutputBoundary;
 import view.BlackJackGameView;
 import view.GameResultView;
 import view.HomePageView;
@@ -55,22 +60,29 @@ public class AppBuilder {
     private StatisticsController statisticsController;
     private StatisticsViewModel statisticsViewModel;
 
+    // new: stand controller
+    private StandController standController;
+
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
         addStartNewGameUseCase();
         addRestartGameUseCase();
         addViewGameResultUseCase();
         addStatisticsUseCase();
+        addStandUseCase(); // new
     }
 
     public AppBuilder addStartNewGameUseCase() {
         final StartNewGameViewModel viewModel = new StartNewGameViewModel();
-        final StartNewGameOutputBoundary presenter = new StartNewGamePresenter(viewModel, viewManagerModel);
+        final StartNewGameOutputBoundary presenter =
+                new StartNewGamePresenter(viewModel, viewManagerModel);
 
-        final StartNewGameInputBoundary interactor = new StartNewGameInteractor(presenter);
+        final StartNewGameInputBoundary interactor =
+                new StartNewGameInteractor(presenter);
         final ArrayList<HistoryEntry> history = new ArrayList<>();
 
-        this.startNewGameController = new StartNewGameController(interactor, new User(history));
+        this.startNewGameController =
+                new StartNewGameController(interactor, new User(history));
         this.startNewGameViewModel = viewModel;
 
         return this;
@@ -78,58 +90,80 @@ public class AppBuilder {
 
     public AppBuilder addRestartGameUseCase() {
         final RestartGameViewModel viewModel = new RestartGameViewModel();
-        final RestartGameOutputBoundary presenter = new RestartGamePresenter(viewModel, viewManagerModel);
+        final RestartGameOutputBoundary presenter =
+                new RestartGamePresenter(viewModel, viewManagerModel);
 
-        final RestartGameInputBoundary interactor = new RestartGameInteractor(presenter);
+        final RestartGameInputBoundary interactor =
+                new RestartGameInteractor(presenter);
         final ArrayList<HistoryEntry> history = new ArrayList<>();
 
-        this.restartGameController = new RestartGameController(interactor, new User(history));
+        this.restartGameController =
+                new RestartGameController(interactor, new User(history));
         this.restartGameViewModel = viewModel;
 
         return this;
     }
 
     public AppBuilder addStatisticsUseCase() {
-        StatisticsViewModel viewModel = new StatisticsViewModel();
-        StatisticsOutputBoundary presenter =
+        final StatisticsViewModel viewModel = new StatisticsViewModel();
+        final StatisticsOutputBoundary presenter =
                 new StatisticsPresenter(viewModel);
 
-        StatisticsInputBoundary interactor =
+        final StatisticsInputBoundary interactor =
                 new StatisticsInteractor(presenter);
 
-        ArrayList<HistoryEntry> history = new ArrayList<>();
+        final ArrayList<HistoryEntry> history = new ArrayList<>();
         this.statisticsController =
                 new StatisticsController(interactor, new User(history));
         this.statisticsViewModel = viewModel;
+
+        return this;
+    }
+
+    // new: stand use case wiring
+    public AppBuilder addStandUseCase() {
+        final StandOutputBoundary presenter = new ConsoleStandPresenter();
+        final StandInputBoundary interactor = new StandInteractor(presenter);
+
+        this.standController = new StandController(interactor);
+
         return this;
     }
 
     public AppBuilder addViewGameResultUseCase() {
-        final ViewGameResultViewModel viewModel = new ViewGameResultViewModel();
-        final ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewModel, viewManagerModel);
-        final ViewGameResultInteractor viewGameResultInteractor = new ViewGameResultInteractor(presenter);
+        final ViewGameResultViewModel viewModel =
+                new ViewGameResultViewModel();
+        final ViewGameResultPresenter presenter =
+                new ViewGameResultPresenter(viewModel, viewManagerModel);
+        final ViewGameResultInteractor viewGameResultInteractor =
+                new ViewGameResultInteractor(presenter);
 
-        this.viewGameResultController = new ViewGameResultController(viewGameResultInteractor);
+        this.viewGameResultController =
+                new ViewGameResultController(viewGameResultInteractor);
         this.viewGameResultViewModel = viewModel;
 
         return this;
     }
 
     public AppBuilder addHomePageView() {
-        final HomePageView homePage = new HomePageView(startNewGameViewModel, startNewGameController);
+        final HomePageView homePage =
+                new HomePageView(startNewGameViewModel, startNewGameController);
         cardPanel.add(homePage, "Home");
         return this;
     }
 
     public AppBuilder addBlackJackGameView() throws IOException {
-        final BlackJackGameView blackJackGameView = new BlackJackGameView(viewGameResultController, startNewGameViewModel);
+        final BlackJackGameView blackJackGameView =
+                new BlackJackGameView(viewGameResultController,
+                        startNewGameViewModel);
         cardPanel.add(blackJackGameView, "Game");
         return this;
     }
 
     public AppBuilder addGameResultView() {
-        GameResultView gameResultView = new GameResultView(viewGameResultViewModel, restartGameController,
-                statisticsController);
+        final GameResultView gameResultView =
+                new GameResultView(viewGameResultViewModel,
+                        restartGameController, statisticsController);
         cardPanel.add(gameResultView, "GameResult");
         return this;
     }
@@ -156,4 +190,3 @@ public class AppBuilder {
         return frame;
     }
 }
-
