@@ -2,6 +2,7 @@ package use_case.viewgameresult;
 import entity.Card;
 import entity.GameState;
 import entity.CurrentGame;
+import entity.HistoryEntry;
 import interface_adapter.ViewGameResult.ViewGameResultPresenter;
 import interface_adapter.ViewGameResult.ViewGameResultViewModel;
 
@@ -21,6 +22,18 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
 
         int playerScore = calculateScore(playerHand);
         int dealerScore = calculateScore(dealerHand);
+
+        /**
+         * Testing - HL
+         */
+        HistoryEntry entry = new HistoryEntry(
+                (int)(System.currentTimeMillis() / 1000),
+                playerScore,
+                dealerScore,
+                gameResult
+        );
+
+        currentGame.getPlayer().addHistoryEntry(entry);
 
         ViewGameResultViewModel viewGameResultViewModel = new ViewGameResultViewModel();
         ViewGameResultPresenter presenter = new ViewGameResultPresenter(viewGameResultViewModel);

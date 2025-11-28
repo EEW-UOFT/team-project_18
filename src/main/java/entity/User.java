@@ -8,4 +8,12 @@ public class User {
     public User(List<HistoryEntry> gameHistory) {
         this.gameHistory = gameHistory;
     }
+
+    public void addHistoryEntry(HistoryEntry entry) {
+        gameHistory.add(entry);
+    }
+
+    public List<HistoryEntry> getHistory() {
+        return gameHistory;
+    }
 }

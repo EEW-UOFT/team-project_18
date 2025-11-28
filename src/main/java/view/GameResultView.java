@@ -1,7 +1,10 @@
 package view;
 
 import javax.swing.*;
+
+import entity.HistoryEntry;
 import interface_adapter.ViewGameResult.ViewGameResultViewModel;
+import interface_adapter.ViewManagerModel;
 
 
 public class GameResultView extends JPanel {
@@ -12,6 +15,8 @@ public class GameResultView extends JPanel {
     private final JButton historyButton;
     private final JLabel playerFinalScore;
     private final JLabel dealerFinalScore;
+
+
 
     public GameResultView(ViewGameResultViewModel viewGameResultViewModel) {
 
@@ -36,6 +41,34 @@ public class GameResultView extends JPanel {
         newGameButton = new JButton("New Game");
         statsButton = new JButton("Stats");
         historyButton = new JButton("History");
+
+        this.add(buttonPanel);
+
+        JTextArea historyArea = new JTextArea(12, 40);
+        historyArea.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(historyArea);
+        this.add(scrollPane);
+
+        // ---------------------------
+        // Fill history text
+        // ---------------------------
+        StringBuilder sb = new StringBuilder();
+
+        int index = 1;
+        for (HistoryEntry entry :
+                viewGameResultViewModel.getCurrentGame().getPlayer().getHistory()) {
+
+            sb.append("Game #").append(index++).append("\n")
+                    .append("Player: ").append(entry.getPlayerTotal()).append("\n")
+                    .append("Dealer: ").append(entry.getDealerTotal()).append("\n")
+                    .append("Outcome: ").append(entry.getOutcome()).append("\n")
+                    .append("---------------------------\n");
+        }
+
+        historyArea.setText(sb.toString());
+
+
         buttonPanel.add(newGameButton);
         buttonPanel.add(statsButton);
         buttonPanel.add(historyButton);
