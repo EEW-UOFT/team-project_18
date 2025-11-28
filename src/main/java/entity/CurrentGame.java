@@ -40,6 +40,11 @@ public class CurrentGame {
     public void addCardPlayer(int cardNumber) throws DeckApiInterface.UnableToLoadDeck {
 
         final List<Card> tempCards = deck.drawCards(cardNumber);
+
+        for (Card card : tempCards) {
+            card.setFaceUp(true);
+        }
+
         playerHand.addAll(tempCards);
     }
 
@@ -50,9 +55,16 @@ public class CurrentGame {
     public void addCardDealer(int cardNumber, boolean faceUp) throws DeckApiInterface.UnableToLoadDeck {
 
         final List<Card> tempCards = deck.drawCards(cardNumber);
-        for (Card card : tempCards) {
-            card.setFaceUp(faceUp);
+
+        for (int i = 0; i < tempCards.size(); i++) {
+            Card card = tempCards.get(i);
+            if (faceUp || i == 0) {
+                card.setFaceUp(true);
+            } else {
+                card.setFaceUp(false);
+            }
         }
+
         dealerHand.addAll(tempCards);
     }
 

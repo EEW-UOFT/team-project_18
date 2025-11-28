@@ -1,36 +1,56 @@
 package interfaceadapter;
 
-import entity.Card;
-import entity.CurrentGame;
-import use.Case.hit.HitOutputData;
-
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.List;
+import java.util.*;
+
+import entity.*;
+import use.Case.hit.HitOutputData;
 
 public class GameModel {
 
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private CurrentGame currentGame;
+
     private List<Card> playerCards;
     private List<Card> dealerCards;
     private int playerScore;
     private int dealerScore;
     private boolean playerTurn;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    public GameModel() {
+        this.currentGame = null;
+        this.playerCards = new ArrayList<>();
+        this.dealerCards = new ArrayList<>();
+        this.playerScore = 0;
+        this.dealerScore = 0;
+    }
     public GameModel(CurrentGame currentGame) {
-        this.currentGame = currentGame;
-        this.playerCards = currentGame.getPlayerHand();
-        this.dealerCards = currentGame.getDealerHand();
-        this.playerScore = currentGame.calculateScore(playerCards);
-        this.dealerScore = currentGame.calculateScore(dealerCards);
+        if (currentGame != null) {
+            this.currentGame = currentGame;
+            this.playerCards = currentGame.getPlayerHand();
+            this.dealerCards = currentGame.getDealerHand();
+            this.playerScore = currentGame.calculateScore(playerCards);
+            this.dealerScore = currentGame.calculateScore(dealerCards);
+        } else {
+            this.currentGame = null;
+            this.playerCards = new ArrayList<>();
+            this.dealerCards = new ArrayList<>();
+            this.playerScore = 0;
+            this.dealerScore = 0;
+        }
     }
 
     public void update(HitOutputData hitOutputData) {
+        CurrentGame oldGame = this.currentGame;
         this.currentGame = hitOutputData.getCurrentGame();
         this.playerCards = currentGame.getPlayerHand();
         this.dealerCards = currentGame.getDealerHand();
         this.playerScore = currentGame.calculateScore(playerCards);
         this.dealerScore = currentGame.calculateScore(dealerCards);
+
+        support.firePropertyChange("currentGame", oldGame, currentGame);
+        support.firePropertyChange("playerHand", null, playerCards);
     }
 
     public CurrentGame getCurrentGame() {
@@ -53,12 +73,16 @@ public class GameModel {
         return dealerScore;
     }
 
+    public void setPlayerTurn(boolean playerTurn) {
+        this.playerTurn = playerTurn;
+    }
+
     public boolean getPlayerTurn() {
         return playerTurn;
     }
 
-    public void setPlayerTurn(boolean playerTurn) {
-        this.playerTurn = playerTurn;
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
     }
 
 }

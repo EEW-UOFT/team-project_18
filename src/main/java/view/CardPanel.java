@@ -1,15 +1,20 @@
 package view;
 
-import entity.Card;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import entity.Card;
 
 public class CardPanel extends JPanel {
 
@@ -18,10 +23,32 @@ public class CardPanel extends JPanel {
 
 
     public CardPanel(String entity) throws IOException {
-        this.setLayout(new GridLayout(1, 1));
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
         this.setPreferredSize(new Dimension(800, 250));
+
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), entity));
+    }
+
+    public void drawCards(List<Card> cards) throws IOException {
+        this.removeAll();
+
+        for (Card card : cards) {
+            try {
+                if (!card.isFaceUp()) {
+                    this.add(cardBackJLabel);
+                }
+                else {
+                    final Image tempImage = ImageIO.read(new URL(card.getImageUrl()));
+                    this.add(toJLabel(tempImage));
+                }
+            }
+            catch (MalformedURLException evt) {
+                evt.printStackTrace();
+            }
+            this.revalidate();
+            this.repaint();
+        }
     }
 
     private static JLabel toJLabel(Image image) {
@@ -31,21 +58,10 @@ public class CardPanel extends JPanel {
         return label;
     }
 
-    public void drawCards(List<Card> cards) throws IOException {
+    public void clearCards() {
         this.removeAll();
-        for (Card card : cards) {
-            try {
-                if (!card.isFaceUp()) {
-                    this.add(cardBackJLabel);
-                } else {
-                    final Image tempImage = ImageIO.read(new URL(card.getImageUrl()));
-                    this.add(toJLabel(tempImage));
-                }
-            } catch (MalformedURLException evt) {
-                evt.printStackTrace();
-            }
-            this.revalidate();
-            this.repaint();
-        }
+        this.add(cardBackJLabel);
+        this.revalidate();
+        this.repaint();
     }
 }
