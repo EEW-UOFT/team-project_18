@@ -60,7 +60,6 @@ public class AppBuilder {
     private StatisticsController statisticsController;
     private StatisticsViewModel statisticsViewModel;
 
-    // new: stand controller
     private StandController standController;
 
     public AppBuilder() {
@@ -69,7 +68,7 @@ public class AppBuilder {
         addRestartGameUseCase();
         addViewGameResultUseCase();
         addStatisticsUseCase();
-        addStandUseCase(); // new
+        addStandUseCase();
     }
 
     public AppBuilder addStartNewGameUseCase() {
@@ -120,7 +119,6 @@ public class AppBuilder {
         return this;
     }
 
-    // new: stand use case wiring
     public AppBuilder addStandUseCase() {
         final StandOutputBoundary presenter = new ConsoleStandPresenter();
         final StandInputBoundary interactor = new StandInteractor(presenter);
@@ -155,7 +153,8 @@ public class AppBuilder {
     public AppBuilder addBlackJackGameView() throws IOException {
         final BlackJackGameView blackJackGameView =
                 new BlackJackGameView(viewGameResultController,
-                        startNewGameViewModel);
+                        startNewGameViewModel,
+                        standController);
         cardPanel.add(blackJackGameView, "Game");
         return this;
     }
