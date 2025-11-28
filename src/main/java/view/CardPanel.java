@@ -1,20 +1,15 @@
 package view;
 
+import entity.Card;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import entity.Card;
 
 public class CardPanel extends JPanel {
 
@@ -29,30 +24,28 @@ public class CardPanel extends JPanel {
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), entity));
     }
 
+    private static JLabel toJLabel(Image image) {
+
+        JLabel label = new JLabel(new ImageIcon(image));
+        label.setPreferredSize(new Dimension(150, 200));
+        return label;
+    }
+
     public void drawCards(List<Card> cards) throws IOException {
         this.removeAll();
         for (Card card : cards) {
             try {
                 if (!card.isFaceUp()) {
                     this.add(cardBackJLabel);
-                }
-                else {
+                } else {
                     final Image tempImage = ImageIO.read(new URL(card.getImageUrl()));
                     this.add(toJLabel(tempImage));
                 }
-            }
-            catch (MalformedURLException evt) {
+            } catch (MalformedURLException evt) {
                 evt.printStackTrace();
             }
             this.revalidate();
             this.repaint();
         }
-    }
-
-    private static JLabel toJLabel(Image image) {
-
-        JLabel label = new JLabel(new ImageIcon(image));
-        label.setPreferredSize(new Dimension(150, 200));
-        return label;
     }
 }

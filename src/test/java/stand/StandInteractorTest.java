@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@link StandInteractor}.
- *
+ * <p>
  * The production StandInteractor currently creates its own Deck instance
  * internally, which makes it hard to deterministically control dealer draws
  * from tests without modifying production code. To keep the tests isolated
@@ -21,31 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * calculation logic via reflection.
  */
 public class StandInteractorTest {
-
-    /**
-     * Minimal presenter implementation so we can instantiate {@link StandInteractor}
-     * without depending on the UI.
-     */
-    private static class DummyPresenter implements StandOutputBoundary {
-
-        StandOutputData lastOutput;
-        String lastErrorMessage;
-
-        @Override
-        public void presentDealerDrew(final Card card, final int dealerTotal) {
-            // not needed for these tests
-        }
-
-        @Override
-        public void presentResult(final StandOutputData outputData) {
-            this.lastOutput = outputData;
-        }
-
-        @Override
-        public void presentError(final String message) {
-            this.lastErrorMessage = message;
-        }
-    }
 
     /**
      * Helper that calls the private cardValue method on StandInteractor
@@ -106,13 +81,13 @@ public class StandInteractorTest {
         });
     }
 
-    // ---------- EXTRA TESTS FOR MORE COVERAGE ----------
-
     @Test
     void tenCardIsWorthTen() throws Exception {
         Card tenDiamonds = new Card("DIAMONDS", "10", "url");
         assertEquals(10, invokeCardValue(tenDiamonds));
     }
+
+    // ---------- EXTRA TESTS FOR MORE COVERAGE ----------
 
     @Test
     void multipleNumberedCardsAreIndependent() throws Exception {
@@ -136,5 +111,30 @@ public class StandInteractorTest {
         assertEquals(11, aceValue);
         assertEquals(10, kingValue);
         assertTrue(aceValue > kingValue);
+    }
+
+    /**
+     * Minimal presenter implementation so we can instantiate {@link StandInteractor}
+     * without depending on the UI.
+     */
+    private static class DummyPresenter implements StandOutputBoundary {
+
+        StandOutputData lastOutput;
+        String lastErrorMessage;
+
+        @Override
+        public void presentDealerDrew(final Card card, final int dealerTotal) {
+            // not needed for these tests
+        }
+
+        @Override
+        public void presentResult(final StandOutputData outputData) {
+            this.lastOutput = outputData;
+        }
+
+        @Override
+        public void presentError(final String message) {
+            this.lastErrorMessage = message;
+        }
     }
 }

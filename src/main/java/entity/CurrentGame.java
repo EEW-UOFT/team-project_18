@@ -11,9 +11,9 @@ public class CurrentGame {
 
     private final User player;
     private final DeckApiInterface deck;
-    Map<String, Integer> blackjackMap = new HashMap<>();
     private final List<Card> playerHand;
     private final List<Card> dealerHand;
+    Map<String, Integer> blackjackMap = new HashMap<>();
     private GameState gameState = GameState.ONGOING;
 
 

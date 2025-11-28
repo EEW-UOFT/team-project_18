@@ -25,10 +25,10 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
     public static final int VGAP = 5;
     private final CardPanel dealerPanel = new CardPanel("Dealer");
     private final CardPanel playerPanel = new CardPanel("Player");
-    BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
-    private CurrentGame currentGame;
     private final ViewGameResultController viewGameResultController;
     private final StartNewGameViewModel startNewGameViewModel;
+    BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
+    private CurrentGame currentGame;
 
     public BlackJackGameView(ViewGameResultController viewGameResultController, StartNewGameViewModel startNewGameViewModel) throws IOException {
 

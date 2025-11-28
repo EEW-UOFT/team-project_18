@@ -6,8 +6,8 @@ import entity.User;
 
 public class StartNewGameInteractor implements StartNewGameInputBoundary {
 
-    private CurrentGame currentGame;
     private final StartNewGameOutputBoundary startNewGamePresenter;
+    private CurrentGame currentGame;
 
     public StartNewGameInteractor(StartNewGameOutputBoundary StartNewGamePresenter) {
         this.startNewGamePresenter = StartNewGamePresenter;
