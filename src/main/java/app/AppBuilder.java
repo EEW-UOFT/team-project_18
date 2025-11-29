@@ -222,9 +222,9 @@ public class AppBuilder {
     }
 
     public AppBuilder addGameResultView() {
-        final GameResultView gameResultView =
-                new GameResultView(viewGameResultViewModel,
-                        restartGameController, statisticsController, viewHistoryController, viewManagerModel);
+        final GameResultView gameResultView;
+        gameResultView = new GameResultView(viewGameResultViewModel,
+                restartGameController, statisticsController, viewHistoryController, viewManagerModel);
         cardPanel.add(gameResultView, "GameResult");
         return this;
     }

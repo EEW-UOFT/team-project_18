@@ -7,9 +7,10 @@ import interfaceadapter.viewgamehistory.ViewHistoryController;
 import interfaceadapter.ViewManagerModel;
 
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class GameResultView extends JPanel {
-
+public class GameResultView extends JPanel implements PropertyChangeListener {
     // Game outcome message
     private final JLabel resultMessage;
     private final JButton newGameButton;
@@ -23,11 +24,11 @@ public class GameResultView extends JPanel {
     private final ViewHistoryController viewHistoryController;
     private final ViewManagerModel viewManagerModel;
 
-    public GameResultView(ViewGameResultViewModel viewGameResultViewModel,
-                          RestartGameController restartGameController,
+    public GameResultView(ViewGameResultViewModel viewGameResultViewModel, RestartGameController restartGameController,
                           StatisticsController statisticsController,
                           ViewHistoryController viewHistoryController,
                           ViewManagerModel viewManagerModel) {
+        viewGameResultViewModel.addPropertyChangeListener(this);
 
         this.restartGameController = restartGameController;
         this.statisticsController = statisticsController;
@@ -35,26 +36,22 @@ public class GameResultView extends JPanel {
         this.viewManagerModel = viewManagerModel;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        // -----------------------------
-        // Result labels
-        // -----------------------------
+        // Centered game result message
         resultMessage = new JLabel(viewGameResultViewModel.getGameResult());
         resultMessage.setAlignmentX(CENTER_ALIGNMENT);
         this.add(resultMessage);
 
+        // Player's final score
         playerFinalScore = new JLabel(viewGameResultViewModel.getPlayerScoreString());
         playerFinalScore.setAlignmentX(CENTER_ALIGNMENT);
         this.add(playerFinalScore);
 
+        // Dealer's final score
         dealerFinalScore = new JLabel(viewGameResultViewModel.getDealerScoreString());
         dealerFinalScore.setAlignmentX(CENTER_ALIGNMENT);
         this.add(dealerFinalScore);
 
-        // -----------------------------
-        // Buttons
-        // -----------------------------
-        JPanel buttonPanel = new JPanel();
+        final JPanel buttonPanel = new JPanel();
         newGameButton = new JButton("Play Again");
         statsButton = new JButton("Statistics");
         historyButton = new JButton("Game History");
@@ -73,5 +70,22 @@ public class GameResultView extends JPanel {
         buttonPanel.add(statsButton);
         buttonPanel.add(historyButton);
         this.add(buttonPanel);
+
+
     }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case "gameResult":
+                resultMessage.setText((String) evt.getNewValue());
+                break;
+            case "playerScore":
+                playerFinalScore.setText((String) evt.getNewValue());
+                break;
+            case "dealerScore":
+                dealerFinalScore.setText((String) evt.getNewValue());
+                break;
+        }
+    }
+
 }
