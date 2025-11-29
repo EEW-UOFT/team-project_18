@@ -6,8 +6,10 @@ import interfaceadapter.statistics.StatisticsController;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class GameResultView extends JPanel {
+public class GameResultView extends JPanel implements PropertyChangeListener {
     // Game outcome message
     private final JLabel resultMessage;
     private final JButton newGameButton;
@@ -20,6 +22,7 @@ public class GameResultView extends JPanel {
 
     public GameResultView(ViewGameResultViewModel viewGameResultViewModel, RestartGameController restartGameController,
                           StatisticsController statisticsController) {
+        viewGameResultViewModel.addPropertyChangeListener(this);
 
         this.restartGameController = restartGameController;
         this.statisticsController = statisticsController;
@@ -86,6 +89,21 @@ public class GameResultView extends JPanel {
         }
 
         historyArea.setText(sb.toString());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case "gameResult":
+                resultMessage.setText((String) evt.getNewValue());
+                break;
+            case "playerScore":
+                playerFinalScore.setText((String) evt.getNewValue());
+                break;
+            case "dealerScore":
+                dealerFinalScore.setText((String) evt.getNewValue());
+                break;
+        }
     }
 
 }
