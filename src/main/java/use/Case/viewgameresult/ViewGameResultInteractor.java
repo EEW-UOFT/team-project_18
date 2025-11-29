@@ -19,10 +19,9 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
     @Override
     public void execute(CurrentGame currentGame) {
         final GameState gameState = currentGame.getGameState();
-        // TODO: toggle this back on later, for testing purposes only
-//        if (gameState == GameState.ONGOING) {
-//            throw new IllegalStateException("Game is still ongoing. Result cannot be viewed.");
-//        }
+        if (gameState == GameState.ONGOING) {
+            throw new IllegalStateException("Game is still ongoing. Result cannot be viewed.");
+        }
         final String gameResult = currentGame.outcome();
         final ArrayList<Card> playerHand = (ArrayList<Card>) currentGame.getPlayerHand();
         final ArrayList<Card> dealerHand = (ArrayList<Card>) currentGame.getDealerHand();
