@@ -10,6 +10,7 @@ public class Main {
                 .addStartNewGameUseCase()
                 .addRestartGameUseCase()
                 .addViewGameResultUseCase()
+                .addGameRuleUseCase()
                 .addHomePageView()
                 .addBlackJackGameView()
                 .addStatisticsUseCase()

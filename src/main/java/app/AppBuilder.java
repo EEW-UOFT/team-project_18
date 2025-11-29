@@ -4,6 +4,9 @@ import entity.HistoryEntry;
 import entity.User;
 import interfaceadapter.GameModel;
 import interfaceadapter.ViewManagerModel;
+import interfaceadapter.gamerule.GameRuleController;
+import interfaceadapter.gamerule.GameRulePresenter;
+import interfaceadapter.gamerule.GameRuleViewModel;
 import interfaceadapter.hit.ConsoleHitPresenter;
 import interfaceadapter.hit.HitController;
 import interfaceadapter.restartgame.RestartGameController;
@@ -23,6 +26,7 @@ import interfaceadapter.viewgameresult.ViewGameResultPresenter;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 import interfaceadapter.stand.ConsoleStandPresenter;
 import interfaceadapter.stand.StandController;
+import use.Case.gamerule.GameRuleInteractor;
 import use.Case.hit.HitInputBoundary;
 import use.Case.hit.HitInteractor;
 import use.Case.hit.HitOutputBoundary;
@@ -73,6 +77,9 @@ public class AppBuilder {
 
     private RestartGameController restartGameController;
     private RestartGameViewModel restartGameViewModel;
+
+    private GameRuleController gameRuleController;
+    private GameRuleViewModel gameRuleViewModel;
 
     private StatisticsController statisticsController;
     private StatisticsViewModel statisticsViewModel;
@@ -191,6 +198,15 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addGameRuleUseCase() {
+        final GameRuleViewModel viewModel = new GameRuleViewModel();
+        final GameRulePresenter presenter = new GameRulePresenter(viewModel);
+        final GameRuleInteractor interactor = new GameRuleInteractor(presenter);
+        this.gameRuleController = new GameRuleController(interactor);
+        this.gameRuleViewModel = viewModel;
+        return this;
+    }
+
     public AppBuilder addViewHistoryUseCase() {
         viewHistoryViewModel = new ViewHistoryViewModel();
         ViewHistoryOutputBoundary presenter =
@@ -208,7 +224,7 @@ public class AppBuilder {
 
     public AppBuilder addHomePageView() {
         final HomePageView homePage =
-                new HomePageView(startNewGameViewModel, startNewGameController);
+                new HomePageView(startNewGameViewModel, startNewGameController, gameRuleController, gameRuleViewModel);
         cardPanel.add(homePage, "Home");
         return this;
     }

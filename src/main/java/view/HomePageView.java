@@ -1,5 +1,7 @@
 package view;
 
+import interfaceadapter.gamerule.GameRuleController;
+import interfaceadapter.gamerule.GameRuleViewModel;
 import interfaceadapter.startnewgame.StartNewGameController;
 import interfaceadapter.startnewgame.StartNewGameViewModel;
 
@@ -14,7 +16,9 @@ public class HomePageView extends JPanel {
     private StartNewGameController startNewGameController;
 
     public HomePageView(StartNewGameViewModel startNewGameViewModel,
-                        StartNewGameController startNewGameController) {
+                        StartNewGameController startNewGameController,
+                        GameRuleController gameRuleController,
+                        GameRuleViewModel gameRuleViewModel) {
 
         this.startNewGameController = startNewGameController;
 
@@ -47,6 +51,13 @@ public class HomePageView extends JPanel {
             errorLabel.setVisible(false);
             errorLabel.setText("");
             this.startNewGameController.execute();
+        });
+
+        gameRule.addActionListener(event -> {
+            gameRuleController.execute();
+            System.out.println(gameRuleViewModel.getGameRules());
+            JOptionPane.showMessageDialog(this, gameRuleViewModel.getGameRules(),
+                    "Game Rules", JOptionPane.INFORMATION_MESSAGE);
         });
     }
 
