@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class GameResultView extends JPanel {
 
+    // Game outcome message
     private final JLabel resultMessage;
     private final JButton newGameButton;
     private final JButton statsButton;
