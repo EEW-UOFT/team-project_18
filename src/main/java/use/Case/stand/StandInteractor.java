@@ -49,12 +49,12 @@ public class StandInteractor implements StandInputBoundary {
                 outcome = "Dealer wins";
                 currentGame.gameLost();
             } else {
-                outcome = "Push";
+                outcome = "Draw";
                 currentGame.gameDraw();
             }
 
             user.addGameHistory(new HistoryEntry(
-                    (int) (System.currentTimeMillis() / 1000), // 时间戳
+                    (int) (System.currentTimeMillis() / 1000),
                     playerTotal,
                     dealerTotal,
                     outcome
