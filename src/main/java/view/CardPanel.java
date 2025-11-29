@@ -54,7 +54,7 @@ public class CardPanel extends JPanel {
     private static JLabel toJLabel(Image image) {
 
         JLabel label = new JLabel(new ImageIcon(image));
-        label.setPreferredSize(new Dimension(150, 200));
+        label.setPreferredSize(new Dimension(250, 350));
         return label;
     }
 
