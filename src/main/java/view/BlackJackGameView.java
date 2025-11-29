@@ -25,6 +25,7 @@ import interfaceadapter.restartgame.RestartGameViewModel;
 import interfaceadapter.stand.StandController;
 import interfaceadapter.startnewgame.StartNewGameViewModel;
 import interfaceadapter.viewgameresult.ViewGameResultController;
+import static javax.swing.JOptionPane.*;
 
 
 
@@ -43,6 +44,7 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
     private GameModel gameModel;
     private final JButton hitButton;
     private final JButton standButton;
+    private final JButton viewGameResultButton;
 
     private BufferedImage cardBack = ImageIO.read(new File("src/main/resources/images/cardback.jpg"));
 
@@ -60,6 +62,8 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         this.gameModel = gameModel;
         hitButton = new JButton("Hit");
         standButton = new JButton("Stand");
+        viewGameResultButton = new JButton("View Game Result");
+        enableGameButtons(true);
 
 
         this.setLayout(new BorderLayout(HGAP, VGAP));
@@ -76,6 +80,26 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
+                    List<Card> playerHand = currentGame.getPlayerHand();
+                    if (currentGame.calculateScore(playerHand) > 21) {
+                        currentGame.gameLost();
+                        currentGame.dealerReveal();
+                        updateGameDisplay(currentGame);
+                        enableGameButtons(false);
+                        showMessageDialog(null,"Bust");
+                    }
+                    else if (currentGame.calculateScore(playerHand) == 21) {
+                        currentGame.dealerReveal();
+                        standController.execute(currentGame);
+                        updateGameDisplay(currentGame);
+                        enableGameButtons(false);
+                        if (currentGame.calculateScore(currentGame.getDealerHand()) == 21) {
+                            showMessageDialog(null,"BlackJack, Tie");
+                        }
+                        else {
+                            showMessageDialog(null,"BlackJack, Win!");
+                        }
+                    }
                 }
         );
 
@@ -83,9 +107,21 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
             try {
                 standController.execute(currentGame);
 
-                hitButton.setEnabled(false);
-                standButton.setEnabled(false);
+                currentGame.dealerReveal();
                 updateGameDisplay(currentGame);
+                enableGameButtons(false);
+
+                switch(currentGame.getGameState()) {
+                    case WIN:
+                        showMessageDialog(null,"You Win");
+                        break;
+                    case LOST:
+                        showMessageDialog(null,"You Lose");
+                        break;
+                    case DRAW:
+                        showMessageDialog(null,"Draw");
+                        break;
+                }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -94,7 +130,7 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
 
         final JPanel buttonPanel = new JPanel();
 
-        buttonPanel.setPreferredSize(new Dimension(800, 50));
+        buttonPanel.setPreferredSize(new Dimension(1200, 50));
         buttonPanel.setLayout(new GridLayout(1, 1));
 
         buttonPanel.add(hitButton);
@@ -102,18 +138,12 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
 
 
         // Invisible view game result button that appears when the game ends
-        // TODO: toggle the visibility when the game ends, currently always visible for testing
-        final JButton viewGameResultButton = new JButton("View Game Result");
-//        viewGameResultButton.setVisible(false);
+
+        viewGameResultButton.setEnabled(false);
         buttonPanel.add(viewGameResultButton, BorderLayout.EAST);
 
         viewGameResultButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        viewGameResultController.execute(startNewGameViewModel.getCurrentGame());
-                    }
-                }
+                e -> viewGameResultController.execute(startNewGameViewModel.getCurrentGame())
         );
 
         this.add(cardsContainer, BorderLayout.CENTER);
@@ -132,6 +162,7 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
     private void enableGameButtons(boolean enabled) {
         hitButton.setEnabled(enabled);
         standButton.setEnabled(enabled);
+        viewGameResultButton.setEnabled(!enabled);
     }
 
     public void setCurrentGame(CurrentGame currentGame) {
