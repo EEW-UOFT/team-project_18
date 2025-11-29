@@ -1,91 +1,76 @@
 package view;
 
-import entity.HistoryEntry;
 import interfaceadapter.restartgame.RestartGameController;
 import interfaceadapter.statistics.StatisticsController;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
+import interfaceadapter.viewgamehistory.ViewHistoryController;
+import interfaceadapter.ViewManagerModel;
 
 import javax.swing.*;
 
 public class GameResultView extends JPanel {
-    // Game outcome message
+
     private final JLabel resultMessage;
     private final JButton newGameButton;
     private final JButton statsButton;
     private final JButton historyButton;
     private final JLabel playerFinalScore;
     private final JLabel dealerFinalScore;
+
     private final RestartGameController restartGameController;
     private final StatisticsController statisticsController;
+    private final ViewHistoryController viewHistoryController;
+    private final ViewManagerModel viewManagerModel;
 
-    public GameResultView(ViewGameResultViewModel viewGameResultViewModel, RestartGameController restartGameController,
-                          StatisticsController statisticsController) {
+    public GameResultView(ViewGameResultViewModel viewGameResultViewModel,
+                          RestartGameController restartGameController,
+                          StatisticsController statisticsController,
+                          ViewHistoryController viewHistoryController,
+                          ViewManagerModel viewManagerModel) {
 
         this.restartGameController = restartGameController;
         this.statisticsController = statisticsController;
+        this.viewHistoryController = viewHistoryController;
+        this.viewManagerModel = viewManagerModel;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        // Centered game result message
+
+        // -----------------------------
+        // Result labels
+        // -----------------------------
         resultMessage = new JLabel(viewGameResultViewModel.getGameResult());
         resultMessage.setAlignmentX(CENTER_ALIGNMENT);
         this.add(resultMessage);
 
-        // Player's final score
         playerFinalScore = new JLabel(viewGameResultViewModel.getPlayerScoreString());
         playerFinalScore.setAlignmentX(CENTER_ALIGNMENT);
         this.add(playerFinalScore);
 
-        // Dealer's final score
         dealerFinalScore = new JLabel(viewGameResultViewModel.getDealerScoreString());
         dealerFinalScore.setAlignmentX(CENTER_ALIGNMENT);
         this.add(dealerFinalScore);
 
-        final JPanel buttonPanel = new JPanel();
+        // -----------------------------
+        // Buttons
+        // -----------------------------
+        JPanel buttonPanel = new JPanel();
         newGameButton = new JButton("Play Again");
         statsButton = new JButton("Statistics");
         historyButton = new JButton("Game History");
 
+        newGameButton.addActionListener(e -> restartGameController.execute());
+        statsButton.addActionListener(e -> statisticsController.execute());
 
-        newGameButton.addActionListener(event ->
-                this.restartGameController.execute());
-
-        statsButton.addActionListener(event ->
-                this.statisticsController.execute());
+        historyButton.addActionListener(e -> {
+            viewHistoryController.execute(
+                    viewGameResultViewModel.getCurrentGame().getPlayer()
+            );
+            viewManagerModel.setActiveView("History");
+        });
 
         buttonPanel.add(newGameButton);
         buttonPanel.add(statsButton);
         buttonPanel.add(historyButton);
         this.add(buttonPanel);
-
-        if (viewGameResultViewModel.getCurrentGame() == null) {
-            JTextArea historyArea = new JTextArea("No history available yet.");
-            historyArea.setEditable(false);
-            JScrollPane scrollPane = new JScrollPane(historyArea);
-            this.add(scrollPane);
-            return;
-        }
-
-        JTextArea historyArea = new JTextArea(12, 40);
-        historyArea.setEditable(false);
-
-        JScrollPane scrollPane = new JScrollPane(historyArea);
-        this.add(scrollPane);
-
-
-        StringBuilder sb = new StringBuilder();
-
-        int index = 1;
-        for (HistoryEntry entry :
-                viewGameResultViewModel.getCurrentGame().getPlayer().getGameHistory()) {
-
-            sb.append("Game #").append(index++).append("\n")
-                    .append("Player: ").append(entry.getPlayerTotal()).append("\n")
-                    .append("Dealer: ").append(entry.getDealerTotal()).append("\n")
-                    .append("Outcome: ").append(entry.getOutcome()).append("\n")
-                    .append("---------------------------\n");
-        }
-
-        historyArea.setText(sb.toString());
     }
-
 }
