@@ -59,7 +59,7 @@ import java.util.ArrayList;
 public class AppBuilder {
 
     public static final int FRAME_LENGTH = 600;
-    public static final int FRAME_WIDTH = 800;
+    public static final int FRAME_WIDTH = 1200;
 
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
