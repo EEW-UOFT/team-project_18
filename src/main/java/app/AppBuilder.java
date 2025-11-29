@@ -230,7 +230,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addGameHistoryView() {
-        historyView = new GameHistoryView(viewHistoryViewModel);
+        historyView = new GameHistoryView(viewHistoryViewModel, viewManagerModel);
         cardPanel.add(historyView, "History");
         return this;
     }

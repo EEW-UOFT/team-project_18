@@ -3,6 +3,9 @@ package use.Case.viewgameresult;
 import entity.Card;
 import entity.CurrentGame;
 import entity.GameState;
+import entity.HistoryEntry;
+import interfaceadapter.viewgameresult.ViewGameResultPresenter;
+import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 import interfaceadapter.viewgameresult.ViewGameResultPresenter;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
 
@@ -28,6 +31,15 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
 
         final int playerScore = currentGame.calculateScore(playerHand);
         final int dealerScore = currentGame.calculateScore(dealerHand);
+
+        HistoryEntry entry = new HistoryEntry(
+                (int) (System.currentTimeMillis() / 1000),  // simple timestamp
+                playerScore,
+                dealerScore,
+                gameResult
+        );
+
+        currentGame.getPlayer().getGameHistory().add(entry);
 
         final ViewGameResultViewModel viewGameResultViewModel = new ViewGameResultViewModel();
 

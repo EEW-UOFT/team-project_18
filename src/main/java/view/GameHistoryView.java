@@ -1,4 +1,5 @@
 package view;
+import interfaceadapter.ViewManagerModel;
 import interfaceadapter.viewgamehistory.ViewHistoryViewModel;
 import entity.HistoryEntry;
 import javax.swing.*;
@@ -9,7 +10,7 @@ public class GameHistoryView extends JPanel {
     private final JTextArea historyArea;
     private final ViewHistoryViewModel viewModel;
 
-    public GameHistoryView(ViewHistoryViewModel viewModel) {
+    public GameHistoryView(ViewHistoryViewModel viewModel, ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
         this.setLayout(new BorderLayout());
 
@@ -18,6 +19,13 @@ public class GameHistoryView extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(historyArea);
         this.add(scrollPane, BorderLayout.CENTER);
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e ->
+                viewManagerModel.setActiveView("GameResult")
+        );
+
+        this.add(backButton, BorderLayout.SOUTH);
     }
 
     public void refresh() {
