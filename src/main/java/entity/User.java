@@ -13,6 +13,12 @@ public class User {
         return gameHistory;
     }
 
+    public void addGameHistory(HistoryEntry entry) {
+        if (gameHistory != null) {
+            gameHistory.add(entry);
+        }
+    }
+
     // optional but nice if someone later wants to update it:
     public void setGameHistory(List<HistoryEntry> gameHistory) {
         this.gameHistory = gameHistory;

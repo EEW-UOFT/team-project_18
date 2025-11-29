@@ -83,6 +83,9 @@ public class AppBuilder {
 
     private GameModel gameModel;
 
+    private final ArrayList<HistoryEntry> sharedHistory = new ArrayList<>();
+    private final User sharedUser = new User(sharedHistory);
+
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
         addStartNewGameUseCase();
@@ -91,7 +94,6 @@ public class AppBuilder {
         addRestartGameUseCase();
         addViewGameResultUseCase();
         addStatisticsUseCase();
-        addStandUseCase();
         addViewHistoryUseCase();
 
         addHomePageView();
@@ -116,10 +118,9 @@ public class AppBuilder {
 
         final StartNewGameInputBoundary interactor =
                 new StartNewGameInteractor(presenter);
-        final ArrayList<HistoryEntry> history = new ArrayList<>();
 
         this.startNewGameController =
-                new StartNewGameController(interactor, new User(history));
+                new StartNewGameController(interactor, sharedUser);
         this.startNewGameViewModel = viewModel;
 
         return this;
@@ -141,10 +142,8 @@ public class AppBuilder {
 
         final RestartGameInputBoundary interactor =
                 new RestartGameInteractor(presenter);
-        final ArrayList<HistoryEntry> history = new ArrayList<>();
-
         this.restartGameController =
-                new RestartGameController(interactor, new User(history));
+                new RestartGameController(interactor, sharedUser);
         this.restartGameViewModel = viewModel;
 
         return this;
@@ -160,7 +159,7 @@ public class AppBuilder {
 
         final ArrayList<HistoryEntry> history = new ArrayList<>();
         this.statisticsController =
-                new StatisticsController(interactor, new User(history));
+                new StatisticsController(interactor, sharedUser);
         this.statisticsViewModel = viewModel;
 
         return this;
@@ -172,7 +171,7 @@ public class AppBuilder {
         final StandInputBoundary interactor =
                 new StandInteractor(presenter);
 
-        this.standController = new StandController(interactor);
+        this.standController = new StandController(interactor, sharedUser);
         return this;
     }
 
