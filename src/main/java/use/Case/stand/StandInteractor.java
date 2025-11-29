@@ -4,6 +4,8 @@ import data.Access.Deck;
 import data.Access.DeckApiInterface;
 import entity.Card;
 import entity.CurrentGame;
+import entity.HistoryEntry;
+import entity.User;
 
 import java.util.List;
 
@@ -16,9 +18,12 @@ public class StandInteractor implements StandInputBoundary {
     }
 
     @Override
-    public void execute(CurrentGame currentGame) throws DeckApiInterface.UnableToLoadDeck {
+    public void execute(StandInputData inputData) throws DeckApiInterface.UnableToLoadDeck {
 
         try {
+            CurrentGame currentGame = inputData.getCurrentGame();
+            User user = inputData.getUser();
+
 
             int dealerTotal = currentGame.calculateScore(currentGame.getDealerHand());
 
@@ -44,9 +49,16 @@ public class StandInteractor implements StandInputBoundary {
                 outcome = "Dealer wins";
                 currentGame.gameLost();
             } else {
-                outcome = "Push";
+                outcome = "Draw";
                 currentGame.gameDraw();
             }
+
+            user.addGameHistory(new HistoryEntry(
+                    (int) (System.currentTimeMillis() / 1000),
+                    playerTotal,
+                    dealerTotal,
+                    outcome
+            ));
 
             final StandOutputData output = new StandOutputData(currentGame, outcome);
             presenter.prepareSuccessView(output);

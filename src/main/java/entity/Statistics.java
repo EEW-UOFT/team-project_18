@@ -19,7 +19,7 @@ public class Statistics {
         int longestStreak = 0;
 
         for (HistoryEntry entry : history) {
-            String outcome = entry.getOutcome(); // you already have this
+            String outcome = entry.getOutcome();
 
             if ("WIN".equalsIgnoreCase(outcome) || "Player Won".equalsIgnoreCase(outcome)) {
                 wins++;
@@ -31,7 +31,6 @@ public class Statistics {
                 losses++;
                 currentStreak = 0;
             } else {
-                // treat everything else (e.g. "TIE", "Draw") as tie
                 ties++;
                 currentStreak = 0;
             }

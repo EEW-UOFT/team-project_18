@@ -32,15 +32,6 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
         final int playerScore = currentGame.calculateScore(playerHand);
         final int dealerScore = currentGame.calculateScore(dealerHand);
 
-        HistoryEntry entry = new HistoryEntry(
-                (int) (System.currentTimeMillis() / 1000),  // simple timestamp
-                playerScore,
-                dealerScore,
-                gameResult
-        );
-
-        currentGame.getPlayer().getGameHistory().add(entry);
-
         final ViewGameResultViewModel viewGameResultViewModel = new ViewGameResultViewModel();
 
         final ViewGameResultOutputData outputData = new ViewGameResultOutputData(currentGame,
