@@ -64,6 +64,11 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
 
         this.setLayout(new BorderLayout(HGAP, VGAP));
 
+
+        JPanel cardsContainer = new JPanel(new GridLayout(2, 1, 0, 10)); // 2行1列，10像素间距
+        cardsContainer.add(dealerPanel);
+        cardsContainer.add(playerPanel);
+
         hitButton.addActionListener(
                 evt -> {
                     try {
@@ -111,9 +116,9 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
                 }
         );
 
-        this.add(dealerPanel, BorderLayout.NORTH);
-        this.add(playerPanel, BorderLayout.CENTER);
+        this.add(cardsContainer, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);
+
         this.setVisible(true);
 
         startNewGameViewModel.addPropertyChangeListener(this);
