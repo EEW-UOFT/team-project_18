@@ -15,6 +15,9 @@ import interfaceadapter.startnewgame.StartNewGameViewModel;
 import interfaceadapter.statistics.StatisticsController;
 import interfaceadapter.statistics.StatisticsPresenter;
 import interfaceadapter.statistics.StatisticsViewModel;
+import interfaceadapter.viewgamehistory.ViewHistoryController;
+import interfaceadapter.viewgamehistory.ViewHistoryPresenter;
+import interfaceadapter.viewgamehistory.ViewHistoryViewModel;
 import interfaceadapter.viewgameresult.ViewGameResultController;
 import interfaceadapter.viewgameresult.ViewGameResultPresenter;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
@@ -36,7 +39,11 @@ import use.Case.viewgameresult.ViewGameResultInteractor;
 import use.Case.stand.StandInputBoundary;
 import use.Case.stand.StandInteractor;
 import use.Case.stand.StandOutputBoundary;
+import use.Case.viewhistory.ViewHistoryInputBoundary;
+import use.Case.viewhistory.ViewHistoryInteractor;
+import use.Case.viewhistory.ViewHistoryOutputBoundary;
 import view.BlackJackGameView;
+import view.GameHistoryView;
 import view.GameResultView;
 import view.HomePageView;
 
@@ -60,6 +67,10 @@ public class AppBuilder {
     private ViewGameResultController viewGameResultController;
     private ViewGameResultViewModel viewGameResultViewModel;
 
+    private ViewHistoryController viewHistoryController;
+    private ViewHistoryViewModel viewHistoryViewModel;
+    private GameHistoryView historyView;
+
     private RestartGameController restartGameController;
     private RestartGameViewModel restartGameViewModel;
 
@@ -81,6 +92,21 @@ public class AppBuilder {
         addViewGameResultUseCase();
         addStatisticsUseCase();
         addStandUseCase();
+        addViewHistoryUseCase();
+
+        addHomePageView();
+
+        try {
+            addBlackJackGameView();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        addGameResultView();
+        addGameHistoryView();
+
+        setupViewManager();
+
     }
 
     public AppBuilder addStartNewGameUseCase() {
@@ -165,6 +191,21 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addViewHistoryUseCase() {
+        viewHistoryViewModel = new ViewHistoryViewModel();
+        ViewHistoryOutputBoundary presenter =
+                new ViewHistoryPresenter(viewHistoryViewModel);
+
+        ViewHistoryInputBoundary interactor =
+                new ViewHistoryInteractor(presenter);
+
+        this.viewHistoryController =
+                new ViewHistoryController(interactor);
+
+        return this;
+    }
+
+
     public AppBuilder addHomePageView() {
         final HomePageView homePage =
                 new HomePageView(startNewGameViewModel, startNewGameController);
@@ -181,17 +222,29 @@ public class AppBuilder {
     }
 
     public AppBuilder addGameResultView() {
-        final GameResultView gameResultView =
-                new GameResultView(viewGameResultViewModel,
-                        restartGameController, statisticsController);
+        final GameResultView gameResultView;
+        gameResultView = new GameResultView(viewGameResultViewModel,
+                restartGameController, statisticsController, viewHistoryController, viewManagerModel);
         cardPanel.add(gameResultView, "GameResult");
         return this;
     }
+
+    public AppBuilder addGameHistoryView() {
+        historyView = new GameHistoryView(viewHistoryViewModel, viewManagerModel);
+        cardPanel.add(historyView, "History");
+        return this;
+    }
+
 
     public AppBuilder setupViewManager() {
         viewManagerModel.addPropertyChangeListener(evt -> {
             if ("view".equals(evt.getPropertyName())) {
                 final String activeView = (String) evt.getNewValue();
+
+                if ("History".equals(activeView) && historyView != null) {
+                    historyView.refresh();
+                }
+
                 cardLayout.show(cardPanel, activeView);
             }
         });
