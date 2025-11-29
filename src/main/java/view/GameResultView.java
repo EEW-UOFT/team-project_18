@@ -1,5 +1,6 @@
 package view;
 
+import entity.HistoryEntry;
 import interfaceadapter.restartgame.RestartGameController;
 import interfaceadapter.statistics.StatisticsController;
 import interfaceadapter.viewgameresult.ViewGameResultViewModel;
@@ -55,6 +56,36 @@ public class GameResultView extends JPanel {
         buttonPanel.add(statsButton);
         buttonPanel.add(historyButton);
         this.add(buttonPanel);
+
+        if (viewGameResultViewModel.getCurrentGame() == null) {
+            JTextArea historyArea = new JTextArea("No history available yet.");
+            historyArea.setEditable(false);
+            JScrollPane scrollPane = new JScrollPane(historyArea);
+            this.add(scrollPane);
+            return;
+        }
+
+        JTextArea historyArea = new JTextArea(12, 40);
+        historyArea.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(historyArea);
+        this.add(scrollPane);
+
+
+        StringBuilder sb = new StringBuilder();
+
+        int index = 1;
+        for (HistoryEntry entry :
+                viewGameResultViewModel.getCurrentGame().getPlayer().getGameHistory()) {
+
+            sb.append("Game #").append(index++).append("\n")
+                    .append("Player: ").append(entry.getPlayerTotal()).append("\n")
+                    .append("Dealer: ").append(entry.getDealerTotal()).append("\n")
+                    .append("Outcome: ").append(entry.getOutcome()).append("\n")
+                    .append("---------------------------\n");
+        }
+
+        historyArea.setText(sb.toString());
     }
 
 }
