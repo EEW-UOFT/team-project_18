@@ -19,20 +19,22 @@ public class Statistics {
         int longestStreak = 0;
 
         for (HistoryEntry entry : history) {
-            String outcome = entry.getOutcome();
+            String outcome = entry.getOutcome().toLowerCase();
 
-            if ("WIN".equalsIgnoreCase(outcome) || "Player Won".equalsIgnoreCase(outcome)) {
+            if (outcome.contains("player wins") || outcome.contains("player won")) {
                 wins++;
                 currentStreak++;
                 if (currentStreak > longestStreak) {
                     longestStreak = currentStreak;
                 }
-            } else if ("LOSS".equalsIgnoreCase(outcome) || "Dealer Won".equalsIgnoreCase(outcome)) {
+            } else if (outcome.contains("dealer wins") || outcome.contains("dealer won")) {
                 losses++;
                 currentStreak = 0;
-            } else {
+            } else if (outcome.contains("push") || outcome.contains("draw")) {
                 ties++;
                 currentStreak = 0;
+            } else {
+                System.out.println("未知游戏结果: " + outcome);
             }
         }
 

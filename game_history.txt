@@ -4,3 +4,6 @@
 1764451272,14,19,Dealer wins
 1764451278,19,17,Player wins
 1764451578,7,24,Player wins (dealer busts)
+1764466311,20,23,Player wins (dealer busts)
+1764466546,17,18,Dealer wins
+1764467099,21,18,Player wins
