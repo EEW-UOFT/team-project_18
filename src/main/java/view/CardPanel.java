@@ -25,7 +25,7 @@ public class CardPanel extends JPanel {
     public CardPanel(String entity) throws IOException {
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
-        this.setPreferredSize(new Dimension(800, 250));
+        this.setPreferredSize(new Dimension(1200, 250));
 
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(), entity));
     }
@@ -53,8 +53,9 @@ public class CardPanel extends JPanel {
 
     private static JLabel toJLabel(Image image) {
 
-        JLabel label = new JLabel(new ImageIcon(image));
-        label.setPreferredSize(new Dimension(250, 350));
+        Image resized = image.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+        JLabel label = new JLabel(new ImageIcon(resized));
+        label.setPreferredSize(new Dimension(150, 200));
         return label;
     }
 
