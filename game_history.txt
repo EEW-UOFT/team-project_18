@@ -1,0 +1,6 @@
+1764434952,19,19,Push
+1764435028,28,22,Dealer wins (player busts)
+1764435127,16,24,Player wins (dealer busts)
+1764451272,14,19,Dealer wins
+1764451278,19,17,Player wins
+1764451578,7,24,Player wins (dealer busts)
