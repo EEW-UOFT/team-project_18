@@ -143,8 +143,7 @@ public class BlackJackGameView extends JPanel implements ActionListener, Propert
         buttonPanel.add(viewGameResultButton, BorderLayout.EAST);
 
         viewGameResultButton.addActionListener(
-                e -> viewGameResultController.execute(startNewGameViewModel.getCurrentGame())
-        );
+                e -> viewGameResultController.execute(currentGame));
 
         this.add(cardsContainer, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);

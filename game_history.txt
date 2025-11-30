@@ -10,3 +10,8 @@
 1764453833,21,24,Player wins (dealer busts)
 1764453866,20,17,Player wins
 1764453899,18,24,Player wins (dealer busts)
+1764460672,20,19,Player wins
+1764460692,15,18,Dealer wins
+1764468119,17,20,Dealer wins
+1764468128,19,24,Player wins (dealer busts)
+1764468251,18,24,Player wins (dealer busts)
