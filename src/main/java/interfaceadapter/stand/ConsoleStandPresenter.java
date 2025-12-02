@@ -16,6 +16,21 @@ public class ConsoleStandPresenter implements StandOutputBoundary {
     }
 
     @Override
+    public void presentDealerDrew(Card card, int dealerTotal) {
+
+    }
+
+    @Override
+    public void presentResult(StandOutputData outputData) {
+
+    }
+
+    @Override
+    public void presentError(String message) {
+
+    }
+
+    @Override
     public void prepareSuccessView(StandOutputData outputData) {
 
     }
