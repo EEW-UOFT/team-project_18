@@ -15,3 +15,30 @@
 1764468119,17,20,Dealer wins
 1764468128,19,24,Player wins (dealer busts)
 1764468251,18,24,Player wins (dealer busts)
+1764702152,25,18,Dealer wins (player busts)
+1764702152,20,18,Player wins
+1764702152,18,25,Player wins (dealer busts)
+1764702152,18,20,Dealer wins
+1764702152,19,19,Draw
+1764702457,25,18,Dealer wins (player busts)
+1764702457,20,18,Player wins
+1764702457,18,25,Player wins (dealer busts)
+1764702457,18,20,Dealer wins
+1764702457,19,19,Draw
+1764702482,25,18,Dealer wins (player busts)
+1764702482,20,18,Player wins
+1764702482,18,25,Player wins (dealer busts)
+1764702482,18,20,Dealer wins
+1764702482,19,19,Draw
+1764702848,25,18,Dealer wins (player busts)
+1764702848,20,18,Player wins
+1764702848,18,25,Player wins (dealer busts)
+1764702849,18,20,Dealer wins
+1764702849,20,18,Player wins
+1764702849,19,19,Draw
+1764702857,25,18,Dealer wins (player busts)
+1764702858,20,18,Player wins
+1764702858,18,25,Player wins (dealer busts)
+1764702858,18,20,Dealer wins
+1764702858,20,18,Player wins
+1764702858,19,19,Draw
