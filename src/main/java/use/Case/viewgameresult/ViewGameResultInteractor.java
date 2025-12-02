@@ -32,8 +32,6 @@ public class ViewGameResultInteractor implements ViewGameResultInputBoundary {
         final int playerScore = currentGame.calculateScore(playerHand);
         final int dealerScore = currentGame.calculateScore(dealerHand);
 
-        final ViewGameResultViewModel viewGameResultViewModel = new ViewGameResultViewModel();
-
         final ViewGameResultOutputData outputData = new ViewGameResultOutputData(currentGame,
                 gameResult,
                 playerScore,
